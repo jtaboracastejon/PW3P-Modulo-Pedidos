@@ -1,0 +1,5 @@
+port=3010
+usuariobd=autenticacion 
+nombrebd=sigresdesarrollo
+contrasenabd=Autenticacion1@
+ipbd="desofiw.xyz"
