@@ -24,7 +24,7 @@ const Pedidos_mesa = db.define(
         type: DataTypes.INTEGER,
         allowNull: false,
         defaultValue: '1',
-        field: 'idpedido'
+        field: 'cuenta'
        },
        nombrecuenta:{
         type: DataTypes.STRING(45),

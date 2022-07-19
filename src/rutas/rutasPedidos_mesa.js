@@ -5,7 +5,7 @@ const controladorPedidos_mesa = require('../controladores/controladorPedidos_mes
 
 rutas.get('/listar', controladorPedidos_mesa.Listar);
 
-
+rutas.post('/guardar', controladorPedidos_mesa.Guardar);
 
 
 
