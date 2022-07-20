@@ -18,6 +18,7 @@ app.use(express.json())
 app.use('/app', require('./rutas/index'))
 
 app.use('/app/cargos', require('./rutas/rutasCargo'))
+app.use('/app/pedidoselaborados', require('./rutas/rutapedidoelab'))
 
 
 app.listen(process.env.port, () => {
