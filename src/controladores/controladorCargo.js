@@ -87,5 +87,9 @@ exports.Editar = async (req, res) => {
     } 
 }
 exports.Eliminar = async (req, res) => {
-
+    try {
+        
+    } catch (error) {
+        
+    }
 }

@@ -8,7 +8,7 @@ exports.Listar = async(req, res) => {
 }
 
 exports.Guardar = async (req, res) =>{
-    const {idpedido,idmesa, cuenta, nombrecuenta} = req.body;
+    const {idregistro,idpedido,idmesa, cuenta, nombrecuenta} = req.body;
     var texto = ''
     try {
         await Pedidos_mesa.create({
@@ -29,6 +29,60 @@ exports.Guardar = async (req, res) =>{
         console.log(error);
         texto= "Error al guardar";
         
+    }
+    res.send(texto);
+}
+
+exports.Modificar = async (req,res) =>{
+    
+    const {idregistro} = req.query;
+    try {
+        await Pedidos_mesa.update(
+            {
+                ...req.body
+            },
+            {
+                where:{
+                    idregistro: idregistro
+                }
+            }
+        )
+        .then((data) => {
+            console.log(data);
+            texto = "Pedido Modificado";
+        })
+        .catch((err) => {
+            console.log(err);
+            texto="Error al modificar";
+        })
+    } catch (error) {
+        console.log(error);
+        texto="Error al modificar en la base de datos"
+    }
+    res.send(texto);
+}
+
+exports.Eliminar = async (req, res) => {
+    const {idregistro} = req.query;
+    try {
+        
+
+        await Pedidos_mesa.destroy({
+            where : 
+            {   idregistro:idregistro
+            }
+            })
+            .then((data) => {
+                console.log(data);
+                texto="Registro Eliminado";
+            }).catch((err) => {
+                console.log(err);
+                texto="Error al actualizar";
+            }); 
+            
+    } catch (error) {
+        console.log(error);
+        texto="Error al actualizar en la base de datos";
     }
     res.send(texto);
 }

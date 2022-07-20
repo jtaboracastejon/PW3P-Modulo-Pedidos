@@ -7,9 +7,9 @@ rutas.get('/listar', controladorPedidos_mesa.Listar);
 
 rutas.post('/guardar', controladorPedidos_mesa.Guardar);
 
+rutas.put('/modificar', controladorPedidos_mesa.Modificar);
 
-
-
+rutas.delete('/eliminar', controladorPedidos_mesa.Eliminar);
 
 
 module.exports = rutas;
