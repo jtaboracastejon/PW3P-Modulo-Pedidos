@@ -5,11 +5,20 @@ const controladorPedidos_mesa = require('../controladores/controladorPedidos_mes
 
 rutas.get('/listar', controladorPedidos_mesa.Listar);
 
-rutas.post('/guardar', controladorPedidos_mesa.Guardar);
+rutas.post('/guardar',
+body('idpedido')
+.notEmpty().withMessage("El id de pedidos es necesario"),
+controladorPedidos_mesa.Guardar);
 
-rutas.put('/modificar', controladorPedidos_mesa.Modificar);
+rutas.put('/modificar',
+query('idregistro')
+.notEmpty().withMessage("El id de registro es necesario y esta vacio"),
+controladorPedidos_mesa.Modificar);
 
-rutas.delete('/eliminar', controladorPedidos_mesa.Eliminar);
+rutas.delete('/eliminar',
+query('idregistro')
+.notEmpty().withMessage('El ID del pedido no puede estar vacio'),
+controladorPedidos_mesa.Eliminar);
 
 
 module.exports = rutas;
