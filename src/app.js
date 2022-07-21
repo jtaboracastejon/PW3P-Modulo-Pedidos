@@ -19,6 +19,8 @@ app.use('/app', require('./rutas/index'))
 
 app.use('/app/cargos', require('./rutas/rutasCargo'))
 
+app.use('/app/pedidos_cancelados', require('./rutas/rutasPedidosCancelados'))
+
 
 app.listen(process.env.port, () => {
     console.log('Servidor iniciado en el puerto ' + process.env.port)

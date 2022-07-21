@@ -1,32 +1,31 @@
 const {DataTypes} = require('sequelize');
 const db = require('../configuracion/db');
-const Cargo = db.define(
-    'cargo', 
+const Pedidos_Cancelados = db.define(
+    'pedidos_cancelados', 
     {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             allowNull: false,
-            autoIncrement: true,
-            field:'CodigoCargo'
+            field:'numeropedido'
         },        
-        nombre: {
+        usuario: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            field:'usuario'
+        },        
+        fechahora: {
             type: DataTypes.STRING(50),
             allowNull: false,
-            field:'NombreCargo'
-        },        
-        descripcion: {
-            type: DataTypes.TEXT,
-            allowNull: false,
-            field:'DescripcionCargo'
+            field:'fechahora'
         },        
     },
     {
         timestamps: false,
-        tableName: 'cargos'
+        tableName: 'pedidos_cancelados'
     }
 )
-    Cargo.sync().then(
+    Pedidos_Cancelados.sync().then(
     () => console.log("Sincronizacion Completa")
 );
-module.exports = Cargo;
+module.exports = Pedidos_Cancelados;
