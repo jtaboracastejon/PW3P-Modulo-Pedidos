@@ -6,7 +6,11 @@ const { text } = require('express');
 
 exports.Listar = async(req, res) => {
     const pedidos_mesa = await Pedidos_mesa.findAll();
-    res.json(pedidos_mesa);
+    //res.json(pedidos_mesa);
+
+    res.render("Pedidos_mesaIndex", {
+        titulo: 'Listado de Pedidos_mesa',
+        pedidos_mesa})
 }
 
 exports.Guardar = async (req, res) =>{

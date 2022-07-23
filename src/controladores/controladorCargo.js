@@ -3,7 +3,10 @@ const {validationResult} = require('express-validator');
 
 exports.Listar = async (req, res) => {
     const cargos = await Cargo.findAll();
-    res.json(cargos);
+    //res.json(cargos);
+    res.render("cargosIndex", {
+        titulo: 'Listado de Cargos',
+        cargos})
 }
 
 exports.Guardar = async (req, res) => {

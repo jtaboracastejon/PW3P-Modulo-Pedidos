@@ -8,17 +8,17 @@ const Cargo = db.define(
             primaryKey: true,
             allowNull: false,
             autoIncrement: true,
-            field:'id'
+            field:'CodigoCargo'
         },        
         nombre: {
             type: DataTypes.STRING(50),
             allowNull: false,
-            field:'nombre'
+            field:'NombreCargo'
         },        
         descripcion: {
             type: DataTypes.TEXT,
             allowNull: false,
-            field:'descripcion'
+            field:'DescripcionCargo'
         },        
     },
     {
