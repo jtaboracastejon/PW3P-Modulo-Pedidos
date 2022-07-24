@@ -1,0 +1,78 @@
+<section class="content">
+  <div class="container-fluid">
+    <h5 class="mb-2 mt-4">Lista de entrega pedido</h5>
+    <div class="row">
+      <!-- Left col -->
+      <div class="col-md-8">
+        <!-- TABLE: LATEST ORDERS -->
+        <div style="color: ;#00a65a" class="card">
+          <div class="card-header border-transparent">
+            <h3 class="card-title">Listado general de pedidos entregados</h3>
+
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+              </button>
+              <button type="button" class="btn btn-tool" data-card-widget="remove">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table m-0">
+                <thead>
+                  <tr>
+                    <th>ID DETALLE</th>
+                    <th>USUARIO</th>
+                    <th>ID ENTREGA</th>
+                    <th>FECHA </th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {{#each listarEntregas}}
+                  <tr>
+                    <td><a
+                        href="/entrega_pedidos/buscarId?id={{this.iddetalle_pedido}}">{{this.iddetalle_pedido}}</a>
+                    </td>
+                    <td>{{this.LoginUsuario}}</td>
+                    <td>
+                      <div class="sparkbar" data-color="#00a65a" data-height="20">{{this.identrega}}</div>
+                    </td>
+                    <td>{{this.fechahora}}</td>
+                    <td>
+                          <a class="btn btn-warning" href="/pedidos/buscarId?id=<?php echo $row['NumeroPedido']; ?>"><i class="text-white fas fa-edit"></i></a>
+                          <a class="btn btn-danger" onclick="return confirm('Estas seguro de Cancelar el pedido?')" href="/pedidos/eliminar?id=<?php echo $row['NumeroPedido']; ?>"><i class="text-white fas fa-window-close"></i></a>
+                    </td>
+                  </tr>
+
+
+                  {{/each}}
+
+                </tbody>
+
+              </table>
+            </div>
+            <!-- /.table-responsive -->
+          </div>
+          <!-- /.card-body -->
+          <div class="card-footer clearfix">
+            <a href="/cargos/nuevo" class="btn btn-sm btn-info float-left">Generar otra entrega de pedido</a>
+            <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">Buscar entrega de pedido</a>
+          </div>
+          <!-- /.card-footer -->
+        </div>
+        <!-- /.card -->
+      </div>
+      <!-- Fin columna izquierda -->
+      <!-- Comienzo columna derecha -->
+      <div class="col-md-4">
+        <!-- /.card -->
+      </div>
+      <!-- Fin columna derecha -->
+    </div>
+    <!-- Fin primera fila -->
+  </div>
+</section>

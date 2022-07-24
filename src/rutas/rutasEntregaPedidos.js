@@ -5,6 +5,7 @@ const rutas = Router()
 const entregaPedidos = require('../controladores/controladorEntregaPedidos')
 
 rutas.get('/listar', entregaPedidos.Listar)
+rutas.get('/listarentregas', entregaPedidos.listarEntregas)
 
 rutas.post('/guardar', 
 body('idDetalle')

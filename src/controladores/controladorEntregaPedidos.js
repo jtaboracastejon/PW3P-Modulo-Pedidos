@@ -1,14 +1,37 @@
 const entregaPedidos = require('../modelos/modeloEntregaPedidos');
 const {validationResult} = require('express-validator');
+const db = require('../configuracion/db');
+const {QueryTypes} = require('sequelize');
 //const { where } = require('sequelize/types');
 
 exports.Listar = async (req, res) => {
     const entrega_pedidos = await entregaPedidos.findAll();
-    res.json(entrega_pedidos);
+    //res.json(entrega_pedidos);
+    res.render("entregaPedidosIndex", {
+    titulo: 'Listado de entrega de pedidos',
+        entrega_pedidos})
+        console.log(entrega_pedidos)
 }
 
+exports.listarEntregas = async (req, res) => {
+    const listarEntregas = await db.query("select * from listarentregas",{type:QueryTypes.SELECT}); 
+    if(listarEntregas.length==0){
+        res.send("No existen datos!!!");
+    }
+    else{
+        res.render("entregaPedidosIndex", {
+            titulo: 'Listado de entrega de pedidos',
+                listarEntregas})
+    console.log(listarEntregas);
+    }
+};
+
+
 exports.Guardar = async (req, res) => {
+    
     const validacion = validationResult(req);
+    
+
     if(validacion.errors.length > 0) {
         let mensaje=''
         validacion.errors.forEach(error => {
@@ -21,13 +44,16 @@ exports.Guardar = async (req, res) => {
         const { idDetalle, usuario, fechahora, identrega } = req.body;
         var texto=''
         try {
-            await entregaPedidos.create({
+            await entregaPedidos.create ({ 
                 idDetalle,
                 usuario,
                 fechahora,
-                identrega
-                
-            }).then((data) => {
+                identrega 
+            })
+            res.render("entregaPedidosIndex", {
+                titulo: 'Listado de entrega de pedidos',
+                    entrega_pedidos})
+            .then((data) => {
                 console.log(data);
                 texto="Entrega de pedido guardada!!"
             })
@@ -35,11 +61,13 @@ exports.Guardar = async (req, res) => {
                 console.log(err);
                 texto="Error al guardar la entrega!!"
             } )
+            
         } catch (error) {
             console.log(error);
             texto="Error al guardar la entrega!!"
         }
-        res.send(texto)        
+        res.send(texto)   
+           
     }    
 }
 exports.Editar = async (req, res) => {
