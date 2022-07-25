@@ -1,0 +1,62 @@
+
+    <section class="content">
+        <div class="container-fluid">
+          <h5 class="mb-2 mt-4">Lista de Pedidos Elaborados</h5>
+           <!--<h5 class="mb-2 mt-4">?php var_dump($this->datos);?></h5>-->
+          <div class="row">
+            <!-- Left col -->
+            <div class="col-md-12">
+              <!-- TABLE: LATEST ORDERS -->
+              <div class="card">
+                <div class="card-header border-transparent">
+                  <h3 class="card-title">Informacion General de Pedidos Elaborados</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body p-0">
+                  <div class="table-responsive">
+                    <table class="table m-0">
+                      <thead>
+                      <tr>
+                        <th>N°DETALLEPEDIDO</th>
+                        <th>USUARIO</th>
+                        <th>FECHAHORA</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      {{#each lista}}
+                        <tr>
+                          <td><a href="/Pedidoselaborados/editar?id={{iddetallepedido}}">{{iddetallepedido}}</a></td>
+                          <td>{{'usuario.LoginUsuario'}}</td>
+                          <td>
+                          <div class="sparkbar" data-color="#00a65a" data-height="20">{{fechahora}}</div>
+                          </td>
+                          <td>
+                            <a class="btn btn-warning" href="/Pedidoselaborados/editar?id={{iddetallepedido}}">Editar</a>
+                            <a class="btn btn-danger" onclick = "return confirm('Estas seguro de eliminar?')"
+                             href="/Pedidoselaborados/eliminar?id={{iddetallepedido}}">Eliminar</a>
+                          </td>                     
+
+                        </tr>  
+                        {{/each}}
+
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- /.table-responsive -->
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer clearfix">
+                  <a href="/app/pedidoselaborados/nuevo" class="btn btn-sm btn-info float-left">Generar nuevo pedido Elaborado</a>
+                  <a href="/pedidoselaborados/buscar" class="btn btn-sm btn-secondary float-right">Buscar pedido </a>
+                </div>
+                <!-- /.card-footer -->
+              </div>
+              <!-- /.card -->
+            </div>
+            <!-- Fin columna izquierda -->
+          </div>
+          <!-- Fin primera fila -->
+        </div>
+    </section>
+    <!-- /.content -->
+

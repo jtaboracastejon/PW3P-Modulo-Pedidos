@@ -1,27 +1,18 @@
 const {validationResult} = require('express-validator');
 //se usa el modelo creado, lo llamamos dentro de una variable
-const modeloPedidosElaborados = require('../modelos/modelopedidoselab');
+const modelousuarios = require('../modelos/modelousuarios');
 const {Op} = require('sequelize');
-const usuarios = require('../modelos/modelousuarios');
-
 
 
 //en el controlador se crean las funciones (CRUD)
 
 exports.Listar = async(req, res) => {
-        const lista = await modeloPedidosElaborados.findAll({
-            include: {
-                model: usuarios,
-                attributes: ['LoginUsuario']
-            },
-        raw: true,
-        });//con el findall le indicamos que busque todos los datos
+        const lista = await usuarios.findAll();//con el findall le indicamos que busque todos los datos
         console.log(lista);
         
-        res.render("pedidoselaboradosindex",{
-            titulo: 'Listado De Pedidos Elaborados',
-            lista
-        });
+        res.render("usuarios",{
+            titulo: 'Listado de Usuarios',
+            lista});
 }
 
 exports.Guardar = async (req, res) => {
@@ -34,12 +25,19 @@ exports.Guardar = async (req, res) => {
         res.send(mensaje)
 
     }else{
-        const { iddetallepedido, idusuario } = req.body;
+        const { idregistro, LoginUsuarios, Contraseña, AccesoTotal, Habilitado, pin, Fallidos, correo, estado} = req.body;
         var texto=''
         try {
-            await modeloPedidosElaborados.create({
-                iddetallepedido,
-                idusuario
+            await usuarios.create({
+                idregistro,
+                LoginUsuarios,
+                Contraseña,
+                AccesoTotal, 
+                Habilitado,
+                pin,
+                Fallidos,
+                correo,
+                estado
             }).then((data) => {
                 console.log(data);
                 texto="Registro Guardado"
@@ -70,10 +68,10 @@ exports.Editar = async (req, res) => {
         
         var texto=''
         try {
-            var buscardetalle = await modeloPedidosElaborados.findOne(
+            var buscardetalle = await modelousuarios.findOne(
                 {
                     where: {
-                        iddetallepedido: id
+                        idregistro: id
                     }
                 }
             )
@@ -119,7 +117,7 @@ exports.Eliminar = async (req, res) => {
     }else{
         const {id} = req.query;
         try { 
-            var buscardetalle = await modeloPedidosElaborados.findOne({
+            var buscardetalle = await modelousuarios.findOne({
                 where: {
                     iddetallepedido: id
                 }
@@ -130,10 +128,10 @@ exports.Eliminar = async (req, res) => {
             else{
                 await buscardetalle.destroy({
                     where: {
-                        iddetallepedido: id
+                        idregistro: id
                     }
                 });
-                msj.mensaje = 'Datalle pedido eliminado correctamente';
+                msj.mensaje = 'ID Registro eliminado correctamente';
             }
         } catch (error) {
             msj.mensaje = 'Error al borrar el detalle pedido';
@@ -142,17 +140,3 @@ exports.Eliminar = async (req, res) => {
     res.json(msj.mensaje);
 
 }
-
-exports.nuevo = async (req, res) => {
-    const lista = await usuarios.findAll({
-    
-    raw: true,
-    });//con el findall le indicamos que busque todos los datos
-    console.log(lista);
-    
-    res.render("pedidoselaboradosnuevo",{
-        titulo: 'Listado De Pedidos Elaborados',
-        lista
-    });
-}
-

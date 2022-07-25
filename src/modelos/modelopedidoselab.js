@@ -1,5 +1,8 @@
 const {DataTypes} = require('sequelize');
 const db = require('../configuracion/db');
+
+const usuarios = require('../modelos/modelousuarios');
+
 //modelo es donde se genera o crea la tabla de la bdd para que la api conozca los campos que lleva
 //con el const pedidos_elaborados le indicamos los campos de la tabla
 
@@ -26,8 +29,16 @@ const pedidos_elaborados = db.define(
     }
 );
 
+
+pedidos_elaborados.belongsTo(usuarios, {
+    foreignKey: 'idusuario',
+    otherkey: 'idregistro'
+});
+
+
 //con el sync creamos la trabla desde el visual
 pedidos_elaborados.sync().then(
     () => console.log("Sincronizacion Completa")
 );
 module.exports = pedidos_elaborados;
+

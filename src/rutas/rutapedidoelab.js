@@ -38,4 +38,6 @@ query('id')
 .isInt().withMessage('El ID del detalle pedido debe ser un numero entero'),
 controladorpedidoselaborados.Eliminar);
 
+rutas.get('/nuevo', controladorpedidoselaborados.nuevo)
+
 module.exports = rutas;
