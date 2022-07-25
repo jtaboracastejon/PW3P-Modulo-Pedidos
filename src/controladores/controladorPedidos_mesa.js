@@ -1,17 +1,55 @@
 const Pedidos_mesa = require('../modelos/modeloPedidos_mesa');
 const {validationResult} = require('express-validator');
 const { text } = require('express');
-
+const modelosMesa = require('../modelos/modeloMesas_x_area');
+const { transformAuthInfo } = require('passport');
 
 
 exports.Listar = async(req, res) => {
-    const pedidos_mesa = await Pedidos_mesa.findAll();
+    //const pedidos_mesa = await Pedidos_mesa.findAll();
+    const pedidos_mesa = await Pedidos_mesa.findAll({
+        include: {
+            model: modelosMesa,
+            attributes: ['Mesa'],
+        },
+        raw: true,
+    });
+    console.log(pedidos_mesa);
     //res.json(pedidos_mesa);
+    //console.log(pedidos_mesa);
 
     res.render("Pedidos_mesaIndex", {
         titulo: 'Listado de Pedidos_mesa',
-        pedidos_mesa})
+        pedidos_mesa
+    });
 }
+
+exports.nuevo = async (req, res) =>{
+    const pedidos_mesa = await Pedidos_mesa.findAll({
+
+    });//con el findall le indicamos que busque todos los datos
+    console.log(Pedidos_mesa);
+    
+    res.render("Pedidos_mesaNuevo", {
+        titulo: 'Nuevo en Pedidos_mesa',
+        Pedidos_mesa
+
+    });
+}
+
+exports.buscar = async (req, res) =>{
+    const pedidos_mesa = await Pedidos_mesa.findAll({
+
+    });//con el findall le indicamos que busque todos los datos
+    console.log(Pedidos_mesa);
+    
+    res.render("Pedidos_mesaBuscar", {
+        titulo: 'Buscar en Pedidos_mesa',
+        Pedidos_mesa
+
+    });
+}
+
 
 exports.Guardar = async (req, res) =>{
     const validacion = validationResult(req);

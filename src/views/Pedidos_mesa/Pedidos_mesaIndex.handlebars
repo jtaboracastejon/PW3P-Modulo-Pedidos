@@ -1,78 +1,68 @@
-
 <div class="wrapper">
-  
+
   <!-- Main content -->
   <!-- Main content -->
   <section class="content">
-        <div class="container-fluid">
-          <h5 class="mb-2 mt-4">Lista de Pedidos</h5>
-          <div class="row">
-            <!-- Left col -->
-            <div class="col-md-12">
-              <!-- TABLE: LATEST ORDERS -->
-              <div class="card">
-                <div class="card-header border-transparent">
-                  <h3 class="card-title">Información general de pedidos a llevar</h3>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body p-0">
-                  <div class="table-responsive">
-                    <table class="table m-0">
-                      <thead>
-                      <tr>
-                        <th>ID REGISTRO</th>
-                        <th>ID PEDIDO</th>
-                        <th>NOMBRE MESA</th>
-                        <th>CUENTA</th>
-                        <th>NOMBRECUENTA</th>
-                        <th>ACCIONES</th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                      {{#each pedidos_mesa}}
-                        <tr>
-                            <td>{{this.dataValues.idregistro}}</td>
-                            <td><a href="/cargos/buscarId?id={{this.dataValues.idpedido}}">{{this.dataValues.idpedido}}</a></td>
-                            <td>{{this.dataValues.idmesa}}</td>
-                            <td>{{this.dataValues.cuenta}}</td>
-                            <td>
-                            <div class="sparkbar" data-color="#00a65a" data-height="20">{{this.dataValues.nombrecuenta}}</div>  
-                            </td>
-                          <td>
-                            <a class="btn btn-warning" href="">Editar</a>
-                            <a class="btn btn-danger" onclick = "return confirm('Estas seguro de eliminar?')"
-                             href="/pedidosmesa/eliminar?id=">Eliminar</a>                            
-                          </td>
-                        </tr>
-                        {{/each}}
-                      </tbody>
-                    </table>
-                  </div>
-                  <!-- /.table-responsive -->
-                </div>
-                <!-- /.card-body -->
-                <div class="card-footer clearfix">
-                <a href="/cargos/nuevo" class="btn btn-sm btn-info float-left">Generar nuevo cargo</a>
-                <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">Buscar pedido</a>
+    <div class="container-fluid">
+      <h5 class="mb-2 mt-4">Lista de Pedidos</h5>
+      <div class="row">
+        <!-- Left col -->
+        <div class="col-md-12">
+          <!-- TABLE: LATEST ORDERS -->
+          <div class="card">
+            <div class="card-header border-transparent">
+              <h3 class="card-title">Información general de pedidos a llevar</h3>
             </div>
-                <!-- /.card-footer -->
+            <!-- /.card-header -->
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table m-0">
+                  <thead>
+                    <tr>
+                      <th>ID REGISTRO</th>
+                      <th>ID PEDIDO</th>
+                      <th>NOMBRE MESA</th>
+                      <th>CUENTA</th>
+                      <th>NOMBRECUENTA</th>
+                      <th>ACCIONES</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {{#each pedidos_mesa}}
+                    <tr>
+                      <td>{{idregistro}}</td>
+                      <td><a href="/cargos/buscarId?id={{idpedido}}">{{idpedido}}</a></td>
+                      <td>{{'mesas_x_area.Mesa'}}</td>
+                      <td>{{cuenta}}</td>
+                      <td>
+                        <div class="sparkbar" data-color="#00a65a" data-height="20">{{nombrecuenta}}</div>
+                      </td>
+                      <td>
+                        <a class="btn btn-warning" href="">Editar</a>
+                        <a class="btn btn-danger" onclick="return confirm('Estas seguro de eliminar?')"
+                          href="/pedidosmesa/eliminar?id=">Eliminar</a>
+                      </td>
+                    </tr>
+                    {{/each}}
+                  </tbody>
+                </table>
               </div>
-              <!-- /.card -->
+              <!-- /.table-responsive -->
             </div>
-            <!-- Fin columna izquierda -->
+            <!-- /.card-body -->
+            <div class="card-footer clearfix">
+              <a href="./nuevo" class="btn btn-sm btn-info float-left">Generar nuevo cargo</a>
+              <a href="./buscar" class="btn btn-sm btn-secondary float-right">Buscar pedido</a>
+            </div>
+            <!-- /.card-footer -->
           </div>
-          <!-- Fin primera fila -->
+          <!-- /.card -->
         </div>
-    </section>
+        <!-- Fin columna izquierda -->
+      </div>
+      <!-- Fin primera fila -->
+    </div>
+  </section>
   <!-- /.content -->
 
   <!-- Aqui agregar script adicionales -->
-
-
-
-
-
-
-
-
-

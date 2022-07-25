@@ -5,6 +5,10 @@ const controladorPedidos_mesa = require('../controladores/controladorPedidos_mes
 
 rutas.get('/listar', controladorPedidos_mesa.Listar);
 
+rutas.get('/nuevo', controladorPedidos_mesa.nuevo);
+
+rutas.get('/buscar', controladorPedidos_mesa.buscar);
+
 rutas.post('/guardar',
 body('idpedido')
 .notEmpty().withMessage("El id de pedidos es necesario"),
