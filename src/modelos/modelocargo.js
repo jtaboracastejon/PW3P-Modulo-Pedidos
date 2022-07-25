@@ -26,7 +26,8 @@ const Cargo = db.define(
         tableName: 'cargos'
     }
 )
-    Cargo.sync().then(
-    () => console.log("Sincronizacion Completa")
+
+Cargo.sync().then(
+() => console.log("Sincronizacion Completa")
 );
 module.exports = Cargo;
