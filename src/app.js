@@ -23,7 +23,8 @@ app.engine(
 app.set('views', [
     path.join(__dirname, './views'),
     path.join(__dirname, './views/home'),
-    path.join(__dirname, './views/entregaPedidos')
+    path.join(__dirname, './views/entregaPedidos'),
+    path.join(__dirname, './views/pedidosLlevar')
 ])
 app.use('/public',express.static(path.join(__dirname, 'public/')))//Ruta donde estaran contenidos los recursos
 

@@ -5,6 +5,7 @@ const rutas = Router()
 const controladorPedidosLlevar = require('../controladores/controladorPedidosLlevar')
 
 rutas.get('/listar', controladorPedidosLlevar.Listar)
+rutas.get('/listarpedidos', controladorPedidosLlevar.listarPedidos)
 
 rutas.post('/guardar', 
 body('idPedido')

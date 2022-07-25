@@ -1,11 +1,26 @@
 const pedidosLlevar = require('../modelos/modeloPedidosLlevar');
 const {validationResult} = require('express-validator');
+const db = require('../configuracion/db');
+const {QueryTypes} = require('sequelize');
 //const { where } = require('sequelize/types');
 
 exports.Listar = async (req, res) => {
     const pedidos_llevar = await pedidosLlevar.findAll();
     res.json(pedidos_llevar);
 }
+
+exports.listarPedidos = async (req, res) => {
+    const listarpedidos = await db.query("select * from listarpedidosllevar",{type:QueryTypes.SELECT}); 
+    if(listarpedidos.length==0){
+        res.send("No existen datos!!!");
+    }
+    else{
+        res.render("pedidosLlevarIndex", {
+            titulo: 'Listado de pedidos llevar',
+            listarpedidos})
+    console.log(listarpedidos);
+    }
+};
 
 exports.Guardar = async (req, res) => {
     const validacion = validationResult(req);
