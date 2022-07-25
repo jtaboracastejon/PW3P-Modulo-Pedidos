@@ -1,5 +1,7 @@
 const {DataTypes} = require('sequelize');
 const db = require('../configuracion/db');
+const ModelosMesas = require('../modelos/modeloMesas_x_area');
+
 const Pedidos_mesa = db.define(
     'pedidos_mesa',
     {
@@ -37,6 +39,11 @@ const Pedidos_mesa = db.define(
         tableName: 'pedidos_mesa'
     }
 )
+
+Pedidos_mesa.belongsTo(ModelosMesas,{
+    foreignKey: 'idmesa',
+    otherKey: 'idregistro'
+});
 
 
 module.exports = Pedidos_mesa;

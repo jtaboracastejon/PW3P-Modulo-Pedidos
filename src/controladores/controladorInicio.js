@@ -4,5 +4,5 @@ exports.Inicio = (req, res) => {
 
 exports.Home = (req, res) => {
     const titulo = 'Ejemplo vista en node js'
-    res.render("/home/home", {titulo})
+    res.render("home", {titulo})
 }
