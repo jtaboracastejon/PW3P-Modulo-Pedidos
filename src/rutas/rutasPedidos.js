@@ -3,7 +3,10 @@ const { body,query } = require('express-validator');
 const controladorPedidos = require('../controladores/controladorPedidos');
 const rutas = Router();
 rutas.get('/listar', controladorPedidos.Listar);
-
+rutas.get('/nuevo', controladorPedidos.Nuevo);
+rutas.get('/buscarId', controladorPedidos.Editar);
+rutas.get('/buscar', controladorPedidos.Buscar);
+rutas.get('/anulados', controladorPedidos.Anulados);
 
 rutas.post('/guardar', 
 body('idmesero')

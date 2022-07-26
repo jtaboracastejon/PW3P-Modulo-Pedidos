@@ -1,5 +1,7 @@
 const { DataTypes } = require('sequelize');
 const db = require('../configuracion/db');
+const modeloEstaciones = require('../modelos/modeloEstaciones');
+const modeloMeseros = require('../modelos/modeloMeseros');
 const Pedido = db.define(
     'Pedido',
     {
@@ -42,6 +44,15 @@ const Pedido = db.define(
     }
 );
 
+Pedido.belongsTo(modeloMeseros, {
+    foreignKey: 'idmesero',
+    otherKey: 'idmesero'
+});
+
+Pedido.belongsTo(modeloEstaciones, {
+    foreignKey: 'Estacion',
+    otherKey: 'NumeroEstacion'
+});
 Pedido.sync()
 .then(() => console.log('Tabla de pedidos sincronizada'));
 

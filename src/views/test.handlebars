@@ -1,0 +1,561 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIGRES APP</title>
+    <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="/public/plugins/fontawesome-free/css/all.min.css">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="/public/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/public/css/adminlte.min.css">
+  <link rel="stylesheet" href="/public/plugins/bootstrap-switch/css/bootstrap3/bootstrap-switch.css"> 
+  <link rel="stylesheet" href="/public/plugins/bootstrap-switch/css/bootstrap2/bootstrap-switch.css"> 
+  <link rel="stylesheet" href="/public/plugins/select2/css/select2.min.css"> 
+</head>
+<body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed"><div class="wrapper">
+    <!-- Preloader -->
+    <!-- <div class="preloader flex-column justify-content-center align-items-center">
+        <img class="animation__wobble" src="/public/img/logo_desofiw.png" alt="Logo DESOFIW" height="120" width="120">
+    </div> -->
+    
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-dark">
+      <!-- Left navbar links -->
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" data-widget="pushmenu" href="/" role="button"><i
+              class="fas fa-bars"
+            ></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="inicio" class="nav-link">Sistema de gestión de restaurantes</a>
+        </li>
+      </ul>
+    
+      <!-- Right navbar links -->
+      <ul class="navbar-nav ml-auto">
+    
+        <li class="nav-item">
+          <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+            <i class="fas fa-expand-arrows-alt"></i>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            data-widget="control-sidebar"
+            data-slide="true"
+            href="#"
+            role="button"
+          >
+            <i class="fas fa-th-large"></i>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <!-- /.navbar -->    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
+        <a href="/" class="brand-link">
+          <img src="/public/img/logo_sigres.png" alt="Logo SIGRES" class="brand-image img-circle elevation-3" style="opacity: .8">
+          <span class="brand-text font-weight-light">SIGRES</span>
+        </a>
+    
+        <!-- Sidebar -->
+        <div class="sidebar">
+          <!-- Sidebar user panel (optional) -->
+          <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+              <img src="/public/img/mia.jpg" class="img-circle elevation-2" alt="Imagen de usuario">
+            </div>
+            <div class="info">
+              <a href="#" class="d-block">Carlos Flores</a>
+            </div>
+          </div>
+    
+          <!-- Sidebar Menu -->
+          <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+              <!-- Add icons to the links using the .nav-icon class
+                   with font-awesome or any other icon font library -->
+              <li class="nav-item menu-open">
+                <a href="/" class="nav-link active">
+                  <i class="nav-icon fas fa-file-alt"></i>
+                  <p>
+                    Tablero de control
+                    <span class="badge badge-info right">2</span>
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item menu-open">
+                <a href="/" class="nav-link">
+                  <i class="nav-icon fas fa-file-alt"></i>
+                  <p>
+                    Pedidos
+                    <span class="badge badge-info right">2</span>
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/" class="nav-link">
+                  <i class="nav-icon fas fa-globe"></i>
+                  <p>
+                    Areas
+                    <span class="right badge badge-danger">5</span>
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/perfil" class="nav-link">
+                  <i class="nav-icon fas fa-user-alt"></i>
+                  <p>
+                    Perfil
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/" class="nav-link">
+                  <i class="nav-icon fas fa-tree"></i>
+                  <p>
+                    Cargos
+                    <i class="fas fa-angle-left right"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview" style="display: none;">
+                  <li class="nav-item">
+                    <a href="/cargos" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Listar</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="../UI/icons.html" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Buscar</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/cargos/nuevo" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Nuevo</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="/" class="nav-link">
+                  <i class="nav-icon fas fa-box"></i>
+                  <p>
+                    Pedidos
+                    <i class="fas fa-angle-left right"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview" style="display: none;">
+                  <li class="nav-item">
+                    <a href="/pedidos" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Listar</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/pedidos/buscar" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Buscar</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/pedidos/nuevo" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Nuevo</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="/" class="nav-link">
+                  <i class="nav-icon fas fa-boxes"></i>
+                  <p>
+                    Pedidos Detalle
+                    <i class="fas fa-angle-left right"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview" style="display: none;">
+                  <li class="nav-item">
+                    <a href="/detallepedido" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Listar</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/detallepedido/buscar" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Buscar</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/detallepedido/nuevo" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Nuevo</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="/" class="nav-link">
+                  <i class="nav-icon fas fa-hand-holding"></i>
+                  <p>
+                    Pedidos Llevar
+                    <i class="fas fa-angle-left right"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview" style="display: none;">
+                  <li class="nav-item">
+                    <a href="/pedidosllevar" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Listar</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/pedidosllevar/buscar" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Buscar</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/pedidosllevar/nuevo" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Nuevo</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="/" class="nav-link">
+                  <i class="nav-icon fas fa-cash-register"></i>
+                  <p>
+                    Pedidos Ventas
+                    <i class="fas fa-angle-left right"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview" style="display: none;">
+                  <li class="nav-item">
+                    <a href="/pedidosventas" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Listar</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/pedidosventas/buscar" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Buscar</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/pedidosventas/nuevo" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Nuevo</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="/" class="nav-link">
+                  <i class="nav-icon fas fa-window-close"></i>
+                  <p>
+                    Pedidos Cancelados
+                    <i class="fas fa-angle-left right"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview" style="display: none;">
+                  <li class="nav-item">
+                    <a href="/pedidoscancelados" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Listar</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/pedidoscancelados/buscar" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Buscar</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/pedidoscancelados/nuevo" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Nuevo</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="/" class="nav-link">
+                  <i class="nav-icon fas fa-check"></i>
+                  <p>
+                    Pedidos Elaborados
+                    <i class="fas fa-angle-left right"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview" style="display: none;">
+                  <li class="nav-item">
+                    <a href="/Pedidoselaborados" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Listar</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/Pedidoselaborados/buscar" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Buscar</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/Pedidoselaborados/nuevo" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Nuevo</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="/" class="nav-link">
+                  <i class="nav-icon fas fa-chair"></i>
+                  <p>
+                    Pedidos Mesa
+                    <i class="fas fa-angle-left right"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview" style="display: none;">
+                  <li class="nav-item">
+                    <a href="/pedidosmesa" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Listar</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/pedidosmesa/buscar" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Buscar</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/pedidosmesa/nuevo" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Nuevo</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="/" class="nav-link">
+                  <i class="nav-icon fas fa-box"></i>
+                  <p>
+                    Pedidos Entregados
+                    <i class="fas fa-angle-left right"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview" style="display: none;">
+                  <li class="nav-item">
+                    <a href="/entregapedido" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Listar</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/entregapedido/buscar" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Buscar</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/entregapedido/nuevo" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Nuevo</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="inicio/logout" class="nav-link" onclick="">
+                  <i class="nav-icon fas fa-window-close"></i>
+                  <p>
+                    Cerrar sesion
+                  </p>
+                </a>
+              </li>
+            </ul>
+          </nav>
+          <!-- /.sidebar-menu -->
+        </div>
+        <!-- /.sidebar -->
+      </aside>    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Nuevo pedido</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item active"><a href=""></a></li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->    <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+          <!-- jquery validation -->
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">Datos generales <small>Pedidos</small></h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form id="quickForm" action="/pedidos/guardar/" method="post">
+              <div class="card-body">
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label for="idmesero">Mesero</label>
+                    <select class="form-control cmbBuscarMesero select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="2" tabindex="-1" aria-hidden="true" name="idmesero">
+                      <option value="" selected>Seleccione un valor</option>
+                        <option value="1">Yair</option>
+                        <option value="2">Manuelito</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="Estacion">Estacion</label>
+                    <select class="form-control cmbBuscarEstacion select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="3" tabindex="-1" aria-hidden="true" name="Estacion">
+                      <option value="" selected>Seleccione un valor</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="modalidad">Modalidad</label>
+                    <select class="form-control" id="modalidad" name="modalidad" placeholder="Modalidad">
+                      <option value="" selected>Seleccione un valor</option>
+                      <option value="LL">Llevar</option>
+                      <option value="DO">Domicilio</option>
+                      <option value="ME">Mesa</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="activo">Estado</label>
+                    <select class="form-control" id="activo" name="activo" placeholder="Activo">
+                      <option value="1" default>Pendiente</option>
+                      <option value="0">Finalizado</option>
+                    </select>
+                  </div>
+                  <div id="field_wrapper" class="col-md-12">
+                  <!-- <div class="form-group col-md-6"><label>Cliente</label><select class="form-control cmbbuscar select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="1" tabindex="-1" aria-hidden="true"><option value="" selected disabled hidden>Seleccione un valor</option><?php foreach ($this->clientes as $cliente) { ?> <option value=" <?php echo $cliente['idcliente'] ?>"><?php echo $cliente['nombre'] ?></option><?php } ?> </select></div>                     -->
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="fechahora">Estado del Pedido</label>
+                    <div class="row">
+                      <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success mr-4 ml-2">
+                        <input type="checkbox" class="custom-control-input" id="elaborado" name="elaborado" value="1" checked control-id="ControlID-43">
+                        <label class="custom-control-label" for="elaborado">Elaborado</label>
+                      </div>
+                      <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success mr-4">
+                        <input type="checkbox" class="custom-control-input" id="entregado" name="entregado" value="1" checked control-id="ControlID-43">
+                        <label class="custom-control-label" for="entregado">Entregado</label>
+                      </div>
+                      <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success mr-4">
+                        <input type="checkbox" class="custom-control-input" id="facturado" name="facturado" value="1" checked control-id="ControlID-43">
+                        <label class="custom-control-label" for="facturado">Facturado</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <label for="">Agregar Fila</label>
+                <button type="button" class="btn btn-success" onclick="AgregarFila()"><i class="text-white fas fa-plus-square"></i></button>
+                <div class="table-responsive">
+                  <table id="detallePedido" class="table m-0">
+                    <thead>
+                      <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>SubProducto</th>
+                        <th>Notas</th>
+                        <th>Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary toastrDefaultSuccess">Guardar</button>
+                </div>
+            </form>
+          </div>
+          <!-- /.card -->
+        </div>
+        <!--/.col (left) -->
+        <!-- right column -->
+        <div class="col-md-6">
+
+        </div>
+        <!--/.col (right) -->
+      </div>
+      <!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </section>
+  <script>
+    console.log('Probandoando');
+    var conteoDetallePedidos = 0;
+
+    
+
+    $(document).ready(function() {
+      $('.cmbBuscarEstacion').select2();
+      $('.cmbBuscarMesero').select2();
+    });
+
+    
+
+    
+  </script>
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+      <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+    
+    <!-- Main Footer -->
+    <footer class="main-footer">
+      <strong>Copyright &copy; 2022
+        <a href="https://www.google.hn">DESOFIW</a>.</strong>
+      Todos los derechos reservados.
+      <div class="float-right d-none d-sm-inline-block">
+        <b>Version</b>
+        1.0.0
+      </div>
+    </footer></div>
+    <!-- REQUIRED SCRIPTS -->
+        
+        <!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+    
+    
+        <!-- Bootstrap -->
+        <script src="/public/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- overlayScrollbars -->
+        <script src="/public/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+        <script src="/public/plugins/bootstrap-switch/js/bootstrap-switch.js"></script>
+        <script src="/public/plugins/select2/js/select2.min.js"></script>
+        <!-- AdminLTE App -->
+        <script src="/public/js/adminlte.js"></script>
+    </body>
+    </html>

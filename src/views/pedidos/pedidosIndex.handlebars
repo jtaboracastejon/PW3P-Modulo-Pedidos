@@ -1,0 +1,80 @@
+<section class="content">
+    <div class="container-fluid">
+      <h5 class="mb-2 mt-4">Lista de Pedidos</h5>
+      <div class="row">
+        <!-- Left col -->
+        <div class="col-md-12">
+          <!-- TABLE: LATEST ORDERS -->
+          <div class="card">
+            <div class="card-header border-transparent">
+              <h3 class="card-title">Información general de Pedidos</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table m-0">
+                  <thead>
+                    <tr>
+                      <th>N° PEDIDO</th>
+                      <th>MESERO</th>
+                      <th>FECHA Y HORA</th>
+                      <th>ESTACION</th>
+                      <th>ESTADO</th>
+                      <th>MODALIDAD</th>
+                      <th>ESTADO DEL PEDIDO</th>                      
+                      <th>ACCIONES</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {{#each lista}}
+                      <tr>
+                        <td><a href="/pedidos/buscarId?id={{NumeroPedido}}">{{NumeroPedido}}</a></td>
+                        <td>{{'mesero.nombre'}}</td>
+                        <td>{{fechahora}}</td>
+                        <td>{{'estacione.nombre'}}</td>
+                        <td>{{activo}}</td>
+                        <td>{{modalidad}}</td>
+                        <td>
+                          {{estado}}
+                          <!-- <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                            <input type="checkbox" readonly class="custom-control-input"  id="elaborado<?php echo $row['NumeroPedido']; ?>" name="elaborado<?php echo $row['NumeroPedido']; ?>" value="<?php echo $row['elaborado']; ?>" checked control-id="ControlID-45">
+                            <label class="custom-control-label"  for="elaborado<?php echo $row['NumeroPedido']; ?>">Elaborado</label>
+                          </div> -->
+                          <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox" id="elaborado{{NumeroPedido}}" {{elaborado}} readonly>
+                            <label class="custom-control-label">Elaborado</label>
+                          </div>
+                          <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox" id="entregado{{NumeroPedido}}" {{entregado}} readonly>
+                            <label class="custom-control-label">Entregado</label>
+                          </div>
+                          <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox" id="facturado{{NumeroPedido}}" {{facturado}} readonly>
+                            <label class="custom-control-label">Facturado</label>
+                          </div>
+                        </td>
+                        <td>
+                          <a class="btn btn-warning" href="/pedidos/buscarId?id={{NumeroPedido}}"><i class="text-white fas fa-edit"></i></a>
+                          <a class="btn btn-danger" onclick="return confirm('Estas seguro de Cancelar el pedido?')" href="/pedidos/eliminar?id={{NumeroPedido}}"><i class="text-white fas fa-window-close"></i></a>
+                        </td>
+                      </tr>
+                    {{/each}}
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.table-responsive -->
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer clearfix">
+              <a href="/pedidos/nuevo" class="btn btn-sm btn-info float-left">Generar nuevo pedido</a>
+              <a href="/pedidos/anulados" class="btn btn-sm btn-secondary float-right">Ver pedido Anulados</a>
+            </div>
+            <!-- /.card-footer -->
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- Fin columna izquierda -->
+      </div>
+      <!-- Fin primera fila -->
+    </div>
+  </section>
