@@ -16,8 +16,8 @@ body ('iddetallepedido')
 .notEmpty().withMessage('Debe enviar idpedidoselaborados') //con esto validamos de que el campo no vaya vacio 
 .isInt().withMessage('El ID del pedido detalle debe ser un numero entero'),//con esta validamos que solo acepte numeros enteros
 body ('idusuario')
-.notEmpty().withMessage('Debe enviar idpedidoselaborados') //con esto validamos de que el campo no vaya vacio 
-.isInt().withMessage('El ID del pedido detalle debe ser un numero entero'),//con esta validamos que solo acepte numeros enteros
+.notEmpty().withMessage('Debe enviar idusuario'), //con esto validamos de que el campo no vaya vacio 
+//con esta validamos que solo acepte numeros enteros
 controladorpedidoselaborados.Guardar); 
 
 //*Editar

@@ -145,9 +145,9 @@ exports.Eliminar = async (req, res) => {
 
 exports.nuevo = async (req, res) => {
     const lista = await usuarios.findAll({
-    
     raw: true,
     });//con el findall le indicamos que busque todos los datos
+    
     console.log(lista);
     
     res.render("pedidoselaboradosnuevo",{
