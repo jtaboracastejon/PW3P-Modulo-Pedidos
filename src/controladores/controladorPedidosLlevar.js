@@ -2,12 +2,68 @@ const pedidosLlevar = require('../modelos/modeloPedidosLlevar');
 const {validationResult} = require('express-validator');
 const db = require('../configuracion/db');
 const {QueryTypes} = require('sequelize');
+const modelocliente = require('../modelos/modeloCliente');
+const modelosdetalle = require('../modelos/modeloDetallePedidos');
 //const { where } = require('sequelize/types');
 
 exports.Listar = async (req, res) => {
-    const pedidos_llevar = await pedidosLlevar.findAll();
-    res.json(pedidos_llevar);
-}
+    const pedidos_llevar = await pedidosLlevar.findAll({
+        include:[{
+            model: modelocliente,
+            attributes: ['nombre']
+        }],
+        logging:console.log,
+        raw:true
+    });
+    
+    res.render("pedidosLlevarIndex", {
+        titulo: 'Listado de entrega de pedidos',
+        pedidos_llevar})
+    };
+
+
+exports.Nuevo =  async (req, res) => {
+        try { 
+            const listarClientes = await modelocliente.findAll({
+                raw: true});
+            const listarDetalles = await modelosdetalle.findAll({
+                    raw: true});
+
+                console.log(listarClientes)
+                console.log(listarDetalles)
+                res.render("pedidosLlevarGuardar", { 
+                titulo: 'Nuevo pedido a guardar', listarClientes, listarDetalles}); 
+        } 
+        catch (error) {
+            console.log(error);
+            res.render("error",{
+            titulo:'error',
+            error
+            });
+        }
+};
+
+
+    exports.Buscar =  async (req, res) => {
+        try { 
+            const pedidos_llevar = await pedidosLlevar.findAll({
+                include:[{
+                    model: modelocliente,
+                    attributes: ['nombre']
+                }],
+                logging:console.log,
+                raw:true
+            }); 
+            res.render("pedidosLlevarBuscar", { 
+                titulo: 'Buscar pedido a llevar', 
+                pedidos_llevar
+            }); 
+        } 
+        catch (error) { 
+            res.json(error);
+        }
+    };
+    
 
 exports.listarPedidos = async (req, res) => {
     const listarpedidos = await db.query("select * from listarpedidosllevar",{type:QueryTypes.SELECT}); 

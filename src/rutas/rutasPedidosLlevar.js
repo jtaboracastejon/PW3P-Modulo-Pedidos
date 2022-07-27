@@ -4,8 +4,11 @@ const rutas = Router()
 
 const controladorPedidosLlevar = require('../controladores/controladorPedidosLlevar')
 
-rutas.get('/listar', controladorPedidosLlevar.Listar)
-rutas.get('/listarpedidos', controladorPedidosLlevar.listarPedidos)
+rutas.get('/listar', controladorPedidosLlevar.Listar);
+rutas.get('/listarpedidos', controladorPedidosLlevar.listarPedidos);
+rutas.get('/nuevo', controladorPedidosLlevar.Nuevo);
+rutas.get('/buscar', controladorPedidosLlevar.Buscar);
+
 
 rutas.post('/guardar', 
 body('idPedido')

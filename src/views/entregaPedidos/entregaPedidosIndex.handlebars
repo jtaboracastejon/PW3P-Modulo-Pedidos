@@ -32,16 +32,16 @@
                 </thead>
 
                 <tbody>
-                  {{#each listarEntregas}}
+                  {{#each entrega_pedidos}}
                   <tr>
                     <td><a
-                        href="/entrega_pedidos/buscarId?id={{this.iddetalle_pedido}}">{{this.iddetalle_pedido}}</a>
+                        href="/entrega_pedidos/buscarId?id={{idDetalle}}">{{idDetalle}}</a>
                     </td>
-                    <td>{{this.LoginUsuario}}</td>
+                    <td>{{'usuario.LoginUsuario'}}</td>
                     <td>
-                      <div class="sparkbar" data-color="#00a65a" data-height="20">{{this.identrega}}</div>
+                      <div class="sparkbar" data-color="#00a65a" data-height="20">{{identrega}}</div>
                     </td>
-                    <td>{{this.fechahora}}</td>
+                    <td>{{fechahora}}</td>
                     <td>
                           <a class="btn btn-warning" href="/pedidos/buscarId?id=<?php echo $row['NumeroPedido']; ?>"><i class="text-white fas fa-edit"></i></a>
                           <a class="btn btn-danger" onclick="return confirm('Estas seguro de Cancelar el pedido?')" href="/pedidos/eliminar?id=<?php echo $row['NumeroPedido']; ?>"><i class="text-white fas fa-window-close"></i></a>
@@ -59,8 +59,8 @@
           </div>
           <!-- /.card-body -->
           <div class="card-footer clearfix">
-            <a href="/cargos/nuevo" class="btn btn-sm btn-info float-left">Generar otra pedido a llevar</a>
-            <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">Buscar</a>
+            <a href="/app/entregaPedidos/nuevo" class="btn btn-sm btn-info float-left">Generar otra pedido a llevar</a>
+            <a href="/app/entregaPedidos/buscar" class="btn btn-sm btn-secondary float-right">Buscar</a>
           </div>
           <!-- /.card-footer -->
         </div>

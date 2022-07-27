@@ -1,5 +1,7 @@
 const {DataTypes} = require('sequelize');
+//const { FOREIGNKEYS } = require('sequelize/types/query-types');
 const db = require('../configuracion/db');
+const modelousuario =require('../modelos/modelosusuario');
 const entregaPedidos = db.define(
     'entrega_pedido', 
     {
@@ -10,7 +12,7 @@ const entregaPedidos = db.define(
             autoIncrement: false,
             field:'iddetalle_pedido'
         },        
-        usuario: {
+        idusuario: {
             type: DataTypes.INTEGER,
             allowNull: false,
             field:'usuario'
@@ -18,21 +20,24 @@ const entregaPedidos = db.define(
         fechahora: {
             type: DataTypes.DATE,
             allowNull: false,
-            field:'fechahora'
         }, 
         identrega: {
             type: DataTypes.INTEGER,
-            allowNull: false,
-            field:'identrega'
+            allowNull: false
         },               
     },
     {
         timestamps: false,
         tableName: 'entrega_pedido'
     }
-)
-/* Esto es para crear la tabla por primera vez 
-    Cargo.sync().then(
+);
+
+entregaPedidos.belongsTo(modelousuario,{ 
+    foreignKey: 'idusuario',
+    otherKey:'idregistro'
+});
+//Esto es para crear la tabla por primera vez 
+    entregaPedidos.sync().then(
     () => console.log("Sincronizacion Completa")
-); */
+); 
 module.exports = entregaPedidos;

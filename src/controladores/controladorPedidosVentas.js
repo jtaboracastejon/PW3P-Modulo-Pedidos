@@ -1,11 +1,69 @@
 const pedidosVentas = require('../modelos/modeloPedidosVentas');
 const {validationResult} = require('express-validator');
+const db = require('../configuracion/db');
+const {QueryTypes} = require('sequelize');
+//const productos = require('../modelos/modeloProductos');
+const modelosdetalle = require('../modelos/modeloDetallePedidos');
 //const { where } = require('sequelize/types');
 
 exports.Listar = async (req, res) => {
     const pedidos_ventas = await pedidosVentas.findAll();
-    res.json(pedidos_ventas);
-}
+    res.render("pedidosVentasIndex", {
+        titulo: 'Listado de ventas',
+        pedidos_ventas})
+        console.log(pedidos_ventas);
+    }
+
+    exports.Nuevo =  async (req, res) => {
+        try { 
+            const listarVentas = await modelosdetalle.findAll({
+                raw:true
+            }); 
+            console.log(listarVentas)
+            res.render("pedidosVentasGuardar", { 
+                titulo: 'Nuevo pedido ventas a guardar', 
+                listarVentas
+            }); 
+        } 
+        catch (error) { 
+            res.json(error);
+        }
+    };
+
+
+    exports.Buscar =  async (req, res) => {
+        try { 
+            const pedidos_ventas = await pedidosVentas.findAll(); 
+            res.render("pedidosVentasBuscar", { 
+                titulo: 'Buscar pedido ventas', 
+                pedidos_ventas
+            }); 
+            console.log(pedidos_ventas);
+        } 
+        catch (error) { 
+            res.json(error);
+        }
+    };
+
+
+
+   
+
+
+exports.listarPedidosVentas = async (req, res) => {
+    const listarPedidos = await db.query("select * from listapedidosventas",{type:QueryTypes.SELECT}); 
+    if(listarPedidos.length==0){
+        res.send("No existen datos!!!");
+    }
+    else{
+        res.render("pedidosVentasIndex", {
+            titulo: 'Listado de entrega de pedidos',
+            listarPedidos})
+    console.log(listarPedidos);
+    }
+};
+
+
 
 exports.Guardar = async (req, res) => {
     const validacion = validationResult(req);

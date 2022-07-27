@@ -4,16 +4,19 @@ const rutas = Router()
 
 const entregaPedidos = require('../controladores/controladorEntregaPedidos')
 
-rutas.get('/listar', entregaPedidos.Listar)
+rutas.get('/listar', entregaPedidos.Listar);
+rutas.get('/nuevo', entregaPedidos.Nuevo);
+rutas.get('/buscar', entregaPedidos.Buscar);
+
 rutas.get('/listarentregas', entregaPedidos.listarEntregas)
 
 rutas.post('/guardar', 
 body('idDetalle')
 .isInt().withMessage('El ID detalle debe ser un entero')
 .notEmpty().withMessage('Debe llenar el campo'),
-body('usuario')
+/* body('idusuario')
 .isInt().withMessage('El ID usuario debe ser un entero')
-.notEmpty().withMessage('Debe llenar el campo'),
+.notEmpty().withMessage('Debe llenar el campo'), */
 body('identrega')
 .isInt().withMessage('El ID entrega debe ser un entero')
 .notEmpty().withMessage('Debe llenar el campo'),

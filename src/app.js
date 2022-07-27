@@ -24,7 +24,9 @@ app.set('views', [
     path.join(__dirname, './views'),
     path.join(__dirname, './views/home'),
     path.join(__dirname, './views/entregaPedidos'),
-    path.join(__dirname, './views/pedidosLlevar')
+    path.join(__dirname, './views/pedidosLlevar'),
+    path.join(__dirname, './views/pedidosVentas')
+
 ])
 app.use('/public',express.static(path.join(__dirname, 'public/')))//Ruta donde estaran contenidos los recursos
 
@@ -34,7 +36,6 @@ app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
 app.use('/app', require('./rutas/index'))
-
 app.use('/app/cargos', require('./rutas/rutasCargo'))
 app.use('/app/pedidosVentas', require('./rutas/rutasPedidosVentas'))
 app.use('/app/pedidosLlevar', require('./rutas/rutasPedidosLlevar'))

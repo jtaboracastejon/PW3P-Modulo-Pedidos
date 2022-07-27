@@ -1,0 +1,56 @@
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+          <!-- jquery validation -->
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">Datos generales Pedidos y ventas</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form id="quickForm" action="/app/pedidosVentas/guardar" method="post">
+              <div class="card-body">
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                  <label for="textareaDescricion">Numero de pedido</label>
+                  <select class="form-control cmbbuscar select2 select2-hidden-accessible" style="width: 100%;"
+                    data-select2-id="1" tabindex="-1" aria-hidden="true" name="usuario" id="selectPedido">
+                    <option value="" selected>Seleccione un valor</option>
+                    {{#each listarVentas}}
+                    <option value="{{NumeroPedido}}">{{NumeroPedido}}</option>
+                    {{/each}}
+                  </select>
+                  </div>
+                  <div class="form-group col-md-6">
+                  
+                  </div>
+                </div>
+
+                <!-- /.card-body -->
+                <div class="card-footer">
+                  <button type="button" class="btn btn-primary toastrDefaultSuccess guardarVentaPedido" value="/app/pedidosVentas/guardar">Guardar</button>
+                </div>
+            </form>
+          </div>
+          <!-- /.card -->
+        </div>
+        <!--/.col (left) -->
+        <!-- right column -->
+        <div class="col-md-6">
+
+        </div>
+        <!--/.col (right) -->
+      </div>
+      <!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </section>
+ 
+ <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+      $('.cmbbuscar').select2();
+    });
+  </script>

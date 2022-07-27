@@ -1,14 +1,16 @@
 
+  <!-- Main content -->
+  <!-- Main content -->
   <section class="content">
         <div class="container-fluid">
-          <h5 class="mb-2 mt-4">Lista de Pedidos llevar</h5>
+          <h5 class="mb-2 mt-4">Lista de Pedidos</h5>
           <div class="row">
             <!-- Left col -->
             <div class="col-md-12">
               <!-- TABLE: LATEST ORDERS -->
               <div class="card">
                 <div class="card-header border-transparent">
-                  <h3 class="card-title">Información general de pedidos a llevar</h3>
+                  <h3 class="card-title">Información general de pedidos y ventas </h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body p-0">
@@ -16,24 +18,24 @@
                     <table class="table m-0">
                       <thead>
                       <tr>
-                        <th>ID REGISTRO</th>
-                        <th>ID PEDIDO</th>
-                        <th>CLIENTE</th>                        
+                        <th>N° FACTURA</th>
+                        <th>N° PEDIDO</th>
+                        <th>DESCRIPCION</th>                        
                       </tr>
                       </thead>
                       <tbody>
-                      {{#each pedidos_llevar}}
+                     {{#each pedidos_ventas}}
                         <tr>
-                          <td><a href="/pedidosllevar/buscarId?id={{idRegistro}}">{{idRegistro}}</a></td>
-                          <td>{{idPedido}}</td>
-                          <td>{{'cliente.nombre'}}</td>
+                          <td><a href="/pedidosventas/buscarId?id={{this.dataValues.numeroFactura}}">{{this.dataValues.numeroFactura}}</a></td>
+                          <td>{{this.dataValues.numeroPedido}}</td>
+                          <td>{{this.Nombre}}</td>
                           <td>
-                            <a class="btn btn-warning" href="/pedidosllevar/buscarId?id=<?php echo $row['idregistro']; ?>"><i class="text-white fas fa-edit"></i></a>
+                            <a class="btn btn-warning" href="/pedidosventas/buscarId?id=<?php echo $row['NumeroFactura']; ?>"><i class="text-white fas fa-edit"></i></a>
                             <a class="btn btn-danger" onclick = "return confirm('Estas seguro de eliminar?')"
-                             href="/pedidosllevar/eliminar?id=<?php echo $row['idregistro']; ?>"><i class="text-white fas fa-trash"></i></a>                            
+                             href="/pedidosventas/eliminar?id=<?php echo $row['NumeroFactura']; ?>"><i class="text-white fas fa-trash"></i></a>                            
                           </td>
                         </tr>
-                         {{/each}}
+                      {{/each}}
                       </tbody>
                     </table>
                   </div>
@@ -41,8 +43,8 @@
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer clearfix">
-                  <a href="/app/pedidosLlevar/nuevo" class="btn btn-sm btn-info float-left">Nuevo pedido a llevar</a>
-                  <a href="/app/pedidosLlevar/buscar" class="btn btn-sm btn-secondary float-right">Buscar pedido a llevar</a>
+                  <a href="/app/pedidosVentas/nuevo" class="btn btn-sm btn-info float-left">Nuevo pedido</a>
+                  <a href="/app/pedidosVentas/buscar" class="btn btn-sm btn-secondary float-right">Buscar pedido</a>
                 </div>
                 <!-- /.card-footer -->
               </div>
@@ -53,3 +55,4 @@
           <!-- Fin primera fila -->
         </div>
     </section>
+  <!-- /.content -->
