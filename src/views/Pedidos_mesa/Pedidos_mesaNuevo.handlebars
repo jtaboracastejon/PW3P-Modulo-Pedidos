@@ -13,44 +13,61 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form id="quickForm" action="/pedidosmesa/guardar/" method="post">
+            <form id="quickForm" action="/app/Pedidos_mesa/guardar/" method="post">
               <div class="card-body">
                 <div class="form-row">
                   <div class="form-group col-md-6">
                     <label for="idpedido">Id Pedido</label>
-                    <select class="form-control cmbbuscar select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="1" tabindex="-1" aria-hidden="true" name="idpedido" required>
-                   <!-- <select class="form-control" id="idpedido" name="idpedido">  -->
-                    <option value="" selected disabled hidden>Seleccione un valor</option>
+                    
+                  
 
+                    <!--<select class="form-control cmbbuscar select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="1" tabindex="-1" aria-hidden="true" name="idpedido" id="selectidpedido" required>  -->                  
+                   <select class="form-control cmbBuscarUsuario select2 select2-hidden-accesible" style="width: 100%;" data-select2-id="1" tabindex="-1" aria-hidden="true" name="idpedido" id="selectidpedido">
+                    <option value="" selected disabled hidden>Seleccione un valor</option>
+                    {{#each pedidos_mesa}}
+                        <option value="{{idpedido}}">{{idpedido}}</option>
+                    {{/each}}
+                    </select>
+
+                  
+                    
+                   <!-- <select class="form-control" id="idpedido" name="idpedido">  -->
+                    
+                    
+                    <option value="" selected disabled hidden>Seleccione un valor</option>
+                    
                       
                     </select>
+
+                    
                   </div>
                   
                   <div class="form-group col-md-6">
-                    <label for="idcliente">Nombre Mesa</label>
-                    <select class="form-control cmbbuscar select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="2" tabindex="-1" aria-hidden="true" name="idmesa" required>
-                   
-                    <!--<select class="form-control" id="idmesa" name="idmesa"> -->
+                    <label for="idmesa">Nombre Mesa</label>
+                    <select class="form-control cmbBuscarUsuario2 select2 select2-hidden-accesible" style="width: 100%;" data-select2-id="2" tabindex="-1" aria-hidden="true" name="idmesa" id="selectidmesa">
                     <option value="" selected disabled hidden>Seleccione un valor</option>
-                      
+                    {{#each mesas_x_area}}
+                        <option value="{{idregistro}}">{{Mesa}}</option>
+                    {{/each}}
                     </select>
+                  
                   </div>
 
                   <div class="form-group col-md-3">
                   <label for="inputNombre">Cuenta</label>
-                  <input type="number" step="1" name="cuenta" class="form-control" id="inputNombre" placeholder="Escriba el numero de cuenta" required>
+                  <input type="number" step="1" name="cuenta" class="form-control" id="selectcuenta" placeholder="Escriba el numero de cuenta" required>
                   </div>
 
                   <div class="form-group col-md-8">
                   <label for="inputNombre">Nombre Cuenta</label>
-                  <input type="text" step="1" name="nombrecuenta" class="form-control" id="inputNombre" placeholder="Escriba el nombre de cuenta" required>
+                  <input type="text" step="1" name="nombrecuenta" class="form-control" id="selectnombre" placeholder="Escriba el nombre de cuenta" required>
                   </div>
                   
                 </div>
 
                 <!-- /.card-body -->
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary toastrDefaultSuccess">Guardar</button>
+                  <button type="button" class="btn btn-primary toastrDefaultSuccess pedidos_mesaguardar" value="/app/Pedidos_mesa/guardar/">Guardar</button>
                 </div>
             </form>
           </div>
@@ -74,7 +91,9 @@
   <script src="/public/plugins/jquery-validation/additional-methods.min.js"></script>
   
 
-
-<script>
-
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function(){
+    $('.cmbBuscarUsuario').select2();
+    $('.cmbBuscarUsuario2').select2();
+  })
 </script>

@@ -2,7 +2,7 @@ const Pedidos_mesa = require('../modelos/modeloPedidos_mesa');
 const {validationResult} = require('express-validator');
 const { text } = require('express');
 const modelosMesa = require('../modelos/modeloMesas_x_area');
-const { transformAuthInfo } = require('passport');
+//const { transformAuthInfo } = require('passport');
 
 
 exports.Listar = async(req, res) => {
@@ -26,15 +26,28 @@ exports.Listar = async(req, res) => {
 
 exports.nuevo = async (req, res) =>{
     const pedidos_mesa = await Pedidos_mesa.findAll({
+    
+        raw: true,
 
     });//con el findall le indicamos que busque todos los datos
-    console.log(Pedidos_mesa);
+    
+    const mesas_x_area = await modelosMesa.findAll({
+        raw:true,
+    });
+    
+    
+    
+    console.log(pedidos_mesa);
+    console.log(mesas_x_area);
     
     res.render("Pedidos_mesaNuevo", {
         titulo: 'Nuevo en Pedidos_mesa',
-        Pedidos_mesa
+        pedidos_mesa,
+        mesas_x_area
 
     });
+
+    
 }
 
 exports.buscar = async (req, res) =>{
@@ -180,5 +193,46 @@ exports.Eliminar = async (req, res) => {
         texto="Error al actualizar en la base de datos";
     }
     res.send(texto);
+    }
+}
+
+
+exports.BuscarId = async (req, res)=>{
+    try{
+        const id = req.query.id;
+        const pedidos_mesa = await Pedidos_mesa.findOne({
+            
+            where:{
+                idpedido: id
+            },
+            include: [{
+                model: modelosMesa,
+                attributes: ['Mesa']
+            }],
+
+            raw: true,
+    
+        });//con el findall le indicamos que busque todos los datos
+        
+        const mesas_x_area = await modelosMesa.findOne({
+            raw:true,
+        });
+        
+
+        console.log(pedidos_mesa);
+        console.log(mesas_x_area);
+        
+        res.render("Pedidos_mesaBuscarId", {
+            titulo: 'Nuevo en Pedidos_mesa',
+            pedidos_mesa,
+            mesas_x_area
+    
+        });
+    }
+    catch(error){
+        console.log(error);
+        res.render("error", {
+            titulo: 'Error'
+        })
     }
 }
