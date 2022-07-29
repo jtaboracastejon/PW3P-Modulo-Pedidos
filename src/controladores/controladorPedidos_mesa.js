@@ -2,6 +2,8 @@ const Pedidos_mesa = require('../modelos/modeloPedidos_mesa');
 const {validationResult} = require('express-validator');
 const { text } = require('express');
 const modelosMesa = require('../modelos/modeloMesas_x_area');
+const modeloPedido = require('../modelos/modeloPedidos');
+
 //const { transformAuthInfo } = require('passport');
 
 
@@ -111,11 +113,12 @@ exports.Modificar = async (req,res) =>{
     res.send(mensaje);
    }
    else{
-    const {idregistro} = req.query;
+    //const {idregistro} = req.query;
+    const {id} = req.query;
     try {
         var buscarPedidos_mesa = await Pedidos_mesa.findOne({
             where: {
-                idregistro: idregistro
+                idregistro: id
             }
         });
         if(buscarPedidos_mesa){
@@ -125,7 +128,7 @@ exports.Modificar = async (req,res) =>{
                 },
                 {
                     where:{
-                        idregistro: idregistro
+                        idregistro: id
                     }
                 }
             )
@@ -203,28 +206,44 @@ exports.BuscarId = async (req, res)=>{
         const pedidos_mesa = await Pedidos_mesa.findOne({
             
             where:{
-                idpedido: id
+                idregistro: id
             },
             include: [{
                 model: modelosMesa,
                 attributes: ['Mesa']
             }],
-
             raw: true,
     
         });//con el findall le indicamos que busque todos los datos
-        
-        const mesas_x_area = await modelosMesa.findOne({
+    
+        const pedidos = await modeloPedido.findAll({
+            raw:true,
+        });
+
+        const mesas_x_area = await modelosMesa.findAll({
+            raw:true,
+        });
+
+        const mesas = await modelosMesa.findOne({
+            
+            where:{
+                idregistro: pedidos_mesa.idmesa
+
+            },
+
             raw:true,
         });
         
-
+        //console.log(pedidos_mesa);
+        //console.log(mesas_x_area);
         console.log(pedidos_mesa);
-        console.log(mesas_x_area);
+
         
         res.render("Pedidos_mesaBuscarId", {
             titulo: 'Nuevo en Pedidos_mesa',
             pedidos_mesa,
+            pedidos,
+            mesas,
             mesas_x_area
     
         });
@@ -232,7 +251,8 @@ exports.BuscarId = async (req, res)=>{
     catch(error){
         console.log(error);
         res.render("error", {
-            titulo: 'Error'
-        })
+            titulo: 'Error',
+            error
+        });
     }
 }
