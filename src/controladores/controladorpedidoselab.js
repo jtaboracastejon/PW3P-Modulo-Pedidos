@@ -57,6 +57,10 @@ exports.Guardar = async (req, res) => {
 }
 
 exports.Editar = async (req, res) => {
+
+    console.log("hola");
+    console.log(req.body);
+    console.log("holis2");
     const validacion = validationResult(req);
     if(validacion.errors.length > 0) {
         let mensaje=''
@@ -67,6 +71,7 @@ exports.Editar = async (req, res) => {
 
     }else{
         const { id } = req.query;
+        
         
         var texto=''
         try {
@@ -155,4 +160,43 @@ exports.nuevo = async (req, res) => {
         lista
     });
 }
+
+exports.BuscarId = async (req, res) => {
+    const id = req.query.id;
+    
+    const pedidoelab = await modeloPedidosElaborados.findOne({
+        where:  {
+          iddetallepedido: id,
+        },
+        raw: true,
+        // include: [{
+        //     model: usuarios,
+        //     attributes: ['LoginUsuario']
+        // }]
+                
+    });
+
+    const lista = await usuarios.findAll({
+    raw: true,
+    });//con el findall le indicamos que busque todos los datos
+    
+    const usuario = await usuarios.findOne({
+        where:{
+            idregistro: pedidoelab.idusuario
+        }, 
+        raw: true,
+        });
+
+    console.log(pedidoelab);
+    
+    res.render("pedidoselaboradosbuscarid",{
+        titulo: 'Listado De Pedidos Elaborados',
+        lista,
+        pedidoelab,
+        usuario
+    });
+}
+
+
+
 
