@@ -23,6 +23,7 @@
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
-    "sequelize": "^6.21.3"
+    "sequelize": "^6.21.3",
+    "sweetalert2": "^11.4.24"
   }
 }

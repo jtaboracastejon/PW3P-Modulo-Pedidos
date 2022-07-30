@@ -3,7 +3,7 @@ const {validationResult} = require('express-validator');
 const db = require('../configuracion/db');
 const {QueryTypes} = require('sequelize');
 const modelocliente = require('../modelos/modeloCliente');
-const modelosdetalle = require('../modelos/modeloDetallePedidos');
+const modeloPedido = require('../modelos/modeloPedidos');
 //const { where } = require('sequelize/types');
 
 exports.Listar = async (req, res) => {
@@ -15,10 +15,10 @@ exports.Listar = async (req, res) => {
         logging:console.log,
         raw:true
     });
-    
     res.render("pedidosLlevarIndex", {
         titulo: 'Listado de entrega de pedidos',
         pedidos_llevar})
+        console.log(pedidosLlevar);
     };
 
 
@@ -26,7 +26,7 @@ exports.Nuevo =  async (req, res) => {
         try { 
             const listarClientes = await modelocliente.findAll({
                 raw: true});
-            const listarDetalles = await modelosdetalle.findAll({
+            const listarDetalles = await modeloPedido.findAll({
                     raw: true});
 
                 console.log(listarClientes)
@@ -41,6 +41,56 @@ exports.Nuevo =  async (req, res) => {
             error
             });
         }
+};
+
+exports.BuscarId = async (req, res) => {
+    try {
+        const id = req.query.id;
+        const pedido = await pedidosLlevar.findOne({
+            where: {
+                idRegistro: id
+            },
+            raw: true,
+        });
+        const cliente = await modelocliente.findOne({
+
+            where: {
+                idcliente: pedido.idCliente
+            },
+            attributes: ['nombre'],
+            raw: true
+        });
+
+        const detalle = await modeloPedido.findOne({
+
+            where: {
+                NumeroPedido: pedido.idPedido
+            },
+            attributes: ['NumeroPedido'],
+            raw: true
+        });
+
+        const listarDetalles = await modeloPedido.findAll({
+            raw:true,
+        });
+        const listarClientes = await modelocliente.findAll({
+            raw:true,
+        });
+
+
+        console.log(detalle);
+        res.render("pedidosLlevarBuscarId", {
+            titulo: 'Editar pedido',
+            pedido, cliente, detalle, listarClientes, listarDetalles
+        });
+    }
+    catch (error) {
+        console.log(error);
+        res.render("error", {
+            titulo: 'error',
+            error
+        });
+    }
 };
 
 
@@ -121,14 +171,14 @@ exports.Editar = async (req, res) => {
         res.send(mensaje)
 
     }else{
-        const { idRegistro } = req.query;
+        const { id } = req.query;
         
         var texto=''
         try {
             var buscarPedido = await pedidosLlevar.findOne(
                 {
                     where: {
-                        idRegistro: idRegistro
+                        idRegistro: id
                     }
                 }
             )
@@ -139,7 +189,7 @@ exports.Editar = async (req, res) => {
                     },
                     {
                         where: {
-                            idRegistro: idRegistro
+                            idRegistro: id
                         }
                     }
                 )

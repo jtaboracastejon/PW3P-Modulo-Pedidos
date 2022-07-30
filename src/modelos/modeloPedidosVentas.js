@@ -23,6 +23,11 @@ const pedidosVentas = db.define(
         tableName: 'pedidos_x_ventas'
     }
 );
+
+pedidosVentas.belongsTo(detallePedido,{ 
+    foreignKey: 'numeroPedido',
+    otherKey:'idregistro'
+});
 //pedidosVentas.detallePedido = pedidosVentas.belongsTo(detallePedido);
 
 //Esto es para crear la tabla por primera vez 

@@ -24,187 +24,224 @@ exports.Listar = async (req, res) => {
 
 
 exports.Nuevo = async (req, res) => {
-    
-      try{ 
+
+    try {
         const listausuarios = await modelousuario.findAll({
-        raw:true
-       });
-       console.log(listausuarios);
+            raw: true
+        });
+        console.log(listausuarios);
         res.render("entregaPedidosGuardar", {
-        titulo: 'Nuevo pedido',
-        listausuarios});
-        }
-            catch (error) {
-                console.log(error);
-                res.render("error",{
-                titulo:'error',
-                error
-                });
-            }
-    };
+            titulo: 'Nuevo pedido entregado',
+            listausuarios
+        });
+    }
+    catch (error) {
+        console.log(error);
+        res.render("error", {
+            titulo: 'error',
+            error
+        });
+    }
+};
+
+exports.BuscarId = async (req, res) => {
+    try {
+        const id = req.query.id;
+        const pedido = await entregaPedidos.findOne({
+            where: {
+                idDetalle: id
+            },
+            raw: true,
+        });
+        const usuario = await modelousuario.findOne({
+
+            where: {
+                idregistro: pedido.idusuario
+            },
+            attributes: ['LoginUsuario'],
+            raw: true
+        });
+
+        const listarusuarios = await modelousuario.findAll({
+            raw:true,
+        });
+        console.log(pedido);
+        res.render("entregaPedidosBuscarId", {
+            titulo: 'editar pedido',
+            pedido, usuario, listarusuarios
+        });
+    }
+    catch (error) {
+        console.log(error);
+        res.render("error", {
+            titulo: 'error',
+            error
+        });
+    }
+};
 
 
 
 exports.Buscar = async (req, res) => {
-        try {
-                const entrega_pedidos = await entregaPedidos.findAll({
-                    include: [{
-                        model: modelousuario,
-                        attributes: ['LoginUsuario']
-                    }],
-                    logging: console.log,
-                    raw: true
-                });
-                res.render("entregaPedidosBuscar", {
-                    titulo: 'Buscar pedido entregado',
-                    entrega_pedidos
-                });
-            }
-            catch (error) {
-                res.json(error);
-            }
-        };
+    try {
+        const entrega_pedidos = await entregaPedidos.findAll({
+            include: [{
+                model: modelousuario,
+                attributes: ['LoginUsuario']
+            }],
+            logging: console.log,
+            raw: true
+        });
+        res.render("entregaPedidosBuscar", {
+            titulo: 'Buscar pedido entregado',
+            entrega_pedidos
+        });
+    }
+    catch (error) {
+        res.json(error);
+    }
+};
 
-        exports.listarEntregas = async (req, res) => {
-            const listarEntregas = await db.query("select * from listarentregas", { type: QueryTypes.SELECT });
-            if (listarEntregas.length == 0) {
-                res.send("No existen datos!!!");
-            }
-            else {
-                res.render("entregaPedidosIndex", {
-                    titulo: 'Listado de entrega de pedidos',
-                    listarEntregas
-                })
-                console.log(listarEntregas);
-            }
-        };
+exports.listarEntregas = async (req, res) => {
+    const listarEntregas = await db.query("select * from listarentregas", { type: QueryTypes.SELECT });
+    if (listarEntregas.length == 0) {
+        res.send("No existen datos!!!");
+    }
+    else {
+        res.render("entregaPedidosIndex", {
+            titulo: 'Listado de entrega de pedidos',
+            listarEntregas
+        })
+        console.log(listarEntregas);
+    }
+};
 
 
 exports.Guardar = async (req, res) => {
 
-            console.log(req.body);
-            const validacion = validationResult(req);
-            if(validacion.errors.length>0){
-            let mensaje='';
-            validacion.errors.forEach(element => {
-                console.log(element);
-                mensaje+=element.msg + '. ';
+    console.log(req.body);
+    const validacion = validationResult(req);
+    if (validacion.errors.length > 0) {
+        let mensaje = '';
+        validacion.errors.forEach(element => {
+            console.log(element);
+            mensaje += element.msg + '. ';
         });
         res.send(mensaje);
 
-            } else {
-                const { idDetalle, idusuario, fechahora, identrega } = req.body;
-                console.log(idDetalle);
-                console.log(idusuario);
-                console.log(fechahora);
-                console.log(identrega);
-                var texto = ''
-                try {
-                    await entregaPedidos.create({...req.body})
-                        .then((data) => {
-                            console.log(data);
-                            texto = "Entrega de pedido guardada!!"
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                            texto = "Error al guardar!!"
-                        })
-                } catch (error) {
-                    console.log(error);
-                    texto = "Error al guardar la entrega!!"
-                }
-                res.send(texto)
-
-            }
-        };
-
-        exports.Editar = async (req, res) => {
-            const validacion = validationResult(req);
-            if (validacion.errors.length > 0) {
-                let mensaje = ''
-                validacion.errors.forEach(error => {
-                    mensaje += error.msg + '. '
+    } else {
+        const { idDetalle, idusuario, fechahora, identrega } = req.body;
+        console.log(idDetalle);
+        console.log(idusuario);
+        console.log(fechahora);
+        console.log(identrega);
+        var texto = ''
+        try {
+            await entregaPedidos.create({ ...req.body })
+                .then((data) => {
+                    console.log(data);
+                    texto = "Entrega de pedido guardada!!"
                 })
-                res.send(mensaje)
+                .catch((err) => {
+                    console.log(err);
+                    texto = "Error al guardar!!"
+                })
+        } catch (error) {
+            console.log(error);
+            texto = "Error al guardar la entrega!!"
+        }
+        res.send(texto)
 
-            } else {
-                const { idDetalle } = req.query;
+    }
+};
 
-                var texto = ''
-                try {
-                    var buscarPedido = await entregaPedidos.findOne(
-                        {
-                            where: {
-                                idDetalle: idDetalle
-                            }
-                        }
-                    )
-                    if (entregaPedidos) {
-                        await entregaPedidos.update(
-                            {
-                                ...req.body
-                            },
-                            {
-                                where: {
-                                    idDetalle: idDetalle
-                                }
-                            }
-                        )
-                            .then((data) => {
-                                console.log(data);
-                                texto = "Entrega  Actualizada"
-                            }).catch((err) => {
-                                console.log(err);
-                                texto = "Error al actualizar la entrega"
-                            })
-                    } else {
-                        texto = "No existe el registro de entrega"
+exports.Editar = async (req, res) => {
+    const validacion = validationResult(req);
+    if (validacion.errors.length > 0) {
+        let mensaje = ''
+        validacion.errors.forEach(error => {
+            mensaje += error.msg + '. '
+        })
+        res.send(mensaje)
+
+    } else {
+        const { id} = req.query;
+
+        var texto = ''
+        try {
+            var buscarPedido = await entregaPedidos.findOne(
+                {
+                    where: {
+                        idDetalle: id
                     }
-                } catch (error) {
-                    console.log(error);
-                    texto = "Error al actualizar la entrega"
                 }
-                res.send(texto)
+            )
+            if (buscarPedido) {
+                await buscarPedido.update(
+                    {
+                        ...req.body
+                    },
+                    {
+                        where: {
+                            idDetalle: id
+                        }
+                    }
+                )
+                    .then((data) => {
+                        console.log(data);
+                        texto = "Entrega  Actualizada"
+                    }).catch((err) => {
+                        console.log(err);
+                        texto = "Error al actualizar la entrega"
+                    })
+            } else {
+                texto = "No existe el registro de entrega"
             }
-        };
-        exports.Eliminar = async (req, res) => {
-            const validacion = validationResult(req);
-            if (validacion.errors.length > 0) {
-                let mensaje = '';
-                validacion.errors.forEach(Element => {
-                    console.log(Element);
-                    mensaje += Element.msg + ', ';
-                });
-                res.send(mensaje);
+        } catch (error) {
+            console.log(error);
+            texto = "Error al actualizar la entrega"
+        }
+        res.send(texto)
+    }
+};
+exports.Eliminar = async (req, res) => {
+    const validacion = validationResult(req);
+    if (validacion.errors.length > 0) {
+        let mensaje = '';
+        validacion.errors.forEach(Element => {
+            console.log(Element);
+            mensaje += Element.msg + ', ';
+        });
+        res.send(mensaje);
+    }
+    else {
+        const { idDetalle } = req.query;
+        var texto = "";
+        try {
+            var buscarPedido = await entregaPedidos.findOne({
+                where: {
+                    idDetalle: idDetalle
+                }
+            });
+            if (!buscarPedido) {
+                texto = "Este registro de entrega no existe"
             }
             else {
-                const { idDetalle } = req.query;
-                var texto = "";
-                try {
-                    var buscarPedido = await entregaPedidos.findOne({
-                        where: {
-                            idDetalle: idDetalle
-                        }
+                await entregaPedidos.destroy({ where: { idDetalle: idDetalle } })
+                    .then((data) => {
+                        console.log(data);
+                        texto = "entrega eliminada!!"
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        texto = "Error al eliminar la entrega!!"
                     });
-                    if (!buscarPedido) {
-                        texto = "Este registro de entrega no existe"
-                    }
-                    else {
-                        await entregaPedidos.destroy({ where: { idDetalle: idDetalle } })
-                            .then((data) => {
-                                console.log(data);
-                                texto = "entrega eliminada!!"
-                            })
-                            .catch((err) => {
-                                console.log(err);
-                                texto = "Error al eliminar la entrega!!"
-                            });
-                    }
-
-                } catch (error) {
-                    console.log(error);
-                    texto = "Error al eliminar de la base de datos"
-                }
-                res.send(texto)
             }
-        };
+
+        } catch (error) {
+            console.log(error);
+            texto = "Error al eliminar de la base de datos"
+        }
+        res.send(texto)
+    }
+};

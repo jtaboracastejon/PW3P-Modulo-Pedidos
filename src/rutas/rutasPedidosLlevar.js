@@ -8,6 +8,7 @@ rutas.get('/listar', controladorPedidosLlevar.Listar);
 rutas.get('/listarpedidos', controladorPedidosLlevar.listarPedidos);
 rutas.get('/nuevo', controladorPedidosLlevar.Nuevo);
 rutas.get('/buscar', controladorPedidosLlevar.Buscar);
+rutas.get('/buscarid', controladorPedidosLlevar.BuscarId);
 
 
 rutas.post('/guardar', 
@@ -16,8 +17,8 @@ body('idPedido')
 .notEmpty().withMessage('Debe llenar el campo'),
 controladorPedidosLlevar.Guardar)
 
-rutas.post('/editar',
-query('idRegistro')
+rutas.put('/editar',
+query('id')
 .notEmpty().withMessage('Debe escribir el ID de registro')
 .isInt().withMessage('El ID debe ser un entero'),
 body('idPedido')

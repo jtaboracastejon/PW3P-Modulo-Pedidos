@@ -2,8 +2,8 @@ const pedidosVentas = require('../modelos/modeloPedidosVentas');
 const {validationResult} = require('express-validator');
 const db = require('../configuracion/db');
 const {QueryTypes} = require('sequelize');
-//const productos = require('../modelos/modeloProductos');
 const modelosdetalle = require('../modelos/modeloDetallePedidos');
+
 //const { where } = require('sequelize/types');
 
 exports.Listar = async (req, res) => {
@@ -63,6 +63,49 @@ exports.listarPedidosVentas = async (req, res) => {
     }
 };
 
+exports.BuscarId = async (req, res) => {
+    try {
+        const id = req.query.id;
+        const pedido = await pedidosVentas.findOne({
+            where: {
+                numeroFactura: id
+            },
+            raw: true,
+        });
+
+        const listarVentas = await pedidosVentas.findAll({
+            raw:true,
+        });
+
+        const detalle = await modelosdetalle.findOne({
+
+            where: {
+                NumeroPedido: pedido.numeroPedido
+            },
+            attributes: ['NumeroPedido'],
+            raw: true
+        });
+
+        const listarDetalles = await modelosdetalle.findAll({
+            raw:true,
+        });
+
+        console.log(detalle);
+        res.render("pedidosVentasBuscarId", {
+            titulo: 'Editar pedido ventas',
+            pedido, listarVentas, detalle,listarDetalles
+        });
+    }
+    catch (error) {
+        console.log(error);
+        res.render("error", {
+            titulo: 'error',
+            error
+        });
+    }
+};
+
+
 
 
 exports.Guardar = async (req, res) => {
@@ -107,14 +150,14 @@ exports.Editar = async (req, res) => {
         res.send(mensaje)
 
     }else{
-        const { numeroFactura } = req.query;
+        const { id } = req.query;
         
         var texto=''
         try {
             var buscarVentas = await pedidosVentas.findOne(
                 {
                     where: {
-                        numeroFactura: numeroFactura
+                        numeroFactura: id
                     }
                 }
             )
@@ -125,7 +168,7 @@ exports.Editar = async (req, res) => {
                     },
                     {
                         where: {
-                            numeroFactura: numeroFactura
+                            numeroFactura: id
                         }
                     }
                 )

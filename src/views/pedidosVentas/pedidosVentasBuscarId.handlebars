@@ -1,0 +1,89 @@
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+                <!-- jquery validation -->
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h2 class="card-title">Editar datos</h2>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form id="quickForm" action="/app/pedidosVentas/guardar" method="post">
+                        <div class="card-body">
+                            <div class="form-group">
+                                    <label for="inputdetalle">Numero de factura</label>
+                                    <input readonly value="{{pedido.numeroFactura}}"{{pedido.numeroFactura}} type="number" name="inputdetalles"
+                                        class="form-control" id="inputdetalle"
+                                        placeholder="Escriba el id detalle pedido" required>
+                                </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="textareaDescricion">Numero de pedido</label>
+                                    <select class="form-control cmbbuscar select2 select2-hidden-accessible"
+                                        style="width: 100%;" data-select2-id="1" tabindex="-1" aria-hidden="true"
+                                        name="usuario" id="selectPedido">
+                                        <option value="{{detalle.NumeroPedido}}" selected>{{detalle.NumeroPedido}}</option>
+                                        {{#each listarDetalles}}
+                                        <option value="{{NumeroPedido}}">{{NumeroPedido}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <!-- /.card-body -->
+                            <div class="card-footer">
+                                <a class="btn btn-primary toastrDefaultSuccess"
+                                    onclick="pedidosModificar({{pedido.numeroFactura}})" href="javascript:void(0)"
+                                    id="{{pedido.numeroFactura}}">Guardar edicion</a>
+                            </div>
+                    </form>
+                </div>
+                <!-- /.card -->
+            </div>
+            <!--/.col (left) -->
+            <!-- right column -->
+            <div class="col-md-6">
+
+            </div>
+            <!--/.col (right) -->
+        </div>
+        <!-- /.row -->
+    </div><!-- /.container-fluid -->
+</section>
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        $('.cmbbuscar').select2();
+    });
+
+function pedidosModificar(id) {
+
+        var url = "/app/pedidosVentas/editar?id=" + id;
+        var datam = {
+            numeroPedido: $("#selectPedido").val()
+        };
+        $.ajax({
+            type: 'PUT',
+            url: url,
+            data: datam,
+            success: function (data, status) {
+                if (status == 'success') {
+                    alert("Data: " + data + "\nStatus: " + status);
+                    window.location.replace("listar");
+                } else {
+                    alert("Data: " + data + "\nStatus: " + status);
+                    console.log("Error" + data.message);
+                }
+            },
+            error: function (data) {
+                console.log(data);
+                alert('Error al guardar el pedido');
+            }
+        });
+    };
+
+
+</script>

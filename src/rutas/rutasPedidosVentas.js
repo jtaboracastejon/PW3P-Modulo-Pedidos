@@ -8,6 +8,7 @@ rutas.get('/listar', controladorPedidosVentas.Listar);
 rutas.get('/listarventas', controladorPedidosVentas.listarPedidosVentas);
 rutas.get('/nuevo', controladorPedidosVentas.Nuevo);
 rutas.get('/buscar', controladorPedidosVentas.Buscar);
+rutas.get('/buscarid', controladorPedidosVentas.BuscarId);
 
 
 
@@ -17,8 +18,8 @@ body('numeroPedido')
 .notEmpty().withMessage('Debe llenar el campo'),
 controladorPedidosVentas.Guardar)
 
-rutas.post('/editar',
-query('numeroFactura')
+rutas.put('/editar',
+query('id')
 .notEmpty().withMessage('Debe escribir el ID de la factura')
 .isInt().withMessage('El ID debe ser un entero'),
 body('numeroPedido')

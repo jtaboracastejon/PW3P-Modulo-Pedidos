@@ -1,5 +1,6 @@
 $(document).ready(function($){
 
+
 $(".guardarEntregas").on("click",function(){
     $.post(
         $(this).val(),
@@ -11,6 +12,8 @@ $(".guardarEntregas").on("click",function(){
         },
         function(data, status){
             alert("Data: " + data + "\nStatus: " + status);
+            window.location.replace("listar")
+
         });
 
 });
@@ -24,6 +27,7 @@ $(".guardarLlevarPedido").on("click",function(){
         },
         function(data, status){
             alert("Data: " + data + "\nStatus: " + status);
+            window.location.replace("listar")
         });
 
 });
@@ -35,7 +39,10 @@ $(".guardarVentaPedido").on("click",function(){
             numeroPedido: $("#selectPedido").val()
         },
         function(data, status){
+           
             alert("Data: " + data + "\nStatus: " + status);
+            window.location.replace("listar")
+            
         });
 
 });

@@ -7,8 +7,7 @@ const Clientes = db.define(
             type: DataTypes.INTEGER,
             primaryKey: true,
             allowNull: false,
-            autoIncrement: true,
-            field:'idcliente'
+            autoIncrement: true
         },        
         nombre: {
             type: DataTypes.STRING(50),
