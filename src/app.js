@@ -34,6 +34,7 @@ app.use('/app', require('./rutas/index'))
 
 app.use('/app/cargos', require('./rutas/rutasCargo'))
 app.use('/app/pedidos', require('./rutas/rutasPedidos'))
+app.use('/app/detallepedidos', require('./rutas/rutasDetallePedido'))
 
 
 app.listen(process.env.port, () => {
