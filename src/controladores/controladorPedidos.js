@@ -2,60 +2,67 @@ const { validationResult } = require('express-validator');
 const modeloPedidos = require('../modelos/modeloPedidos');
 const modeloMeseros = require('../modelos/modeloMeseros');
 const modeloEstaciones = require('../modelos/modeloEstaciones');
-const { QueryTypes, sequelize } = require('sequelize');
+const modeloMesas_x_area = require('../modelos/modeloMesas_x_area');
+const { Op } = require('sequelize');
 const db = require('../configuracion/db');
 
 //Funcion para obtener todos los pedidos de la tabla
 exports.Listar = async (req, res) => { //async es para que espere a que se ejecute la funcion y le devuelta un resultado
     try {
-        const lista = await modeloPedidos.findAll({
-            include: [{                
-                model: modeloMeseros,
-                attributes: ['nombre']
-            }, {
-                model: modeloEstaciones,
-                attributes: ['nombre']
-            }],
-            //logging: console.log,
-            raw: true
-        });
+        const filtro = req.body.filtro;
+        const buscar = req.body.buscar;
+        const lista = await modeloPedidos.findAll({       
+                order: [
+                    ['NumeroPedido', 'ASC']
+                ],
+                include: [{
+                    model: modeloMeseros,
+                    attributes: ['nombre']
+                }, {
+                    model: modeloEstaciones,
+                    attributes: ['nombre']
+                }],
+                //logging: console.log,
+                raw: true
+            });
+        
         lista.forEach(element => {
             const estado = element.estado;
-            if(estado[0] == 'S'){
-                element.facturado = 'checked';
+            if (estado[0] == 'S') {
+                element.elaborado = 'checked';
             }
-            else{
-                element.facturado = '';
+            else {
+                element.elaborado = '';
             }
-            if(estado[1] == 'S'){
+            if (estado[1] == 'S') {
                 element.entregado = 'checked';
             }
-            else{
+            else {
                 element.entregado = '';
             }
-            if(estado[2] == 'S'){
+            if (estado[2] == 'S') {
                 element.facturado = 'checked';
             }
-            else{
+            else {
                 element.facturado = '';
             }
             // isset($pedido['activo'])? 'Activo':'Inactivo';
             element.activo = element.activo == '1' ? 'Pendiente' : 'Finalizado';
-            if(element.modalidad == 'DO'){
+            if (element.modalidad == 'DO') {
                 element.modalidad = 'Domicilio';
             }
-            else if(element.modalidad == 'ME'){
+            else if (element.modalidad == 'ME') {
                 element.modalidad = 'Mesa';
             }
-            else{
+            else {
                 element.modalidad = 'Llevar';
             }
         });
-        console.log(lista);
+        //console.log(lista);
         res.render("pedidosIndex", {
             titulo: 'Listado de pedidos',
             lista
-        });
+        }); 
     }
     catch (error) {
         console.log(error);
@@ -74,10 +81,76 @@ exports.Nuevo = async (req, res) => {
         const listaEstaciones = await modeloEstaciones.findAll({
             raw: true
         });
+        const listaMesas = await modeloMesas_x_area.findAll({
+            //logging: console.log,
+            raw: true
+        });
+        //console.log(listaMesas);
+        //console.log(window.location.href)
         res.render("pedidosNuevo", {
             titulo: 'Nuevo pedido',
             listaMeseros,
-            listaEstaciones
+            listaEstaciones,
+            listaMesas,
+            //listarClientes
+        });
+    }
+    catch (error) {
+        console.log(error);
+        res.render("error", {
+            titulo: 'Error',
+            error
+        });
+    }
+}
+
+exports.BuscarId = async (req, res) => {
+    try {
+        const id = req.query.id;
+        const pedido = await modeloPedidos.findOne({
+            where: {
+                NumeroPedido: id
+            },
+            raw: true,
+        });
+        //foreach pedido.estado
+        const nombreestacion = await modeloEstaciones.findOne({
+            where: {
+                idestacion: pedido.Estacion
+            },
+            attributes: ['nombre'],
+            raw: true
+        });
+        const nombremesero = await modeloMeseros.findOne({
+            where: {
+                idmesero: pedido.idmesero
+            },
+            attributes: ['nombre'],
+            raw: true
+        });
+        const listaMeseros = await modeloMeseros.findAll({
+            raw: true
+        });
+        const listaEstaciones = await modeloEstaciones.findAll({
+            raw: true
+        });
+        const listaMesas = await modeloMesas_x_area.findAll({
+            //logging: console.log,
+            raw: true
+        });
+        //console.log(listaMesas);
+        //console.log("id"+id)
+        //console.log(pedido)
+        //console.log(nombreestacion)
+        //console.log(window.location.href)
+        res.render("pedidosBuscarId", {
+            titulo: 'Editar pedido',
+            pedido,
+            listaMeseros,
+            listaEstaciones,
+            listaMesas,
+            nombreestacion,
+            nombremesero
         });
     }
     catch (error) {
@@ -90,54 +163,178 @@ exports.Nuevo = async (req, res) => {
 }
 
 exports.Buscar = async (req, res) => {
-    try {
-        const lista = await modeloPedidos.findAll({
-            /* where: {
-                numero: req.body.numero
-            }, */
+    //filter: mesero, numeropedido, estacion
+    const filtro = req.query.filtro;
+    const buscar = req.query.buscar;
+    //console.log("Buscar "+req.query.buscar);
+    //console.log("Filtro "+req.query.filtro);   
+    let modeloABuscar = (filtro == 'mesero') ? modeloMeseros : (filtro == 'estacion') ? modeloEstaciones : modeloPedidos;
+    let campoABuscar = (filtro == 'mesero') ? 'nombre' : (filtro == 'estacion') ? 'nombre' : 'NumeroPedido'
+    let modeloAIncluir = (filtro == 'mesero') ? modeloEstaciones : (filtro == 'estacion') ? modeloMeseros : ''
+    
+    console.log('Modelo a Buscar ' + modeloABuscar)
+    console.log('Campo a Buscar ' + campoABuscar)
+    let lista=[]
+    if(filtro === undefined || buscar === undefined){
+        
+        lista = await modeloPedidos.findAll({
+            order: [
+                ['NumeroPedido', 'ASC']
+            ],
             include: [{
                 model: modeloMeseros,
-                attributes: ['nombre']
             }, {
                 model: modeloEstaciones,
-                attributes: ['nombre']
             }],
-            //logging: console.log,
-            raw: true
+            raw: true 
         });
-        lista.forEach(element => {
+    }
+    else{
+        try {        
+            if(campoABuscar != 'NumeroPedido'){
+                lista = await modeloPedidos.findAll({
+                    order: [
+                        ['NumeroPedido', 'ASC']
+                    ],
+                    include: [{
+                        model: modeloABuscar,
+                        where: {
+                            [campoABuscar]: {
+                                [Op.like]: '%' + buscar + '%'
+                            }
+                        },
+                        attributes: [campoABuscar]
+                    }, {
+                        model: modeloAIncluir,
+                        attributes: [campoABuscar]
+                    }],
+                    raw: true 
+                });
+            }
+            else{
+                lista = await modeloPedidos.findAll({
+                    where: {
+                        [filtro]: {
+                            [Op.like]: '%' + buscar + '%'
+                        }
+                    },
+                    order: [
+                        ['NumeroPedido', 'ASC']
+                    ],
+                    include: [{
+                        model: modeloMeseros,
+                        attributes: ['nombre']
+                    }, {
+                        model: modeloEstaciones,
+                        attributes: ['nombre']
+                    }],
+                    //logging: console.log,
+                    raw: true 
+                });
+            }
+            
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+    
+        
+        if(lista.length > 0){
+         lista.forEach(element => {
             const estado = element.estado;
-            if(estado[0] == 'S'){
-                element.facturado = 'checked';
-            }
-            else{
-                element.facturado = '';
-            }
-            if(estado[1] == 'S'){
-                element.entregado = 'checked';
-            }
-            else{
-                element.entregado = '';
-            }
-            if(estado[2] == 'S'){
-                element.facturado = 'checked';
-            }
-            else{
-                element.facturado = '';
-            }
+            estado[0] == 'S' ? (element.facturado = 'checked') : (element.facturado = '');
+            estado[1] == 'S' ? (element.entregado = 'checked') : (element.entregado = '');
+            estado[2] == 'S' ? (element.elaborado= 'checked') : (element.elaborado = '');
             // isset($pedido['activo'])? 'Activo':'Inactivo';
             element.activo = element.activo == '1' ? 'Pendiente' : 'Finalizado';
-            if(element.modalidad == 'DO'){
+            if (element.modalidad == 'DO') {
                 element.modalidad = 'Domicilio';
             }
-            else if(element.modalidad == 'ME'){
+            else if (element.modalidad == 'ME') {
                 element.modalidad = 'Mesa';
             }
-            else{
+            else {
                 element.modalidad = 'Llevar';
             }
+        }) 
+        } 
+        else {
+            console.log('No hay resultados');
+        }
+        
+        res.render("pedidosBuscar", {
+            titulo: 'Buscar pedido',
+            lista
         });
-        console.log(lista);
+        
+
+
+        
+    /* try {
+        let lista;
+        if (filtro == 'mesero') {
+            lista = await modeloPedidos.findAll({
+                order: [
+                    ['NumeroPedido', 'ASC']
+                ],
+                include: [{
+                    model: modeloMeseros,
+                    where: {
+                        nombre: {
+                            [Op.like]: '%' + buscar + '%'
+                        }
+                    },
+                    attributes: ['nombre']
+                }, {
+                    model: modeloEstaciones,
+                    attributes: ['nombre']
+                }],
+                //logging: console.log,
+                raw: true 
+            });
+        }else if (filtro == 'estacion') {
+            lista = await modeloPedidos.findAll({
+                order: [
+                    ['NumeroPedido', 'ASC']
+                ],
+                include: [{
+                    model: modeloMeseros,
+                    attributes: ['nombre']
+                }, {
+                    model: modeloEstaciones,
+                    where: {
+                        nombre: {
+                            [Op.like]: '%' + buscar + '%'
+                        }
+                    },
+                    attributes: ['nombre']
+                }],
+                //logging: console.log,
+                raw: true 
+            });
+        }else{
+            lista = await modeloPedidos.findAll({
+                where: {
+                    [filtro]: {
+                        [Op.like]: '%' + buscar + '%'
+                    }
+                },
+                order: [
+                    ['NumeroPedido', 'ASC']
+                ],
+                include: [{
+                    model: modeloMeseros,
+                    attributes: ['nombre']
+                }, {
+                    model: modeloEstaciones,
+                    attributes: ['nombre']
+                }],
+                //logging: console.log,
+                raw: true 
+            });
+        }
+        //console.log(lista);
         res.render("pedidosBuscar", {
             titulo: 'Buscar pedido',
             lista
@@ -145,11 +342,10 @@ exports.Buscar = async (req, res) => {
     }
     catch (error) {
         console.log(error);
-        res.render("error", {
-            titulo: 'Error',
-            error
+        res.render("pedidosbuscar", {
+            titulo: String(error),
         });
-    }
+    } */
 }
 
 exports.Anulados = async (req, res) => {
@@ -170,37 +366,37 @@ exports.Anulados = async (req, res) => {
         });
         lista.forEach(element => {
             const estado = element.estado;
-            if(estado[0] == 'S'){
-                element.facturado = 'checked';
+            if (estado[0] == 'S') {
+                element.elaborado = 'checked';
             }
-            else{
-                element.facturado = '';
+            else {
+                element.elaborado = '';
             }
-            if(estado[1] == 'S'){
+            if (estado[1] == 'S') {
                 element.entregado = 'checked';
             }
-            else{
+            else {
                 element.entregado = '';
             }
-            if(estado[2] == 'S'){
+            if (estado[2] == 'S') {
                 element.facturado = 'checked';
             }
-            else{
+            else {
                 element.facturado = '';
             }
             // isset($pedido['activo'])? 'Activo':'Inactivo';
             element.activo = element.activo == '1' ? 'Pendiente' : 'Finalizado';
-            if(element.modalidad == 'DO'){
+            if (element.modalidad == 'DO') {
                 element.modalidad = 'Domicilio';
             }
-            else if(element.modalidad == 'ME'){
+            else if (element.modalidad == 'ME') {
                 element.modalidad = 'Mesa';
             }
-            else{
+            else {
                 element.modalidad = 'Llevar';
             }
         });
-        console.log(lista);
+        //console.log(lista);
         res.render("pedidosAnulados", {
             titulo: 'Listado de pedidos anulados',
             lista
@@ -219,6 +415,7 @@ exports.Anulados = async (req, res) => {
 /* #Funcion para guardar un nuevo pedido que recibe mediante el body
 #La fechas y el numero de pedido se genera automaticamente */
 exports.Guardar = async (req, res) => {
+    console.log(req.body);
     const validacion = validationResult(req);
     if (validacion.errors.length > 0) {
         let mensaje = ''
@@ -229,12 +426,11 @@ exports.Guardar = async (req, res) => {
 
     }
     else {
-        const { idmesero, estacion, Estacion, activo, modalidad, estado } = req.body;
+        const { idmesero, Estacion, activo, modalidad, estado } = req.body;
         var texto = ''
         try {
             await modeloPedidos.create({
                 idmesero: idmesero,
-                estacion: estacion,
                 Estacion: Estacion,
                 activo: activo,
                 modalidad: modalidad,
@@ -260,6 +456,8 @@ exports.Guardar = async (req, res) => {
 #La fecha se actualiza automaticamente */
 exports.Editar = async (req, res) => {
     const validacion = validationResult(req);
+    console.log("Holakk")
+    console.log(req.body);
     if (validacion.errors.length > 0) {
         let mensaje = ''
         validacion.errors.forEach(error => {
@@ -270,7 +468,7 @@ exports.Editar = async (req, res) => {
     }
     else {
         const { id } = req.query;
-        const { idmesero, fechahora, estacion, Estacion, activo, modalidad, estado } = req.body;
+        console.log("Numero" + id);
         var texto = ''
         try {
             var buscarPedido = await modeloPedidos.findOne({
@@ -278,6 +476,7 @@ exports.Editar = async (req, res) => {
                     NumeroPedido: id
                 }
             });
+            console.log(buscarPedido);
             if (buscarPedido) {
                 await buscarPedido.update(
                     {
@@ -307,7 +506,6 @@ exports.Editar = async (req, res) => {
         res.send(texto)
 
     }
-    res.json(msj);
 };
 
 /* 
