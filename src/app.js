@@ -23,6 +23,7 @@ app.set('views', [
     path.join(__dirname, './views/home'),
     path.join(__dirname, './views/cargos'),
     path.join(__dirname, './views/pedidos'),
+    path.join(__dirname, './views/detallePedido'),
 ])//Rutas donde estaran contenidas las vistas
 app.use('/public',express.static(path.join(__dirname, 'public/')))//Ruta donde estaran contenidos los recursos
 
@@ -34,7 +35,7 @@ app.use('/app', require('./rutas/index'))
 
 app.use('/app/cargos', require('./rutas/rutasCargo'))
 app.use('/app/pedidos', require('./rutas/rutasPedidos'))
-app.use('/app/detallepedidos', require('./rutas/rutasDetallePedido'))
+app.use('/app/detallepedido', require('./rutas/rutasDetallePedido'))
 
 
 app.listen(process.env.port, () => {

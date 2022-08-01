@@ -9,8 +9,6 @@ const db = require('../configuracion/db');
 //Funcion para obtener todos los pedidos de la tabla
 exports.Listar = async (req, res) => { //async es para que espere a que se ejecute la funcion y le devuelta un resultado
     try {
-        const filtro = req.body.filtro;
-        const buscar = req.body.buscar;
         const lista = await modeloPedidos.findAll({       
                 order: [
                     ['NumeroPedido', 'ASC']

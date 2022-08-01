@@ -1,15 +1,25 @@
 
 const modeloDetallePedidos = require('../modelos/modeloDetallePedidos');
+const modeloPedidos = require('../modelos/modeloPedidos');
 const {validationResult} = require('express-validator');
 
 
 exports.Listar = async (req, res) => {
     try {
-        const lista = await modeloDetallePedidos.findAll();
-        res.json(lista);
+        const lista = await modeloDetallePedidos.findAll({
+            order: [
+                ['idregistro', 'ASC']
+            ],
+            raw: true
+        });
+        res.render("detallepedidoIndex",{
+        titulo: "Lista de Detalle Pedidos",
+        lista})
     } catch (error) {
-        console.error(error);
-        res.json(error);
+        console.error(error);        
+        res.render("detallepedidoIndex",{
+        titulo: "Lista de Detalle Pedidos",
+        })
     }
 }
 

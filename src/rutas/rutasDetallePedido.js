@@ -6,6 +6,10 @@ const rutas = Router();
 
 rutas.get('/listar', controladorDetallePedido.Listar);
 
+/* rutas.get('/nuevo', controladorDetallePedido.Nuevo);
+rutas.get('/buscarId', controladorDetallePedido.BuscarId);
+rutas.get('/buscar', controladorDetallePedido.Buscar); */
+
 rutas.post('/guardar', 
 body('NumeroPedidos')
 .notEmpty().withMessage('El NumeroPedidos es requerido'),

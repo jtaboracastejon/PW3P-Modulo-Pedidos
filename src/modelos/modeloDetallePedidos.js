@@ -9,7 +9,7 @@ const detalle_pedido = db.define(
             primaryKey:true,
             autoIncrement:true
         },
-        NumeroPedidos:{
+        NumeroPedido:{
             type:DataTypes.INTEGER,
             allowNull:false
         },
