@@ -1,54 +1,83 @@
-
-  <section class="content">
-        <div class="container-fluid">
-          <div class="row">
-            <!-- Left col -->
-            <div class="col-md-12">
-              <!-- TABLE: LATEST ORDERS -->
-              <div class="card">
-                <div class="card-header border-transparent">
-                  <h2 class="card-title">Listado general de pedidos a llevar</h2>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body p-0">
-                  <div class="table-responsive">
-                    <table class="table m-0">
-                      <thead>
-                      <tr>
-                        <th>ID REGISTRO</th>
-                        <th>ID PEDIDO</th>
-                        <th>CLIENTE</th>                        
-                      </tr>
-                      </thead>
-                      <tbody>
-                      {{#each pedidos_llevar}}
-                        <tr>
-                          <td><a href="/pedidosllevar/buscarId?id={{idRegistro}}">{{idRegistro}}</a></td>
-                          <td>{{idPedido}}</td>
-                          <td>{{'cliente.nombre'}}</td>
-                          <td>
-                            <a class="btn btn-warning" href="/pedidosllevar/buscarId?id=<?php echo $row['idregistro']; ?>"><i class="text-white fas fa-edit"></i></a>
-                            <a class="btn btn-danger" onclick = "return confirm('Estas seguro de eliminar?')"
-                             href="/pedidosllevar/eliminar?id=<?php echo $row['idregistro']; ?>"><i class="text-white fas fa-trash"></i></a>                            
-                          </td>
-                        </tr>
-                         {{/each}}
-                      </tbody>
-                    </table>
-                  </div>
-                  <!-- /.table-responsive -->
-                </div>
-                <!-- /.card-body -->
-                <div class="card-footer clearfix">
-                  <a href="/app/pedidosLlevar/nuevo" class="btn btn-sm btn-info float-left">Nuevo pedido a llevar</a>
-                  <a href="/app/pedidosLlevar/buscar" class="btn btn-sm btn-secondary float-right">Buscar pedido a llevar</a>
-                </div>
-                <!-- /.card-footer -->
-              </div>
-              <!-- /.card -->
-            </div>
-            <!-- Fin columna izquierda -->
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Left col -->
+      <div class="col-md-12">
+        <!-- TABLE: LATEST ORDERS -->
+        <div class="card">
+          <div class="card-header border-transparent">
+            <h2 class="card-title">Listado general de pedidos a llevar</h2>
           </div>
-          <!-- Fin primera fila -->
+          <!-- /.card-header -->
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table m-0">
+                <thead>
+                  <tr>
+                    <th>ID REGISTRO</th>
+                    <th>ID PEDIDO</th>
+                    <th>CLIENTE</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each pedidos_llevar}}
+                  <tr>
+                    <td><a href="/pedidosllevar/buscarId?id={{idRegistro}}">{{idRegistro}}</a></td>
+                    <td>{{idPedido}}</td>
+                    <td>{{'cliente.nombre'}}</td>
+                    <td>
+                      <a class="btn btn-warning" href="buscarId?id={{idRegistro}}"><i
+                          class="text-white fas fa-edit"></i></a>
+
+                        <a class="btn btn-danger"
+                            onclick="pedidosEliminar({{idRegistro}})" href="javascript:void(0)"
+                            id="{{idRegistro}}">Eliminar<i class="text-white fas fa-trash"></i></a>
+                    </td>
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+            </div>
+            <!-- /.table-responsive -->
+          </div>
+          <!-- /.card-body -->
+          <div class="card-footer clearfix">
+            <a href="/app/pedidosLlevar/nuevo" class="btn btn-sm btn-info float-left">Nuevo pedido a llevar</a>
+            <a href="/app/pedidosLlevar/buscar" class="btn btn-sm btn-secondary float-right">Buscar pedido a llevar</a>
+          </div>
+          <!-- /.card-footer -->
         </div>
-    </section>
+        <!-- /.card -->
+      </div>
+      <!-- Fin columna izquierda -->
+    </div>
+    <!-- Fin primera fila -->
+  </div>
+</section>
+
+<script type="text/javascript">
+
+  function pedidosEliminar(id) {
+
+    var url = "/app/pedidosLlevar/eliminar?id=" + id;
+    $.ajax({
+      type: 'DELETE',
+      url: url,
+      success: function (data, status) {
+        if (status == 'success') {
+          alert("Data: " + data + "\nStatus: " + status);
+          window.location.replace("listar");
+        } else {
+          alert("Data: " + data + "\nStatus: " + status);
+          console.log("Error" + data.message);
+        }
+      },
+      error: function (data) {
+        console.log(data);
+        alert('Error al eliminar el pedido');
+      }
+    });
+  };
+
+
+</script>

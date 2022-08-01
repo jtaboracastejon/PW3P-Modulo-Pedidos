@@ -9,15 +9,15 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-8 offset-md-2">
-                    <form action="/pedidosllevar/buscar" method="post">
+                    <form action="" method="">
                         <div class="input-group input-group-lg">
                             <select class="" id="filtro" name="filtro">
-                                <option value="pedidos_llevar.idpedido">N° pedido</option>
-                                <option value="clientes.nombre">Cliente</option>
+                                <option value="idRegistro">N° Registro</option>
+                                <option value="nombre">Cliente</option>
                             </select>
-                            <input type="search" id="buscar" name="buscar" class="form-control form-control-lg" placeholder="Buscar" value="">
+                            <input type="text" id="buscar" name="buscar" class="form-control form-control-lg" placeholder="Buscar" value="">
                             <div class="input-group-append">
-                                <button type="submit" class="btn btn-lg btn-default">
+                                <button type="button" class="btn btn-lg btn-default btnbuscar">
                                     <i class="fa fa-search"></i>
                                 </button>
                             </div>
@@ -38,14 +38,16 @@
                             </tr>
                         </thead>
                         <tbody>
-                              {{#each pedidos_llevar}}
+                              {{#each lista}}
                                 <tr>
                                     <td><a href="/pedidosllevar/buscarId?id={{idRegistro}}">{{idRegistro}}</a></td>
                                     <td>{{idPedido}}</td>
-                                     <td>{{idCliente}}</td>
+                                     <td>{{'cliente.nombre'}}</td>
                                     <td>
-                                        <a class="btn btn-warning" href="/pedidosllevar/buscarId?id=<?php echo $row['idregistro']; ?>">Editar</a>
-                                        <a class="btn btn-danger" onclick="return confirm('Estas seguro de eliminar?')" href="/pedidosllevar/eliminar?id=<?php echo $row['idregistro']; ?>">Eliminar</a>
+                                        <a class="btn btn-warning" href="buscarId?id={{idRegistro}}">Editar</a>
+                                        <a class="btn btn-danger"
+                            onclick="pedidosEliminar({{idRegistro}})" href="javascript:void(0)"
+                            id="{{idRegistro}}">Eliminar<i class="text-white fas fa-trash"></i></a>
                                     </td>
                                 </tr>
 
@@ -68,6 +70,43 @@
         echo $msj;
     }
     ?> --}}
+    <script>
+        function pedidosEliminar(id) {
+
+    var url = "/app/pedidosLlevar/eliminar?id=" + id;
+    $.ajax({
+      type: 'DELETE',
+      url: url,
+      success: function (data, status) {
+        if (status == 'success') {
+          alert("Data: " + data + "\nStatus: " + status);
+          window.location.replace("listar");
+        } else {
+          alert("Data: " + data + "\nStatus: " + status);
+          console.log("Error" + data.message);
+        }
+      },
+      error: function (data) {
+        console.log(data);
+        alert('Error al eliminar el pedido');
+      }
+    });
+  };
+        
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log(window.location.href)
+            if(window.location.href == "http://localhost:3010/app/Pedidosllevar/buscar?filtro=idRegistro&buscar=    "){
+                window.location.href = '/app/Pedidosllevar/buscar';    
+            }
+
+            $('.btnbuscar').click(function () {
+                var filtro = $('#filtro').val();
+                var buscar = $('#buscar').val();
+                var url = '/app/Pedidosllevar/buscar?filtro=' + filtro + '&buscar=' + buscar;
+                window.location.href = url;
+            });
+        });
+    </script>
 
 
    

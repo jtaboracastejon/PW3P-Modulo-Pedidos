@@ -1,7 +1,7 @@
 const pedidosLlevar = require('../modelos/modeloPedidosLlevar');
 const {validationResult} = require('express-validator');
 const db = require('../configuracion/db');
-const {QueryTypes} = require('sequelize');
+const {QueryTypes, Op} = require('sequelize');
 const modelocliente = require('../modelos/modeloCliente');
 const modeloPedido = require('../modelos/modeloPedidos');
 //const { where } = require('sequelize/types');
@@ -94,25 +94,61 @@ exports.BuscarId = async (req, res) => {
 };
 
 
-    exports.Buscar =  async (req, res) => {
-        try { 
-            const pedidos_llevar = await pedidosLlevar.findAll({
+exports.Buscar =  async (req, res) => {
+    const filtro = req.query.filtro;
+    const buscar = req.query.buscar;
+    let lista=[];
+    try {
+        if(filtro === undefined || buscar === undefined){
+            lista = await pedidosLlevar.findAll({ 
                 include:[{
                     model: modelocliente,
                     attributes: ['nombre']
                 }],
-                logging:console.log,
+                //logging:console.log,
                 raw:true
-            }); 
-            res.render("pedidosLlevarBuscar", { 
-                titulo: 'Buscar pedido a llevar', 
-                pedidos_llevar
-            }); 
-        } 
-        catch (error) { 
-            res.json(error);
+            });
         }
-    };
+        else if(filtro=='idRegistro'){ //12
+            lista = await pedidosLlevar.findAll({ 
+                where:{
+                    idRegistro: {
+                        [Op.like]: '%'+buscar+'%'
+                    }
+                }, //Where pedidosllevar.idRegistro = 12
+                include:[{
+                    model: modelocliente,
+                    attributes: ['nombre']
+                }],
+                //logging:console.log,
+                raw:true
+            });
+        }
+        else{
+            lista = await pedidosLlevar.findAll({              
+                include:[{
+                    model: modelocliente,
+                    where:{
+                        nombre: {
+                            [Op.like]: '%'+buscar+'%'
+                        }
+                    }, //Where cliente.nombre = 12                    
+                    attributes: ['nombre']
+                }],
+                //logging:console.log,
+                raw:true
+            });
+        }         
+        
+    } 
+    catch (error) { 
+        res.json(error);
+    }
+    res.render("pedidosLlevarBuscar", { 
+        titulo: 'Buscar pedido a llevar', 
+        lista
+    }); 
+};
     
 
 exports.listarPedidos = async (req, res) => {
@@ -221,19 +257,24 @@ exports.Eliminar = async (req, res) => {
         res.send(mensaje);
         }
     else{
-        const {idRegistro} = req.query;
+        const { id } = req.query;
+        console.log(id);
         var texto="";
         try {
             var buscarPedido = await pedidosLlevar.findOne({
                 where:{
-                    idRegistro:idRegistro
+                    idRegistro:id
                 }
             });
             if(!buscarPedido){
                 texto="Este registro no existe"
             }
             else{
-                await pedidosLlevar.destroy({where:{idRegistro:idRegistro}})
+                await pedidosLlevar.destroy({
+                    where:{
+                        idRegistro:id
+                    }
+                })
                 .then((data) => {
                     console.log(data);
                     texto="Pedido eliminado!!"
