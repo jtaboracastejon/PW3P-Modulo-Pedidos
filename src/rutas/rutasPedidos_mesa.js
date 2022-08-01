@@ -22,7 +22,7 @@ query('id')
 controladorPedidos_mesa.Modificar);
 
 rutas.delete('/eliminar',
-query('idregistro')
+query('id')
 .notEmpty().withMessage('El ID del pedido no puede estar vacio'),
 controladorPedidos_mesa.Eliminar);
 

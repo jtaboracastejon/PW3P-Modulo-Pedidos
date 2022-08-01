@@ -1,4 +1,4 @@
-<div class="wrapper">
+    <div class="wrapper"> 
 
     <!-- Main content -->
 
@@ -12,19 +12,19 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-8 offset-md-2">
-                    <form action="/pedidosmesa/buscar" method="post">
+                    <form action="" method="">
                         <div class="input-group input-group-lg">
                             <select class="" id="filtro" name="filtro">
-                                <option value="pedidos_mesa.idregistro">N° Registro</option>
-                                <option value="pedidos_mesa.idpedido">N° pedido</option>
-                                <option value="mesas_x_area.Mesa">Mesa</option>
-                                <option value="pedidos_mesa.cuenta">Cuenta</option>
-                                <option value="pedidos_mesa.nombrecuenta">Nombre Cuenta</option>
+                                <option value="idregistro">N° Registro</option>
+                                <option value="idpedido">N° pedido</option>
+                                <option value="Mesa">Mesa</option>
+                                <option value="cuenta">Cuenta</option>
+                                <option value="nombrecuenta">Nombre Cuenta</option>
                             </select>
-                            <input type="search" id="buscar" name="buscar" class="form-control form-control-lg"
+                            <input type="text" id="buscar" name="buscar" class="form-control form-control-lg"
                                 placeholder="Buscar" value="">
                             <div class="input-group-append">
-                                <button type="submit" class="btn btn-lg btn-default">
+                                <button type="button" class="btn btn-lg btn-default btnbuscar">
                                     <i class="fa fa-search"></i>
                                 </button>
                             </div>
@@ -38,30 +38,31 @@
                     <table class="table m-0">
                         <thead>
                             <tr>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
+                                <th>ID REGISTRO</th>
+                                <th>ID PEDIDO</th>
+                                <th>MESA</th>
+                                <th>CUENTA</th>
+                                <th>NOMBRE CUENTA</th>
                                 <!-- <th>ESTADO</th> -->
                             </tr>
                         </thead>
                         <tbody>
 
-
+                        {{#each lista}}
                             <tr>
-                                <td><a href="/pedidosmesa/buscarId?id="></a></td>
-                                <td>idpedido</td>
-                                <td>Mesa</td>
-                                <td>cuenta</td>
-                                <td>nombrecuenta</td>
+                                <td><a href="/pedidos_mesa/buscarId?id={{idregistro}}">{{idregistro}}</a></td>
+                                <td>{{idpedido}}</td>
+                                <td>{{'mesas_x_area.Mesa'}}</td>
+                                <td>{{cuenta}}</td>
+                                <td>{{nombrecuenta}}</td>
                                 <td>
-                                    <a class="btn btn-warning" href="/pedidosmesa/buscarId?id=">Editar</a>
-                                    <a class="btn btn-danger" onclick="return confirm('Estas seguro de eliminar?')"
-                                        href="/pedidosmesa/eliminar?id=">Eliminar</a>
+                                    <a class="btn btn-warning" href="/app/pedidos_mesa/buscarId?id={{idregistro}}">Editar</a>
+                                   <!-- <a class="btn btn-warning" href="/pedidosmesa/buscarId?id=">Editar</a> -->
+                                    <a class="btn btn-danger" onclick="pedidosEliminar({{idregistro}})" href="javascript:void(0)" id="{{idregistro}}">Eliminar</a>
                                 </td>
                             </tr>
 
+                        {{/each}}
 
                         </tbody>
                     </table>
@@ -73,8 +74,8 @@
 
     <section class="content-header">
         <div class="container-fluid">
-            <h5 class="text-center display">No existen datos que coincidan con la busqueda</h5>
-        </div>
+           <!-- <h5 class="text-center display">No existen datos que coincidan con la busqueda</h5> -->
+         </div>
     </section>';
 
 
@@ -84,3 +85,45 @@
     <!-- /.content -->
 
     <!-- Aqui agregar script adicionales -->
+
+      <script type="text/javascript">
+
+  function pedidosEliminar(id) {    
+      var url = "/app/pedidos_mesa/eliminar?id=" + id;
+      $.ajax({
+        type: 'DELETE',
+        url: url,    
+        success: function (data, status) {
+          if (status == 'success') {
+            alert("Data: " + data + "\nStatus: " + status);
+            window.location.replace("listar");
+          } else {
+            alert("Data: " + data + "\nStatus: " + status);
+            console.log("Error"+ data.message);
+          }
+        },
+        error: function (data) {
+          console.log(data.message);
+          console.log(data);
+          alert('Error al Eliminar el pedido');
+          
+        }
+      });
+    };
+    
+
+
+     document.addEventListener('DOMContentLoaded', function () {
+        console.log(window.location.href)
+        if (window.location.href == "http://localhost:3011/app/pedidos_mesa/buscar?filtro=idregistro&buscar=") {
+            window.location.href = '/app/pedidos_mesa/buscar';
+        }
+        $('.btnbuscar').click(function () {
+            var filtro = $('#filtro').val();
+            var buscar = $('#buscar').val();
+            var url = '/app/pedidos_mesa/buscar?filtro=' + filtro + '&buscar=' + buscar;
+            //alert(url);
+            window.location.href = url;
+        });
+    });
+</script>

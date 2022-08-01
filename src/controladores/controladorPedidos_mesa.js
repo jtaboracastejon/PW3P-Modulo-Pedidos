@@ -3,6 +3,7 @@ const {validationResult} = require('express-validator');
 const { text } = require('express');
 const modelosMesa = require('../modelos/modeloMesas_x_area');
 const modeloPedido = require('../modelos/modeloPedidos');
+const {QueryTypes, Op} = require('sequelize');
 
 //const { transformAuthInfo } = require('passport');
 
@@ -52,6 +53,8 @@ exports.nuevo = async (req, res) =>{
     
 }
 
+
+/*
 exports.buscar = async (req, res) =>{
     const pedidos_mesa = await Pedidos_mesa.findAll({
 
@@ -64,6 +67,9 @@ exports.buscar = async (req, res) =>{
 
     });
 }
+*/
+
+
 
 
 exports.Guardar = async (req, res) =>{
@@ -165,18 +171,22 @@ exports.Eliminar = async (req, res) => {
     }
     else{
         //texto="";
-        const {idregistro} = req.query;
+        const {id} = req.query;         /*idregistro*/ 
     try {
         
         var buscarPedidos_mesa =  await  Pedidos_mesa.findOne({
             where: {
-                idregistro: idregistro
+                idregistro: id /*idregistro*/ 
             }
         });
-        if(buscarPedidos_mesa){
+        if(!buscarPedidos_mesa){
+
+                texto = "No se ha encontrado el registro del pedido" 
+        }
+        else{
             await Pedidos_mesa.destroy({
                 where : 
-                {   idregistro:idregistro
+                {   idregistro:id   /*idregistro */
                 }
                 })
                 .then((data) => {
@@ -185,12 +195,8 @@ exports.Eliminar = async (req, res) => {
                 }).catch((err) => {
                     console.log(err);
                     texto="Error al eliminar";
-                }); 
-        }
-        else{
-            texto = "No se ha encontrado el registro del pedido" 
-        }
-            
+                });  
+        }      
     } catch (error) {
         console.log(error);
         texto="Error al actualizar en la base de datos";
@@ -256,3 +262,98 @@ exports.BuscarId = async (req, res)=>{
         });
     }
 }
+
+exports.buscar = async (req, res) => {
+    const filtro = req.query.filtro;
+    const buscar = req.query.buscar;
+    let lista=[];
+    try {
+        if(filtro === undefined || buscar === undefined){
+            lista = await Pedidos_mesa.findAll({
+                include: {
+                    model: modelosMesa,
+                    attributes: ['Mesa']
+                },
+            raw: true,
+            });//con el findall le indicamos que busque todos los datos
+            //console.log(lista);
+        }
+
+        else if(filtro =='idregistro'){
+            lista = await Pedidos_mesa.findAll({
+                where: {
+                    idregistro: {
+                        [Op.like]: '%'+buscar+'%'
+                    }
+                },
+                include: {
+                    model: modelosMesa,
+                    attributes: ['Mesa']
+                },
+            raw: true,
+            });//con el findall le indicamos que busque todos los datos
+            //console.log(lista);
+        }  
+
+        else if(filtro =='cuenta'){
+            lista = await Pedidos_mesa.findAll({
+                where: {
+                    cuenta: {
+                        [Op.like]: '%'+buscar+'%'
+                    }
+                },
+                include: {
+                    model: modelosMesa,
+                    attributes: ['Mesa']
+                },
+            raw: true,
+            });//con el findall le indicamos que busque todos los datos
+            //console.log(lista);
+        }
+        else if(filtro =='nombrecuenta'){
+            lista = await Pedidos_mesa.findAll({
+                where: {
+                    nombrecuenta: {
+                        [Op.like]: '%'+buscar+'%'
+                    }
+                },
+                include: {
+                    model: modelosMesa,
+                    attributes: ['Mesa']
+                },
+            raw: true,
+            });//con el findall le indicamos que busque todos los datos
+            //console.log(lista);
+        }    
+        else {
+            lista = await  Pedidos_mesa.findAll({
+                include: {
+                    model: modelosMesa,
+                    where: {
+                        Mesa: {
+                            [Op.like]: '%'+buscar+'%'
+                        }
+                    },
+                    
+                    attributes: ['Mesa']
+                },
+            raw: true,
+            });
+
+        
+        }
+        
+              
+    } catch (error) {
+        
+        res.json(error);
+    }
+
+    res.render("Pedidos_mesaBuscar",{
+        titulo: 'Listado De Pedidos_Mesa',
+        lista
+    });
+        
+}
+
+

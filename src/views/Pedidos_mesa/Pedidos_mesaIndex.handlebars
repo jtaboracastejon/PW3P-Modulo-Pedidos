@@ -39,11 +39,16 @@
                       </td>
                       <td>
                         <a class="btn btn-warning" href="/app/pedidos_mesa/buscarId?id={{idregistro}}">Editar</a>
-                        <a class="btn btn-danger" onclick="return confirm('Estas seguro de eliminar?')"
-                          href="/pedidosmesa/eliminar?id=">Eliminar</a>
+                        
+                        <a class="btn btn-danger" onclick="pedidosEliminar({{idregistro}})" href="javascript:void(0)" id="{{idregistro}}">Eliminar</a>
+                        <!--<a class="btn btn-danger" onclick="return confirm('Estas seguro de eliminar?') href="/pedidosmesa/eliminar?id=">Eliminar</a> -->
+
+
                       </td>
                     </tr>
-                    {{/each}}
+                  {{/each}}
+
+                  
                   </tbody>
                 </table>
               </div>
@@ -66,3 +71,29 @@
   <!-- /.content -->
 
   <!-- Aqui agregar script adicionales -->
+
+
+  <script type="text/javascript">
+  function pedidosEliminar(id) {    
+      var url = "/app/pedidos_mesa/eliminar?id=" + id;
+      $.ajax({
+        type: 'DELETE',
+        url: url,    
+        success: function (data, status) {
+          if (status == 'success') {
+            alert("Data: " + data + "\nStatus: " + status);
+            window.location.replace("listar");
+          } else {
+            alert("Data: " + data + "\nStatus: " + status);
+            console.log("Error"+ data.message);
+          }
+        },
+        error: function (data) {
+          console.log(data.message);
+          console.log(data);
+          alert('Error al Eliminar el pedido');
+          
+        }
+      });
+    };
+</script>
