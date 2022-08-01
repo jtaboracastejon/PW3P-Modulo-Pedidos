@@ -1,7 +1,7 @@
 const {validationResult} = require('express-validator');
 //se usa el modelo creado, lo llamamos dentro de una variable
 const modeloPedidosElaborados = require('../modelos/modelopedidoselab');
-const {Op} = require('sequelize');
+const {QueryTypes, Op} = require('sequelize');
 const usuarios = require('../modelos/modelousuarios');
 
 
@@ -145,6 +145,7 @@ exports.Eliminar = async (req, res) => {
         }
     }
     res.json(msj.mensaje);
+    
 
 }
 
@@ -197,6 +198,62 @@ exports.BuscarId = async (req, res) => {
     });
 }
 
+
+exports.Buscar = async (req, res) => {
+    const filtro = req.query.filtro;
+    const buscar = req.query.buscar;
+    let lista=[];
+    try {
+        if(filtro === undefined || buscar === undefined){
+            lista = await modeloPedidosElaborados.findAll({
+                include: {
+                    model: usuarios,
+                    attributes: ['LoginUsuario']
+                },
+            raw: true,
+            });//con el findall le indicamos que busque todos los datos
+            //console.log(lista);
+        }
+        else if(filtro =='iddetallepedido'){
+            lista = await modeloPedidosElaborados.findAll({
+                where: {
+                    iddetallepedido: {
+                        [Op.like]: '%'+buscar+'%'
+                    }
+                },
+                include: {
+                    model: usuarios,
+                    attributes: ['LoginUsuario']
+                },
+            raw: true,
+            });//con el findall le indicamos que busque todos los datos
+            //console.log(lista);
+        }  else {
+            lista = await modeloPedidosElaborados.findAll({
+                include: {
+                    model: usuarios,
+                    where: {
+                        LoginUsuario: {
+                            [Op.like]: '%'+buscar+'%'
+                        }
+                    },
+                    
+                    attributes: ['LoginUsuario']
+                },
+            raw: true,
+            });
+        }
+              
+    } catch (error) {
+        res.json(error);
+    }
+
+    res.render("pedidoselaboradosbuscar",{
+        titulo: 'Listado De Pedidos Elaborados',
+        lista
+    });
+        
+}
 
 
 

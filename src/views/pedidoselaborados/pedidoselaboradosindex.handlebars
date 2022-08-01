@@ -31,9 +31,9 @@
                           <div class="sparkbar" data-color="#00a65a" data-height="20">{{fechahora}}</div>
                           </td>
                           <td>
-                            <a class="btn btn-warning" href="/Pedidoselaborados/editar?id={{iddetallepedido}}">Editar</a>
-                            <a class="btn btn-danger" onclick = "return confirm('Estas seguro de eliminar?')"
-                             href="/Pedidoselaborados/eliminar?id={{iddetallepedido}}">Eliminar</a>
+                            <a class="btn btn-warning" href="buscarId?id={{iddetallepedido}}">Editar</a>
+
+                            <a class="btn btn-danger" onclick="pedidosEliminar({{iddetallepedido}})" href="javascript:void(0)" id="{{iddetallepedido}}">Eliminar</a>
                           </td>                     
 
                         </tr>  
@@ -47,7 +47,7 @@
                 <!-- /.card-body -->
                 <div class="card-footer clearfix">
                   <a href="/app/pedidoselaborados/nuevo" class="btn btn-sm btn-info float-left">Generar nuevo pedido Elaborado</a>
-                  <a href="/pedidoselaborados/buscar" class="btn btn-sm btn-secondary float-right">Buscar pedido </a>
+                  <a href="/app/pedidoselaborados/buscar" class="btn btn-sm btn-secondary float-right">Buscar pedido </a>
                 </div>
                 <!-- /.card-footer -->
               </div>
@@ -60,3 +60,30 @@
     </section>
     <!-- /.content -->
 
+<script type="text/javascript">
+  function pedidosEliminar(id) {    
+
+      var url = "/app/pedidoselaborados/eliminar?id=" + id;
+      $.ajax({
+        type: 'DELETE',
+        url: url,    
+        success: function (data, status) {
+          if (status == 'success') {
+            alert("Data: " + data + "\nStatus: " + status);
+            window.location.replace("listar");
+          } else {
+            alert("Data: " + data + "\nStatus: " + status);
+            console.log("Error"+ data.message);
+          }
+        },
+        error: function (data) {
+          console.log(data.message);
+          console.log(data);
+          alert('Error al Eliminar el pedido');
+          
+        }
+      });
+    };
+
+
+</script>

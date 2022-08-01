@@ -29,7 +29,7 @@ body ('idusuario')
 controladorpedidoselaborados.Editar);
 
 //*Delete
-rutas.post('/eliminar',
+rutas.delete('/eliminar',
 query('id')
 .notEmpty().withMessage('El ID del detalle pedido no puede estar vacio')
 .isInt().withMessage('El ID del detalle pedido debe ser un numero entero eliminacion'),
@@ -38,6 +38,7 @@ controladorpedidoselaborados.Eliminar);
 rutas.get('/nuevo', controladorpedidoselaborados.nuevo);
 
 rutas.get('/buscarid', controladorpedidoselaborados.BuscarId)
+rutas.get('/buscar', controladorpedidoselaborados.Buscar)
 
 
 
