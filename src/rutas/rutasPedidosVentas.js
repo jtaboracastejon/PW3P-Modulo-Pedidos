@@ -28,7 +28,7 @@ body('numeroPedido')
 controladorPedidosVentas.Editar)
 
 rutas.delete('/eliminar',
-query('numeroFactura')
+query('id')
 .notEmpty().withMessage('Debe escribir el numero de factura')
 .isInt().withMessage('El numero debe ser un entero'),
 controladorPedidosVentas.Eliminar)

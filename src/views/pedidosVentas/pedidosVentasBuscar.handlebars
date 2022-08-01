@@ -9,15 +9,15 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-8 offset-md-2">
-                    <form action="/pedidosventas/buscar" method="post">
+                    <form action="" method="">
                         <div class="input-group input-group-lg">
                             <select class="" id="filtro" name="filtro">
-                                <option value="pedidos_x_ventas.NumeroFactura">N° Factura</option>
-                                <option value="productos.Nombre">Nombre</option>
+                                <option value="numeroFactura">Numero Factura</option>
+                                <option value="nombre">Numero pedido </option>
                             </select>
-                            <input type="search" id="buscar" name="buscar" class="form-control form-control-lg" placeholder="Buscar" value="">
+                            <input type="text" id="buscar" name="buscar" class="form-control form-control-lg" placeholder="Buscar" value="">
                             <div class="input-group-append">
-                                <button type="submit" class="btn btn-lg btn-default">
+                                <button type="button" class="btn btn-lg btn-default btnbuscar">
                                     <i class="fa fa-search"></i>
                                 </button>
                             </div>
@@ -33,20 +33,18 @@
                             <tr>
                                 <th>N° Factura</th>
                                 <th>N° PEDIDO</th>
-                                <th>DESCRIPCION</th>
                                 <!-- <th>ESTADO</th> -->
                             </tr>
                         </thead>
                         <tbody>
-                           {{#each pedidos_ventas}}
+                           {{#each lista}}
                         <tr>
-                          <td><a href="/pedidosventas/buscarId?id={{this.dataValues.numeroFactura}}">{{this.dataValues.numeroFactura}}</a></td>
+                          <td><a href="/pedidos_x_ventas/buscarId?id={{this.dataValues.numeroFactura}}">{{this.dataValues.numeroFactura}}</a></td>
                           <td>{{this.dataValues.numeroPedido}}</td>
-                          <td>{{this.Nombre}}</td>
                           <td>
                             <a class="btn btn-warning" href="/pedidosventas/buscarId?id=<?php echo $row['NumeroFactura']; ?>"><i class="text-white fas fa-edit"></i></a>
                             <a class="btn btn-danger" onclick = "return confirm('Estas seguro de eliminar?')"
-                             href="/pedidosventas/eliminar?id=<?php echo $row['NumeroFactura']; ?>"><i class="text-white fas fa-trash"></i></a>                            
+                             href="/pedidosVentas/eliminar?id=<?php echo $row['NumeroFactura']; ?>"><i class="text-white fas fa-trash"></i></a>                            
                           </td>
                         </tr>
                       {{/each}}
@@ -57,20 +55,21 @@
             </div>
         </div>
     </section>
-   {{!--  <?php
-    if ($this->datos == null) {
-        $msj =
-            '<section class="content-header">
-                        <div class="container-fluid">
-                            <h5 class="text-center display">No existen datos que coincidan con la busqueda</h5>
-                        </div>
-                    </section>';
-        echo $msj;
-    }
-    ?>
+   
+   <script>
+     document.addEventListener('DOMContentLoaded', function () {
+        console.log(window.location.href)
+        if (window.location.href == "http://localhost:3010/app/pedidosVentas/buscar?filtro=numeroFactura&buscar= ") {
+            window.location.href = '/app/pedidosVentas/buscar';
+        }
 
-
-    <!-- /.content -->
-    <?php include 'vistas/plantilla/pie.php'; ?>
-    <!-- Aqui agregar script adicionales -->
-    <?php include 'vistas/plantilla/script.php'; ?> --}}
+        $('.btnbuscar').click(function () {
+            
+            var filtro = $('#filtro').val();
+            var buscar = $('#buscar').val();
+            var url = '/app/pedidosVentas/buscar?filtro=' + filtro + '&buscar=' + buscar;
+            alert(url)
+            window.location.href = url;
+        });
+    });
+   </script>

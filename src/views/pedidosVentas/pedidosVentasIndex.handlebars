@@ -1,57 +1,90 @@
-
-  <!-- Main content -->
-  <!-- Main content -->
-  <section class="content">
-        <div class="container-fluid">
-          <div class="row">
-            <!-- Left col -->
-            <div class="col-md-12">
-              <!-- TABLE: LATEST ORDERS -->
-              <div class="card">
-                <div class="card-header border-transparent">
-                  <h2 class="card-title">Listado general de pedidos por ventas </h2>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body p-0">
-                  <div class="table-responsive">
-                    <table class="table m-0">
-                      <thead>
-                      <tr>
-                        <th>N° FACTURA</th>
-                        <th>N° PEDIDO</th>
-                        <th>DESCRIPCION</th>                        
-                      </tr>
-                      </thead>
-                      <tbody>
-                     {{#each pedidos_ventas}}
-                        <tr>
-                          <td><a href="/pedidosventas/buscarId?id={{this.dataValues.numeroFactura}}">{{this.dataValues.numeroFactura}}</a></td>
-                          <td>{{this.dataValues.numeroPedido}}</td>
-                          <td>{{this.Nombre}}</td>
-                          <td>
-                            <a class="btn btn-warning" href="/pedidosventas/buscarId?id=<?php echo $row['NumeroFactura']; ?>"><i class="text-white fas fa-edit"></i></a>
-                            <a class="btn btn-danger" onclick = "return confirm('Estas seguro de eliminar?')"
-                             href="/pedidosventas/eliminar?id=<?php echo $row['NumeroFactura']; ?>"><i class="text-white fas fa-trash"></i></a>                            
-                          </td>
-                        </tr>
-                      {{/each}}
-                      </tbody>
-                    </table>
-                  </div>
-                  <!-- /.table-responsive -->
-                </div>
-                <!-- /.card-body -->
-                <div class="card-footer clearfix">
-                  <a href="/app/pedidosVentas/nuevo" class="btn btn-sm btn-info float-left">Nuevo pedido</a>
-                  <a href="/app/pedidosVentas/buscar" class="btn btn-sm btn-secondary float-right">Buscar pedido</a>
-                </div>
-                <!-- /.card-footer -->
-              </div>
-              <!-- /.card -->
-            </div>
-            <!-- Fin columna izquierda -->
+<!-- Main content -->
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Left col -->
+      <div class="col-md-12">
+        <!-- TABLE: LATEST ORDERS -->
+        <div class="card">
+          <div class="card-header border-transparent">
+            <h2 class="card-title">Listado general de pedidos por ventas </h2>
           </div>
-          <!-- Fin primera fila -->
+          <!-- /.card-header -->
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table m-0">
+                <thead>
+                  <tr>
+                    <th>N° FACTURA</th>
+                    <th>N° PEDIDO</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each pedidos_ventas}}
+                  <tr>
+                    <td><a
+                        href="/pedidosventas/buscarId?id={{this.dataValues.numeroFactura}}">{{this.dataValues.numeroFactura}}</a>
+                    </td>
+                    <td>{{this.dataValues.numeroPedido}}</td>
+                    <td>{{this.Nombre}}</td>
+                    <td>
+
+                      <a class="btn btn-warning"
+                        href="buscarId?id={{this.dataValues.numeroFactura}}"> Editar <i
+                          class="text-white fas fa-edit"></i></a>
+
+
+                      <a class="btn btn-danger" onclick="pedidosEliminar({{this.dataValues.numeroFactura}})" href="javascript:void(0)"
+                                    id="{{this.dataValues.numeroFactura}}"> Eliminar <i
+                          class="text-white fas fa-trash"></i></a>
+                      
+                    </td>
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+            </div>
+            <!-- /.table-responsive -->
+          </div>
+          <!-- /.card-body -->
+          <div class="card-footer clearfix">
+            <a href="/app/pedidosVentas/nuevo" class="btn btn-sm btn-info float-left">Nuevo pedido</a>
+            <a href="/app/pedidosVentas/buscar" class="btn btn-sm btn-secondary float-right">Buscar pedido</a>
+          </div>
+          <!-- /.card-footer -->
         </div>
-    </section>
-  <!-- /.content -->
+        <!-- /.card -->
+      </div>
+      <!-- Fin columna izquierda -->
+    </div>
+    <!-- Fin primera fila -->
+  </div>
+</section>
+
+<script type="text/javascript">
+
+  function pedidosEliminar(id) {
+
+    var url = "/app/pedidosVentas/eliminar?id=" + id;
+    $.ajax({
+      type: 'Delete',
+      url: url,
+      success: function (data, status) {
+        if (status == 'success') {
+          alert("Data: " + data + "\nStatus: " + status);
+          window.location.replace("listar");
+        } else {
+          alert("Data: " + data + "\nStatus: " + status);
+          console.log("Error" + data.message);
+        }
+      },
+      error: function (data) {
+        console.log(data);
+        alert('Error al guardar el pedido');
+      }
+    });
+  };
+
+</script>
