@@ -2,7 +2,7 @@ const entregaPedidos = require('../modelos/modeloEntregaPedidos');
 const { validationResult } = require('express-validator');
 const modelousuario = require('../modelos/modelosusuario');
 const db = require('../configuracion/db');
-const { QueryTypes } = require('sequelize');
+const { QueryTypes, Op } = require('sequelize');
 //const { where } = require('sequelize/types');
 
 exports.Listar = async (req, res) => {
@@ -83,23 +83,64 @@ exports.BuscarId = async (req, res) => {
 
 
 exports.Buscar = async (req, res) => {
+    const filtro = req.query.filtro;
+    const buscar = req.query.buscar;
+    let lista= [];
+
+
     try {
-        const entrega_pedidos = await entregaPedidos.findAll({
+        if(filtro === undefined || buscar === undefined){
+            lista = await entregaPedidos.findAll({
+                include: [{
+                    model: modelousuario,
+                    attributes: ['LoginUsuario']
+                }],
+                //logging: console.log,
+                raw: true
+            });
+
+        }
+       else if (filtro == 'iddetalle_pedido'){
+            lista = await entregaPedidos.findAll({
+                where:{
+                    iddetalle_pedido:{
+                        [Op.like]: '%' +buscar+ '%'
+                    }
+                },
+                include: [{
+                    model: modelousuario,
+                    attributes: ['LoginUsuario']
+                }],
+                //logging: console.log,
+                raw: true
+            });
+        }
+    
+    else{
+
+        lista = await entregaPedidos.findAll({
             include: [{
+            where:{
+                LoginUsuario:{
+                    [Op.like]: '%' +buscar+ '%'
+                }
+            },
                 model: modelousuario,
                 attributes: ['LoginUsuario']
             }],
-            logging: console.log,
+            //logging: console.log,
             raw: true
         });
-        res.render("entregaPedidosBuscar", {
-            titulo: 'Buscar pedido entregado',
-            entrega_pedidos
-        });
+    }
+
     }
     catch (error) {
         res.json(error);
     }
+    res.render("entregaPedidosBuscar", {
+        titulo: 'Buscar pedido entregado',
+        lista
+    });
 };
 
 exports.listarEntregas = async (req, res) => {
@@ -215,19 +256,19 @@ exports.Eliminar = async (req, res) => {
         res.send(mensaje);
     }
     else {
-        const { idDetalle } = req.query;
+        const { id } = req.query;
         var texto = "";
         try {
             var buscarPedido = await entregaPedidos.findOne({
                 where: {
-                    idDetalle: idDetalle
+                    idDetalle: id
                 }
             });
             if (!buscarPedido) {
                 texto = "Este registro de entrega no existe"
             }
             else {
-                await entregaPedidos.destroy({ where: { idDetalle: idDetalle } })
+                await entregaPedidos.destroy({ where: { idDetalle: id } })
                     .then((data) => {
                         console.log(data);
                         texto = "entrega eliminada!!"

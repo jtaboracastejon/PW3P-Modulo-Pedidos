@@ -1,7 +1,7 @@
 const pedidosVentas = require('../modelos/modeloPedidosVentas');
 const {validationResult} = require('express-validator');
 const db = require('../configuracion/db');
-const {QueryTypes} = require('sequelize');
+const {QueryTypes, Op} = require('sequelize');
 const modelosdetalle = require('../modelos/modeloDetallePedidos');
 
 //const { where } = require('sequelize/types');
@@ -32,17 +32,43 @@ exports.Listar = async (req, res) => {
 
 
     exports.Buscar =  async (req, res) => {
+        const filtro = req.query.filtro;
+        const buscar = req.query.buscar;
+        let lista= [];
+
         try { 
-            const pedidos_ventas = await pedidosVentas.findAll(); 
-            res.render("pedidosVentasBuscar", { 
-                titulo: 'Buscar pedido ventas', 
-                pedidos_ventas
-            }); 
-            console.log(pedidos_ventas);
+            if(filtro === undefined || buscar === undefined){
+            lista = await pedidosVentas.findAll(); 
+           
         } 
+
+        else if (filtro == 'numeroFactura'){
+            lista = await pedidosVentas.findAll({
+                where:{
+                    numeroFactura:{
+                        [Op.like]: '%' +buscar+ '%'
+                    }
+                }
+            });
+        }
+    else{
+
+        lista = await pedidosVentas.findAll({
+            where:{
+                numeroPedido:{
+                    [Op.like]: '%' +buscar+ '%'
+                }
+            },
+        });
+    }
+    }
         catch (error) { 
             res.json(error);
         }
+        res.render("pedidosVentasBuscar", { 
+            titulo: 'Buscar pedido ventas', 
+            lista
+        }); 
     };
 
 
@@ -200,19 +226,19 @@ exports.Eliminar = async (req, res) => {
         res.send(mensaje);
         }
     else{
-        const {numeroFactura} = req.query;
+        const {id} = req.query;
         var texto="";
         try {
             var buscarPedido = await pedidosVentas.findOne({
                 where:{
-                    numeroFactura:numeroFactura
+                    numeroFactura:id
                 }
             });
             if(!buscarPedido){
                 texto="Este registro no existe"
             }
             else{
-                await pedidosVentas.destroy({where:{numeroFactura:numeroFactura}})
+                await pedidosVentas.destroy({where:{numeroFactura:id}})
                 .then((data) => {
                     console.log(data);
                     texto="Pedido eliminado!!"

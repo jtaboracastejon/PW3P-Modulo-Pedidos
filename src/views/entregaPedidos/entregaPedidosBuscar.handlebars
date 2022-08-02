@@ -1,75 +1,112 @@
-
-    <section class="content-header">
-        <div class="container-fluid">
-            <h2 class="text-center display-4">Buscar Pedido Entregado</h2>
-        </div>
-    </section>
-
-    <section class="content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-8 offset-md-2">
-                    <form action="/entregapedido/buscar" method="post">
-                        <div class="input-group input-group-lg">
-                            <select class="" id="filtro" name="filtro">
-                                <option value="entrega_pedido.iddetalle_pedido">N° Detalle Pedido</option>
-                                <option value="usuarios.LoginUsuario">Usuario</option>
-                            </select>
-                            <input type="search" id="buscar" name="buscar" class="form-control form-control-lg" placeholder="Buscar" value="">
-                            <div class="input-group-append">
-                                <button type="submit" class="btn btn-lg btn-default">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="row mt-3"></div>
-            <div class="row">
-                <div class="table-responsive">
-                    <table class="table m-0">
-                        <thead>
-                            <tr>
-                                <th>N° DETALLE PEDIDO</th>
-                                <th>USUARIO</th>
-                                <th>N° Entrega</th>
-                                <th>FECHA Y HORA</th>
-                               
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {{#each entrega_pedidos}}
-                  <tr>
-                    <td><a
-                        href="/entrega_pedidos/buscarId?id={{idDetalle}}">{{idDetalle}}</a>
-                    </td>
-                    <td>{{'usuario.LoginUsuario'}}</td>
-                    <td>
-                      <div class="sparkbar" data-color="#00a65a" data-height="20">{{identrega}}</div>
-                    </td>
-                    <td>{{fechahora}}</td>
-                    <td>
-                          <a class="btn btn-warning" href="/pedidos/buscarId?id=<?php echo $row['NumeroPedido']; ?>"><i class="text-white fas fa-edit"></i></a>
-                          <a class="btn btn-danger" onclick="return confirm('Estas seguro de Cancelar el pedido?')" href="/pedidos/eliminar?id=<?php echo $row['NumeroPedido']; ?>"><i class="text-white fas fa-window-close"></i></a>
-                    </td>
-                  </tr>
-
-
-                  {{/each}}
-                           
-                        </tbody>
-                    </table>
-                </div>
-
-            </div>
-        </div>
-    </section>
-   {{!--  <?php
-    if ($this->datos == null) {
-        $msj =
-            '<section class="content-header">
-                        <div class="container-fluid">
-                            <h5 class="text-center display">No existen datos que coincidan con la busqueda</h5>
-                        </div> --}}
+<section class="content-header">
+    <div class="container-fluid">
+        <h2 class="text-center display-4">Buscar Pedido Entregado</h2>
+    </div>
 </section>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <form action="" method="">
+                    <div class="input-group input-group-lg">
+                        <select class="" id="filtro" name="filtro">
+                            <option value="iddetalle_pedido">N° Detalle Pedido</option>
+                            <option value="LoginUsuario">Usuario</option>
+                        </select>
+                        <input type="text" id="buscar" name="buscar" class="form-control form-control-lg"
+                            placeholder="Buscar" value="">
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-lg btn-default btnbuscar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row mt-3"></div>
+        <div class="row">
+            <div class="table-responsive">
+                <table class="table m-0">
+                    <thead>
+                        <tr>
+                            <th>N° DETALLE PEDIDO</th>
+                            <th>USUARIO</th>
+                            <th>N° Entrega</th>
+                            <th>FECHA Y HORA</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each lista}}
+                        <tr>
+                            <td><a href="/entrega_pedidos/buscarId?id={{idDetalle}}">{{idDetalle}}</a>
+                            </td>
+                            <td>{{'usuario.LoginUsuario'}}</td>
+                            <td>
+                                <div class="sparkbar" data-color="#00a65a" data-height="20">{{identrega}}</div>
+                            </td>
+                            <td>{{fechahora}}</td>
+                            <td>
+                                <a class="btn btn-warning" href="buscarId?id={{idDetalle}}"> Editar  <i
+                                        class="text-white fas fa-edit"></i></a>
+
+                                <a class="btn btn-danger" onclick="pedidosEliminar({{idDetalle}})"
+                                    href="javascript:void(0)" id="{{idDetalle}}"> Eliminar  <i
+                                        class="text-white fas fa-window-close"></i></a>
+                            </td>
+                        </tr>
+
+
+                        {{/each}}
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<script>
+
+    function pedidosEliminar(id) {
+
+    var url = "/app/entregaPedidos/eliminar?id=" + id;
+    console.log("hola" + id);
+    $.ajax({
+      type: 'Delete',
+      url: url,
+      success: function (data, status) {
+        if (status == 'success') {
+          alert("Data: " + data + "\nStatus: " + status);
+          window.location.replace("listar");
+        } else {
+          alert("Data: " + data + "\nStatus: " + status);
+          console.log("Error" + data.message);
+        }
+      },
+      error: function (data) {
+        console.log(data);
+        alert('Error al guardar el pedido');
+      }
+    });
+  };
+  
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log(window.location.href)
+        if (window.location.href == "http://localhost:3010/app/entregaPedidos/buscar?filtro=iddetalle_pedido&buscar= ") {
+            window.location.href = '/app/entregaPedidos/buscar';
+        }
+
+        $('.btnbuscar').click(function () {
+            
+            var filtro = $('#filtro').val();
+            var buscar = $('#buscar').val();
+            var url = '/app/entregaPedidos/buscar?filtro=' + filtro + '&buscar=' + buscar;
+            window.location.href = url;
+        });
+    });
+
+</script>

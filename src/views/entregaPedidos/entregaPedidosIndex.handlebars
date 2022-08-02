@@ -33,8 +33,7 @@
                 <tbody>
                   {{#each entrega_pedidos}}
                   <tr>
-                    <td><a
-                        href="/entrega_pedidos/buscarId?id={{idDetalle}}">{{idDetalle}}</a>
+                    <td><a href="/entrega_pedidos/buscarId?id={{idDetalle}}">{{idDetalle}}</a>
                     </td>
                     <td>{{'usuario.LoginUsuario'}}</td>
                     <td>
@@ -42,8 +41,14 @@
                     </td>
                     <td>{{fechahora}}</td>
                     <td>
-                          <a class="btn btn-warning" href="/pedidos/buscarId?id=<?php echo $row['NumeroPedido']; ?>"><i class="text-white fas fa-edit"></i></a>
-                          <a class="btn btn-danger" onclick="return confirm('Estas seguro de Cancelar el pedido?')" href="/pedidos/eliminar?id=<?php echo $row['NumeroPedido']; ?>"><i class="text-white fas fa-window-close"></i></a>
+                      <a class="btn btn-warning" href="buscarId?id={{idDetalle}}"> Editar <i
+                          class="text-white fas fa-edit"></i></a>
+
+                     
+
+                      <a class="btn btn-danger" onclick= "pedidosEliminar({{idDetalle}})"
+                        href="javascript:void(0)" id="{{idDetalle}}"> Eliminar <i
+                          class="text-white fas fa-window-close"></i></a>
                     </td>
                   </tr>
 
@@ -75,3 +80,30 @@
     <!-- Fin primera fila -->
   </div>
 </section>
+
+<script type="text/javascript">
+
+  function pedidosEliminar(id) {
+
+    var url = "/app/entregaPedidos/eliminar?id=" + id;
+    console.log("hola" + id);
+    $.ajax({
+      type: 'Delete',
+      url: url,
+      success: function (data, status) {
+        if (status == 'success') {
+          alert("Data: " + data + "\nStatus: " + status);
+          window.location.replace("listar");
+        } else {
+          alert("Data: " + data + "\nStatus: " + status);
+          console.log("Error" + data.message);
+        }
+      },
+      error: function (data) {
+        console.log(data);
+        alert('Error al guardar el pedido');
+      }
+    });
+  };
+
+</script>

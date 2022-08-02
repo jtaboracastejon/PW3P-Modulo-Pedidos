@@ -36,7 +36,7 @@ body('identrega')
 entregaPedidos.Editar)
 
 rutas.delete('/eliminar',
-query('idDetalle')
+query('id')
 .notEmpty().withMessage('Debe escribir el ID de registro')
 .isInt().withMessage('El ID debe ser un entero'),
 entregaPedidos.Eliminar)
