@@ -1,0 +1,78 @@
+
+<section class="content">
+    <div class="container-fluid">
+        <h5 class="mb-2 mt-4">Lista de Pedidos Cancelados</h5>
+        <div class="row">
+        <!-- Left col -->
+        <div class="col-md-12">
+            <!-- TABLE: LATEST ORDERS -->
+            <div class="card">
+            <div class="card-header border-transparent">
+                <h3 class="card-title">Información general de pedidos a cancelar</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                <table class="table m-0">
+                    <thead>
+                    <tr>
+                    <th>ID PEDIDO</th>
+                    <th>USUARIO</th>
+                    <th>FECHA</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#each pedidos_cancelados}}
+                    <tr>
+                        <td><a href="/pedidoscancelados/buscarid?id=<?php echo $row['numeropedido']; ?>">{{id}}</a></td>
+                        <td>{{'usuario.LoginUsuario'}}</td>
+                        <td>{{fechahora}}</td>
+                        <td>
+                        <a class="btn btn-warning" href="/app/pedidos_cancelados/buscarid?id={{id}}">Editar</a>
+                        <a class="btn btn-danger" onclick="pedidos_canceladoseliminar({{id}})" href="javascript:void(0)" id="{{id}}">Eliminar</a>                            
+                        </td>
+                    </tr>
+                    {{/each}}
+                    </tbody>
+                </table>
+                </div>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer clearfix">
+                <a href="/app/pedidos_cancelados/nuevo" class="btn btn-sm btn-info float-left">Nuevo pedido cancelado</a>
+                <a href="/app/pedidos_cancelados/buscar" class="btn btn-sm btn-secondary float-right">Buscar pedido cancelado</a>
+            </div>
+            <!-- /.card-footer -->
+            </div>
+            <!-- /.card -->
+        </div>
+        <!-- Fin columna izquierda -->
+        </div>
+        <!-- Fin primera fila -->
+    </div>
+</section>
+<script>
+    function pedidos_canceladoseliminar(id) {
+            var url = "/app/pedidos_cancelados/eliminar?id=" + id;
+            $.ajax({
+                type: 'DELETE',
+                url: url,
+                success: function (data, status) {
+                    if (status == 'success') {
+                        alert("Data: " + data + "\nStatus: " + status);
+                        window.location.replace("listar");
+                    } else {
+                        alert("Data: " + data + "\nStatus: " + status);
+                        console.log("Error" + data.message);
+                    }
+                },
+                error: function (data) {
+                    console.log(data.message);
+                    console.log(data);
+                    alert('Error al Eliminar el pedido');
+                }
+            });
+        };
+</script>
+ 

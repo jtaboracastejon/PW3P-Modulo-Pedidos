@@ -1,31 +1,36 @@
-const {DataTypes} = require('sequelize');
+const { DataTypes } = require('sequelize');
 const db = require('../configuracion/db');
+const md = require('../modelos/modelousurio');
 const Pedidos_Cancelados = db.define(
-    'pedidos_cancelados', 
+    'pedidos_cancelados',
     {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             allowNull: false,
-            field:'numeropedido'
-        },        
-        usuario: {
+            field: 'numeropedido'
+        },
+        idusuario: {
             type: DataTypes.INTEGER,
             allowNull: false,
-            field:'usuario'
-        },        
+            field: 'usuario'
+        },
         fechahora: {
-            type: DataTypes.STRING(50),
+            type: DataTypes.DATE,
             allowNull: false,
-            field:'fechahora'
-        },        
+            field: 'fechahora'
+        },
     },
     {
         timestamps: false,
         tableName: 'pedidos_cancelados'
     }
 )
-    Pedidos_Cancelados.sync().then(
+Pedidos_Cancelados.belongsTo(md, {
+    foreignKey:'idusuario',
+    otherKey: 'idregistro'
+})
+Pedidos_Cancelados.sync().then(
     () => console.log("Sincronizacion Completa")
 );
 module.exports = Pedidos_Cancelados;

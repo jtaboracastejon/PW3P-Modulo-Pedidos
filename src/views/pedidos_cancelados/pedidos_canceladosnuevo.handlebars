@@ -1,0 +1,74 @@
+
+<div class="wrapper">
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+          <!-- jquery validation -->
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">Datos generales <small>Pedidos Cancelados</small></h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form id="quickForm" action="/app/pedidos_cancelados/guardar" method="post">
+              <div class="card-body">
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="inputid">Id Pedido</label>
+                    <select class="form-control cmbidpedido select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="2" tabindex="-1" aria-hidden="true" id="inputid" name="inputid">
+                    <option value=""selected>Seleccione el pedido</option>
+                    {{#each modelopedidosdetallee}}
+                    <option value="{{idregistro}}">{{idregistro}}</option>
+                    {{/each}}
+
+                    </select>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="inputidusuario">Usuario</label>
+                    <select class="form-control cmbbuscarusuario select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="3" tabindex="-1" aria-hidden="true" id="inputidusuario" name="inputidusuario">
+                    <option value=""selected>Seleccione el usuario</option>
+                    {{#each modelousuarioo}}
+                    <option value="{{idregistro}}">{{LoginUsuario}}</option>
+                    {{/each}}
+
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="textfecha">Fecha Hora</label>
+                    <input type="date" name="textfecha" class="form-control" id="textfecha" placeholder="Escriba la descripcion del cargo">
+                  </div>
+                </div>
+
+                <!-- /.card-body -->
+                <div class="card-footer">
+                  <button type="button" class="btn btn-primary toastrDefaultSuccess pedidos_canceladosguardar" value="/app/pedidos_cancelados/guardar">Guardar</button>
+                </div>
+            </form>
+          </div>
+          <!-- /.card -->
+        </div>
+        <!--/.col (left) -->
+        <!-- right column -->
+        <div class="col-md-6">
+
+        </div>
+        <!--/.col (right) -->
+      </div>
+      <!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </section>
+  <script src="/public/plugins/jquery-validation/jquery.validate.min.js"></script>
+  <script src="/public/plugins/jquery-validation/additional-methods.min.js"></script>
+  <script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function () {
+
+    $('.cmbbuscarusuario').select2();
+    $('.cmbidpedido').select2();
+  });
+    
+
+</script>
