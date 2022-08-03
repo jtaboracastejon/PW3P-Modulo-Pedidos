@@ -18,9 +18,9 @@
                   <label for="idmesero">Mesero</label>
                   <select class="form-control cmbBuscarMesero select2 select2-hidden-accessible" style="width: 100%;"
                     data-select2-id="2" tabindex="-1" aria-hidden="true" name="idmesero" id="idmesero">
-                      <option value="{{pedido.idmesero}}">{{nombremesero.nombre}}</option>
+                    <option value="{{pedido.idmesero}}">{{nombremesero.nombre}}</option>
                     {{#each listaMeseros}}
-                      <option value="{{idmesero}}">{{nombre}}</option>
+                    <option value="{{idmesero}}">{{nombre}}</option>
                     {{/each}}
                   </select>
                 </div>
@@ -30,7 +30,7 @@
                     data-select2-id="3" tabindex="-1" aria-hidden="true" name="Estacion" id="idestacion">
                     <option value="{{pedido.Estacion}}" selected>{{nombreestacion.nombre}}</option>
                     {{#each listaEstaciones}}
-                    <option  value="{{idestacion}}">{{nombre}}</option>
+                    <option value="{{idestacion}}">{{nombre}}</option>
                     {{/each}}
                   </select>
                 </div>
@@ -53,7 +53,7 @@
                 <div id="field_wrapper" class="col-md-12">
                   <!-- <div class="form-group col-md-6"><label>Cliente</label><select class="form-control cmbbuscar select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="1" tabindex="-1" aria-hidden="true"><option value="" selected disabled hidden>Seleccione un valor</option><?php foreach ($this->clientes as $cliente) { ?> <option value=" <?php echo $cliente['idcliente'] ?>"><?php echo $cliente['nombre'] ?></option><?php } ?> </select></div>                     -->
                 </div>
-                
+
                 {{!-- <div class="form-group col-md-6">
                   <label for="fechahora">Estado del Pedido</label>
                   <div class="row">
@@ -96,7 +96,8 @@
               </div>
               <!-- /.card-body -->
               <div class="card-footer">
-                <a class="btn btn-primary toastrDefaultSuccess" onclick="pedidosModificar({{pedido.NumeroPedido}})" href="javascript:void(0)" id="{{pedido.NumeroPedido}}">Guardar</a>
+                <a class="btn btn-primary toastrDefaultSuccess" onclick="pedidosModificar({{pedido.NumeroPedido}})"
+                  href="javascript:void(0)" id="{{pedido.NumeroPedido}}">Guardar</a>
               </div>
           </form>
         </div>
@@ -116,9 +117,9 @@
 
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', function () {
-  var conteoDetallePedidos = 0
+    var conteoDetallePedidos = 0
 
-  var table = document.getElementById("detallePedido");
+    var table = document.getElementById("detallePedido");
     $('#AgregarFila').click(function () {
       console.log("AgregarFila");
       var row = table.insertRow(conteoDetallePedidos);
@@ -127,58 +128,67 @@
       var cell3 = row.insertCell(2);
       var cell4 = row.insertCell(3);
       var cell5 = row.insertCell(4);
-      cell1.innerHTML = '<select class="form-control cmbBuscarProducto select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="5" tabindex="-1" aria-hidden="true" name="Producto' + conteoDetallePedidos + '" id="Producto' + conteoDetallePedidos + '"><option value="" selected>Seleccione un valor</option>{{#each listaProductos}}<option value="{{idproducto}}">{{nombre}}</option>{{/each}}</select>';
+      cell1.innerHTML = '<select class="form-control cmbBuscarProducto select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="5" tabindex="-1" aria-hidden="true" name="Producto' + conteoDetallePedidos + '" id="Producto' + conteoDetallePedidos + '"><option value="" selected>Seleccione un valor</option>{{#each listaProductos}}<option value="{{Codigo}}">{{Nombre}}</option>{{/each}}</select>';
       cell2.innerHTML = '<input type="number" class="form-control" name="Cantidad' + conteoDetallePedidos + '" id="Cantidad' + conteoDetallePedidos + '" placeholder="Cantidad">';
-      cell3.innerHTML = '<select class="form-control cmbBuscarSubProducto select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="1" tabindex="-1" aria-hidden="true" name="SubProducto' + conteoDetallePedidos + '" id="SubProducto' + conteoDetallePedidos + '"><option value="" selected>Seleccione un valor</option>{{#each listaSubProductos}}<option value="{{idsubproducto}}">{{nombre}}</option>{{/each}}</select>';
+      cell3.innerHTML = '<select class="form-control cmbBuscarSubProducto select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="1" tabindex="-1" aria-hidden="true" name="SubProducto' + conteoDetallePedidos + '" id="SubProducto' + conteoDetallePedidos + '"><option value="" selected>Seleccione un valor</option>{{#each listaSubProductos}}<option value="{{Codigo}}">{{Nombre}}</option>{{/each}}</select>';
       cell4.innerHTML = '<input type="text" class="form-control" name="Notas' + conteoDetallePedidos + '" id="Notas' + conteoDetallePedidos + '" placeholder="Notas">';
       cell5.innerHTML = '<button type="button" class="btn btn-danger btn-sm" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button>';
       conteoDetallePedidos++;
 
       $('.cmbBuscarProducto').select2();
-    $('.cmbBuscarSubProducto').select2();
+      $('.cmbBuscarSubProducto').select2();
     })
 
     $('.cmbBuscarEstacion').select2();
     $('.cmbBuscarMesero').select2();
     //api put para actualizar el pedido
   });
-    function pedidosModificar (id) {    
+  function pedidosModificar(id) {
 
-      var url = "/app/pedidos/editar?id=" + id;
-      var datam= {
-          idmesero: $("#idmesero").val(),
-          Estacion: $("#idestacion").val(),
-          activo: $("#activo").val(),
-          modalidad: $("#modalidad").val(),
-          estado: 'AAA',
-        };
-      $.ajax({
-        type: 'PUT',
-        url: url,
-        data: datam,        
-        success: function (data, status) {
-          if (status == 'success') {
-            alert("Data: " + data + "\nStatus: " + status);
-            window.location.replace("listar");
-          } else {
-            alert("Data: " + data + "\nStatus: " + status);
-            console.log("Error"+ data.message);
-          }
-        },
-        error: function (data) {
-          console.log(data);
-          alert('Error al guardar el pedido');
-        }
-      });
+    var url = "/app/pedidos/editar?id=" + id;
+    var datam = {
+      idmesero: $("#idmesero").val(),
+      Estacion: $("#idestacion").val(),
+      activo: $("#activo").val(),
+      modalidad: $("#modalidad").val(),
+      estado: 'AAA',
     };
+    $.ajax({
+      type: 'PUT',
+      url: url,
+      data: datam,
+      success: function (data, status) {
+        if (status == 'success') {
+          window.location.replace("listar");
+          //alert("Data: " + data + "\nStatus: " + status);
+          $(document).Toasts('create', {
+            class: 'bg-success',
+            title: 'El Pedido se ha actualizado correctamente',
+            subtitle: '',
+            body: 'El pedido se ha actualizado correctamente',
+            "fadeOut": 1800
+          })
 
-    function EliminarFila(id) {
-      $('#' + id).remove();
-    }
+        } else {
+          $(document).Toasts('create', {
+            class: 'bg-danger',
+            title: 'El pedido no se ha podido actualizar',
+            subtitle: '',
+            body: 'El pedido no se ha actualizado correctamente',
+            "fadeOut": 1800
+          })
+          console.log("Error" + data.message);
+        }
+      },
+      error: function (data) {
+        console.log(data);
+        alert('Error al guardar el pedido');
+      }
+    });
+  };
 
-
-
-    
+  function EliminarFila(id) {
+    $('#' + id).remove();
+  }
 
 </script>
-  

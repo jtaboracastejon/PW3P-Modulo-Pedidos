@@ -31,110 +31,50 @@
                                         </thead>
                                         <tbody>
                                             {{#each lista}}
-                                            {{!--
-                                            <?php
-                        foreach ($this->datos as $detallepedido) {
-                        ?> --}}
-                                            <tr>
+                                            <tr id="list-{{idregistro}}">
                                                 <td class="text-center"><a
                                                         href="/detallepedido/buscarid?id={{idregistro}}">{{idregistro}}</a>
                                                 </td>
                                                 <td class="text-center">{{NumeroPedido}}</td>
-                                                <td class="text-center">{{CodigoProducto}}</td>
+                                                <td class="text-center">{{'producto.Nombre'}}</td>
                                                 <td class="text-center">{{Cantidad}}</td>
                                                 <td class="text-center">{{Notas}}</td>
                                                 <td class="text-center">{{subproducto}}</td>
                                                 <td class="text-center">
-                                                    {{#if (condition "{{Cancelado}}" "==" "0")}}
-
-                                                    {{!--
-                                                    <?php
-                              if ($detallepedido['Cancelado'] == 0) {
-                              ?> --}}
-                                                    <span class="badge badge-danger">NO</span>
+                                                    {{#if Cancelado}}
+                                                    <span class="badge badge-success">SI</span>
                                                     {{else}}
-                                                    {{!--
-                                                    <?php
-                              } else {
-                              ?> --}}
-                                                    <span class="badge badge-success">SI</span>
+                                                    <span class="badge badge-danger">NO</span>
                                                     {{/if}}
-                                                    {{!--
-                                                    <?php
-                              }
-                              ?> --}}
                                                 <td class="text-center">
-                                                    {{!--
-                                                    <?php
-                              if ($detallepedido['Elaborado'] == 0) {
-                              ?> --}}
-                                                    <span class="badge badge-danger">NO</span>
-                                                    {{!--
-                                                    <?php
-                              } else {
-                              ?> --}}
+                                                    {{#if Elaborado}}
                                                     <span class="badge badge-success">SI</span>
-                                                    {{!--
-                                                    <?php
-                              }
-                              ?> --}}
+                                                    {{else}}
+                                                    <span class="badge badge-danger">NO</span>
+                                                    {{/if}}
                                                 <td class="text-center">
-                                                    {{!--
-                                                    <?php
-                                if ($detallepedido['Entregado'] == 0) {
-                                ?> --}}
-                                                    <span class="badge badge-danger">NO</span>
-                                                    {{!--
-                                                    <?php
-                                } else {
-                                ?> --}}
+                                                    {{#if Entregado}}
                                                     <span class="badge badge-success">SI</span>
-                                                    {{!--
-                                                    <?php
-                                }
-                              ?> --}}
+                                                    {{else}}
+                                                    <span class="badge badge-danger">NO</span>
+                                                    {{/if}}
                                                 <td class="text-center">
-                                                    {{!--
-                                                    <?php
-                                if ($detallepedido['Facturado'] == 0) {
-                                ?> --}}
-                                                    <span class="badge badge-danger">NO</span>
-                                                    {{!--
-                                                    <?php
-                                } else {
-                                ?> --}}
+                                                    {{#if Facturado}}
                                                     <span class="badge badge-success">SI</span>
-                                                    {{!--
-                                                    <?php
-                                }
-                              ?> --}}
+                                                    {{else}}
+                                                    <span class="badge badge-danger">NO</span>
+                                                    {{/if}}
                                                 <td class="text-center">
                                                     <a class="btn btn-warning"
-                                                        href="/detallepedido/editar?id=<?php echo $detallepedido['idregistro'] ?>"><i
+                                                        href="../detallepedido/buscarid?id={{idregistro}}"><i
                                                             class="text-white fas fa-edit"></i></a>
-                                                    <a class="btn btn-danger"
-                                                        href="/detallepedido/eliminar?id=<?php echo $detallepedido['idregistro'] ?>"
-                                                        onclick="return confirm('Estas seguro de eliminar?')"><i
-                                                            class="fas fa-trash"></i></a>
+                                                    <Button class="btn btn-danger modalEliminar" id="{{idregistro}}" data-toggle="modal" data-target="#modal-danger"><i
+                                                            class="fas fa-trash"></i></Button>       
                                                 </td>
                                             </tr>
                                             {{/each}}
                                         </tbody>
                                     </table>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12 col-md-5">
-                                    <!-- <div class="dataTables_info" id="example1_info" role="status" aria-live="polite">Showing 1 to 4 of 4 entries (filtered from 57 total entries)</div> -->
-                                </div>
-                                <div class="col-sm-12 col-md-7">
-                                    <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
-                                        <!-- <ul class="pagination">
-                        <li class="paginate_button page-item previous disabled" id="example1_previous"><a href="#" aria-controls="example1" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li>
-                        <li class="paginate_button page-item active"><a href="#" aria-controls="example1" data-dt-idx="1" tabindex="0" class="page-link">1</a></li>
-                        <li class="paginate_button page-item next disabled" id="example1_next"><a href="#" aria-controls="example1" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li>
-                      </ul> -->
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -159,3 +99,40 @@
         <!-- /.row -->
     </div>
 </section>
+<div id="field_wrapper">
+    
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    $('.modalEliminar').click(function () {
+        var id = $(this).attr('id');
+        console.log(id);
+        $('#idEliminar').val(id);
+
+        var wrapper = $('#field_wrapper'); 
+        var modal = '<div class="modal fade" id="modal-danger"><div class="modal-dialog"><div class="modal-content bg-danger"><div class="modal-header"><h4 class="modal-title">Eliminar Pedido</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div><div class="modal-body"><p> ¿Esta seguro de eliminar el Pedido '+id+'?&hellip;</p></div><div class="modal-footer justify-content-between"><button type="button" class="btn btn-outline-light" data-dismiss="modal">Cancelar</button><button type="button"  class="btn btn-outline-light" onclick="pedidosEliminar('+id+')">Eliminar Pedido</button></div></div></div>'
+        $(wrapper).append(modal);
+    });
+    
+  })
+  function pedidosEliminar(id) {
+    var url = "/app/detallepedido/eliminar?id=" + id;
+    $.ajax({
+      type: 'DELETE',
+      url: url,
+      success: function (data, status) {
+        if (status == 'success') {
+          $("#list-"+id).remove();
+          $('#modal-danger').modal('hide');
+            return false;
+        } else {
+          console.log("Error" + data.message);
+        }
+      },
+      error: function (data) {
+        console.log(data);
+        alert('Error al eliminar el pedido');
+      }
+    });
+  };
+</script>

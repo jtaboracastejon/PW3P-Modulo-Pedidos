@@ -78,6 +78,9 @@
               <label for="">Agregar Fila</label>
               <button type="button" id="AgregarFila" class="btn btn-success"><i
                   class="text-white fas fa-plus-square"></i></button>
+              <button type="button" id="ListarFila" class="btn btn-warning"><i
+                  class="text-white fas fa-plus-square"></i></button>
+                  
               <div class="table-responsive">
                 <table id="detallePedido" class="table m-0">
                   <thead>
@@ -89,7 +92,8 @@
                       <th>Acciones</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody id="bodydetalle">
+
                   </tbody>
                 </table>
               </div>
@@ -112,14 +116,12 @@
     <!-- /.row -->
   </div><!-- /.container-fluid -->
 </section>
-</div>
 
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', function () {
     var conteoDetallePedidos = 0
 
-
-    var table = document.getElementById("detallePedido");
+    var table = document.getElementById("bodydetalle");
     $('#AgregarFila').click(function () {
       console.log("AgregarFila");
       var row = table.insertRow(conteoDetallePedidos);
@@ -128,15 +130,43 @@
       var cell3 = row.insertCell(2);
       var cell4 = row.insertCell(3);
       var cell5 = row.insertCell(4);
-      cell1.innerHTML = '<select class="form-control cmbBuscarProducto select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="5" tabindex="-1" aria-hidden="true" name="Producto' + conteoDetallePedidos + '" id="Producto' + conteoDetallePedidos + '"><option value="" selected>Seleccione un valor</option>{{#each listaProductos}}<option value="{{idproducto}}">{{nombre}}</option>{{/each}}</select>';
-      cell2.innerHTML = '<input type="number" class="form-control" name="Cantidad' + conteoDetallePedidos + '" id="Cantidad' + conteoDetallePedidos + '" placeholder="Cantidad">';
-      cell3.innerHTML = '<select class="form-control cmbBuscarSubProducto select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="1" tabindex="-1" aria-hidden="true" name="SubProducto' + conteoDetallePedidos + '" id="SubProducto' + conteoDetallePedidos + '"><option value="" selected>Seleccione un valor</option>{{#each listaSubProductos}}<option value="{{idsubproducto}}">{{nombre}}</option>{{/each}}</select>';
-      cell4.innerHTML = '<input type="text" class="form-control" name="Notas' + conteoDetallePedidos + '" id="Notas' + conteoDetallePedidos + '" placeholder="Notas">';
+      cell1.innerHTML = '<select class="form-control cmbBuscarProducto select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="5" tabindex="-1" aria-hidden="true" name="detallePedido[' + conteoDetallePedidos + '][producto]" id="detallePedido[' + conteoDetallePedidos + '][producto]"><option value="" selected>Seleccione un valor</option>{{#each listaProductos}}<option value="{{Codigo}}">{{Nombre}}</option>{{/each}}</select>';
+      cell2.innerHTML = '<input type="number" class="form-control" name="detallePedido[' + conteoDetallePedidos + '][cantidad]" id="detallePedido[' + conteoDetallePedidos + '][cantidad]" placeholder="Cantidad">';
+      cell3.innerHTML = '<select class="form-control cmbBuscarSubProducto select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="1" tabindex="-1" aria-hidden="true" name="detallePedido[' + conteoDetallePedidos + '][subproducto]" id="detallePedido[' + conteoDetallePedidos + '][subproducto]"><option value="" selected>Seleccione un valor</option>{{#each listaProductos}}<option value="{{Codigo}}">{{Nombre}}</option>{{/each}}</select>';
+      cell4.innerHTML = '<input type="text" class="form-control" name="detallePedido[' + conteoDetallePedidos + '][notas]" id="detallePedido[' + conteoDetallePedidos + '][notas]" placeholder="Notas">';
       cell5.innerHTML = '<button type="button" class="btn btn-danger btn-sm" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button>';
       conteoDetallePedidos++;
 
-      $('.cmbBuscarProducto').select2();
+    $('.cmbBuscarProducto').select2();
     $('.cmbBuscarSubProducto').select2();
+    })
+
+    $('#ListarFila').click(function(){
+      var arrData=[];
+   // loop over each table row (tr)
+   $("#detallePedido tr").each(function(){
+    $(".check-icon").hide();
+      setTimeout(function () {
+        $(".check-icon").show();
+      }, 10);
+        var currentRow=$(this);
+    
+        var col1_value=currentRow.find("td:eq(0)").text();
+        var col2_value=currentRow.find("td:eq(1)").text();
+        var col3_value=currentRow.find("td:eq(2)").text();
+        var col4_value=currentRow.find("td:eq(3)").text();
+
+         var obj={};
+        obj.col1=col1_value;
+        obj.col2=col2_value;
+        obj.col3=col3_value;
+        obj.col4=col4_value;
+
+        arrData.push(obj);
+   });
+   
+    console.log(arrData);
+      
     })
 
     
@@ -147,8 +177,8 @@
 
     var cmbModalidad = document.getElementById('modalidad'); //Add button selector
     var wrapper = $('#field_wrapper'); 
-    var fieldMesa = '<div id="mesa" class="col-md-12 row"><div class="form-group col-md-6"><label for="idcliente">N° Mesa</label><select class="form-control cmbbuscarMesa select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="4" tabindex="-1" aria-hidden="true" name="idmesa"><option value="" selected disabled hidden>Seleccione un valor</option>{{#each listaMesas}}<option value="{{idregistro}}">{{Mesa}}</option>{{/each}}</select></div><div class="form-group col-md-6"><label for="idpedido">Cuenta</label><input type="number" min=0 ste=1 class="form-control" id="cuenta" name="cuenta" placeholder="Cuenta" required></div><div class="form-group col-md-6"><label for="idcliente">Nombre de la Cuenta</label><input type="text" class="form-control" id="nombrecuenta" name="nombrecuenta" placeholder="Nombre de la cuenta" required></div></div>'; //New input field html 
-      var fieldLlevar = '<div id="mesa2" class="col-md-12 row"><div class="form-group col-md-6" data-select2-id="63"><label>Cliente</label><select class="form-control cmbBuscarLlevar select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="1" tabindex="-1" aria-hidden="true" name="idcliente"><option value="" selected>Seleccione un valor</option>{{#each listarClientes}} <option value="{{idcliente}}">{{nombre}}</option>{{/each}}</select></div>';
+    var fieldMesa = '<div id="mesa" class="col-md-12 row"><div class="form-group col-md-6"><label for="idcliente">N° Mesa</label><select class="form-control cmbbuscarMesa select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="4" tabindex="-1" aria-hidden="true" id="idmesa" name="idmesa"><option value="" selected disabled hidden>Seleccione un valor</option>{{#each listaMesas}}<option value="{{idregistro}}">{{Mesa}}</option>{{/each}}</select></div><div class="form-group col-md-6"><label for="idpedido">Cuenta</label><input type="number" min=0 ste=1 class="form-control" id="cuenta" name="cuenta" placeholder="Cuenta" required></div><div class="form-group col-md-6"><label for="idcliente">Nombre de la Cuenta</label><input type="text" class="form-control" id="nombrecuenta" name="nombrecuenta" placeholder="Nombre de la cuenta" required></div></div>'; //New input field html 
+    var fieldLlevar = '<div id="mesa2" class="col-md-12 row"><div class="form-group col-md-6" data-select2-id="63"><label>Cliente</label><select class="form-control cmbBuscarLlevar select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="1" tabindex="-1" aria-hidden="true" name="idcliente" id="idcliente"><option value="" selected>Seleccione un valor</option>{{#each listaClientes}} <option value="{{idcliente}}">{{nombre}}</option>{{/each}}</select></div>';
     var x = 1;
     var y = 1;
     var max = 1;

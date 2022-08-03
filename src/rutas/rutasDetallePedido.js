@@ -5,14 +5,14 @@ const controladorDetallePedido = require('../controladores/controladorDetallePed
 const rutas = Router();
 
 rutas.get('/listar', controladorDetallePedido.Listar);
+rutas.get('/buscarid', controladorDetallePedido.BuscarId);
 
-/* rutas.get('/nuevo', controladorDetallePedido.Nuevo);
-rutas.get('/buscarId', controladorDetallePedido.BuscarId);
-rutas.get('/buscar', controladorDetallePedido.Buscar); */
+rutas.get('/nuevo', controladorDetallePedido.Nuevo);
+rutas.get('/buscar', controladorDetallePedido.Buscar);
 
 rutas.post('/guardar', 
-body('NumeroPedidos')
-.notEmpty().withMessage('El NumeroPedidos es requerido'),
+body('NumeroPedido')
+.notEmpty().withMessage('El NumeroPedido es requerido'),
 
 body('CodigoProducto')
 .notEmpty().withMessage('El CodigoProducto es requerido'),
@@ -38,11 +38,11 @@ controladorDetallePedido.GuardarBulk)
 module.exports = rutas;
 
 rutas.put('/editar', 
-query('idregistro')
+query('id')
 .notEmpty().withMessage('El idregistro es requerido')
 .isInt().withMessage('El idregistro debe ser un numero entero'),
 
-body('NumeroPedidos')
+body('NumeroPedido')
 .notEmpty().withMessage('El NumeroPedidos es requerido'),
 
 body('CodigoProducto')
@@ -54,7 +54,7 @@ body('Cantidad')
 controladorDetallePedido.Editar)
 
 rutas.delete('/eliminar',
-query('idregistro')
+query('id')
 .notEmpty().withMessage('El idregistro es requerido')
 .isInt().withMessage('El idregistro debe ser un numero entero'),
 controladorDetallePedido.Eliminar)

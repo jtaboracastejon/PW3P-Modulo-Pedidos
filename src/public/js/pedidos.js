@@ -33,12 +33,14 @@ $(document).ready(function($){
                 //console.log(data);
                 alert('Error al guardar el pedido');
               }
-        }); 
+    vod
+  zi(data); console.eil
+}); 
     }); */
     
         
     $(".pedidosGuardar").on("click",function(){
-        $.post(
+         $.post(
             $(this).val(), 
             {
                 idmesero: $("#idmesero").val(),
@@ -46,12 +48,39 @@ $(document).ready(function($){
                 activo: $("#activo").val(),
                 modalidad: $("#modalidad").val(),
                 estado: 'AAA',
+                
+                idmesa: $("#idmesa").val(),
+                cuenta: $("#cuenta").val(),
+                nombrecuenta: $("#nombrecuenta").val(),
+
+                idcliente: $("#idcliente").val(),
+                
+                //detallePedido: $("#detallePedido").val(),
+            },
+
                 /* nombre: $("#inputNombre").val(),
                 descripcion: $("#textareaDescricion").val()  */
-             },
             function(data, status){
-            alert("Data: " + data + "\nStatus: " + status);
-            window.location.replace("listar");
+              if (status == 'success') {
+                window.location.replace("listar");
+                //alert("Data: " + data + "\nStatus: " + status);
+                $(document).Toasts('create', {
+                  class: 'bg-success',
+                  title: 'Pedido Creado',
+                  subtitle: '',
+                  body: 'El pedido se ha creado correctamente',
+                })
+
+              } else {
+                $(document).Toasts('create', {
+                  class: 'bg-danger',
+                  title: 'El pedido no se ha creado',
+                  subtitle: '',
+                  body: 'El pedido no se ha creado correctamente',
+                })
+                console.log("Error" + data.message);
+              }
+            
           });
     });
 });

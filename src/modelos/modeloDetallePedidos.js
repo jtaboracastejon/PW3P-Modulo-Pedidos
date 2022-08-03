@@ -1,5 +1,6 @@
 const {DataTypes}=require('sequelize')
 const db = require('../configuracion/db')
+const modeloProductos = require('../modelos/modeloProducto')
 
 const detalle_pedido = db.define(
     'detalle_pedido',
@@ -55,6 +56,11 @@ const detalle_pedido = db.define(
         tableName:'detalle_pedido'
     }
 )
+
+detalle_pedido.belongsTo(modeloProductos,{
+    foreignKey:'CodigoProducto',
+    sourceKey:'Codigo',
+});
 
 detalle_pedido.sync().then(
     () => console.log("Sincronizacion Completa")

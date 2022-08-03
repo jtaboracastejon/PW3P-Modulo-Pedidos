@@ -3,6 +3,10 @@ const modeloPedidos = require('../modelos/modeloPedidos');
 const modeloMeseros = require('../modelos/modeloMeseros');
 const modeloEstaciones = require('../modelos/modeloEstaciones');
 const modeloMesas_x_area = require('../modelos/modeloMesas_x_area');
+const modeloCliente = require('../modelos/modeloCliente');
+const modeloPedidosMesa = require('../modelos/modeloPedidos_mesa');
+const modeloPedidosLlevar = require('../modelos/modeloPedidosLlevar');
+const modeloProductos = require('../modelos/modeloProducto');
 const { Op } = require('sequelize');
 const db = require('../configuracion/db');
 
@@ -83,6 +87,14 @@ exports.Nuevo = async (req, res) => {
             //logging: console.log,
             raw: true
         });
+        const listaClientes = await modeloCliente.findAll({
+            //logging: console.log,
+            raw: true
+        });
+        const listaProductos = await modeloProductos.findAll({
+            //logging: console.log,
+            raw: true
+        });
         //console.log(listaMesas);
         //console.log(window.location.href)
         res.render("pedidosNuevo", {
@@ -90,7 +102,8 @@ exports.Nuevo = async (req, res) => {
             listaMeseros,
             listaEstaciones,
             listaMesas,
-            //listarClientes
+            listaClientes,
+            listaProductos
         });
     }
     catch (error) {
@@ -424,8 +437,12 @@ exports.Guardar = async (req, res) => {
 
     }
     else {
-        const { idmesero, Estacion, activo, modalidad, estado } = req.body;
+        /* const ultimaId = await modeloPedidos.max('NumeroPedido');
+        let numeroPedido = ultimaId + 1; */
+        const { idmesero, Estacion, activo, modalidad, estado, idmesa, cuenta, nombrecuenta, idcliente, detallePedido } = req.body;
         var texto = ''
+        var ultimaId = 0;
+        console.log(typeof (detallePedido));
         try {
             await modeloPedidos.create({
                 idmesero: idmesero,
@@ -435,12 +452,47 @@ exports.Guardar = async (req, res) => {
                 estado: estado
             }).then((data) => {
                 console.log(data);
+                ultimaId = data.NumeroPedido;
                 texto = "Registro Guardado"
-            })
-                .catch((err) => {
+            }).catch((err) => {
+                console.log(err);
+                texto = "Error al guardar"
+            });
+            console.log(ultimaId);   
+            console.log(idcliente)         
+        } catch (error) {
+            console.log(error);
+            texto = "Error al guardar"
+        }
+        try {
+            if(modalidad == 'ME'){
+                
+                await modeloPedidosMesa.create({
+                    idpedido: ultimaId,
+                    idmesa: idmesa,
+                    cuenta: cuenta,
+                    nombrecuenta: nombrecuenta,
+                }).then((data) => {
+                    console.log(data);
+                    texto = "Registro Guardado"
+                }).catch((err) => {
                     console.log(err);
                     texto = "Error al guardar"
-                })
+                });
+            }
+            else if(modalidad == 'LL'){
+                console.log("Entro"+ultimaId)
+                await modeloPedidosLlevar.create({
+                    idPedido: ultimaId,
+                    idCliente: idcliente,
+                }).then((data) => {
+                    console.log(data);
+                    texto = "Registro Guardado"
+                }).catch((err) => {
+                    console.log(err);
+                    texto = "Error al guardar"
+                });
+            }
         } catch (error) {
             console.log(error);
             texto = "Error al guardar"
@@ -542,5 +594,4 @@ exports.Eliminar = async (req, res) => {
         res.send(texto)
 
     }
-    res.json(msj);
 };
