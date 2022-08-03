@@ -1,0 +1,131 @@
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+          <!-- jquery validation -->
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">Datos generales <small>Detella pedido</small></h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form id="quickForm" action="/detallepedido/guardar/" method="post">
+              <div class="card-body row">
+                <div class="form-group col-md-6">
+                  <label for="inputNombre">Numero Pedido</label>
+                  <input type="number" name="numeropedidos" class="form-control" id="numeroPedido" placeholder="Escriba el nombre del cargo" required>
+                </div>
+                <div class="form-group col-md-6" data-select2-id="63">
+                  <label>Producto</label>
+                  <select id="producto" class="form-control cmbBuscarProducto select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="1" tabindex="-1" aria-hidden="true" name="codigoproducto">
+                    <option value="" selected disabled hidden>Seleccione un valor</option>
+                    {{#each listaProductos}}
+                      <option value="{{Codigo}}">{{Nombre}}</option>
+                    {{/each}}
+                  </select>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="inputNombre">Cantidad</label>
+                  <input type="number" min="0" step="1" name="cantidad" class="form-control" id="cantidad" placeholder="Escriba el nombre del cargo" required>
+                </div>
+                <div class="form-group col-md-6">
+                  <label>SubProducto</label>
+                  <select id="subproducto" class="form-control cmbBuscarSubProducto select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="2" tabindex="-1" aria-hidden="true" >
+                    <option value="" selected disabled hidden>Seleccione un valor</option>
+                    {{#each listaProductos}}
+                      <option value="{{Codigo}}">{{Nombre}}</option>
+                    {{/each}}
+                  </select>
+                </div>
+                <div class="form-group col-md-12">
+                  <label for="inputNombre">Notas</label>
+                  <input type="text" name="notas" class="form-control" id="notas" placeholder="Escriba el nombre del cargo">
+                </div>
+                <div class="col-md-3 text-center custom-control custom-switch custom-switch-off-danger custom-switch-on-success ">
+                  <input type="checkbox" class="custom-control-input" name="cancelado" id="cancelado" value="0" control-id="ControlID-41">
+                  <label class="custom-control-label" for="cancelado" id="cancelado">Cancelado</label>
+                </div>
+                <div class="col-md-3 text-center custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                  <input type="checkbox" class="custom-control-input" name="elaborado" id="elaborado" value="0" control-id="ControlID-42">
+                  <label class="custom-control-label" for="elaborado" id="elaborado">Elaborado</label>
+                </div>
+                <div class="col-md-3 text-center custom-control custom-switch custom-switch-off-danger custom-switch-on-success ">
+                  <input type="checkbox" class="custom-control-input" name="entregado" id="entregado" value="0" control-id="ControlID-43">
+                  <label class="custom-control-label" for="entregado" id="entregado">Entregado</label>
+                </div>
+                <div class="col-md-3 text-center custom-control custom-switch custom-switch-off-danger custom-switch-on-success ">
+                  <input type="checkbox" class="custom-control-input" name="facturado" id="facturado" value="0" control-id="ControlID-44">
+                  <label class="custom-control-label" for="facturado" id="facturado">Facturado</label>
+                </div>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer">
+                <button type="button" class="btn btn-primary toastrDefaultSuccess pedidosDetalleGuardar"
+                  value="/app/detallePedido/guardar">Guardar</button>
+              </div>
+            </form>
+          </div>
+          <!-- /.card -->
+        </div>
+        <!--/.col (left) -->
+        <!-- right column -->
+        <div class="col-md-6">
+
+        </div>
+        <!--/.col (right) -->
+      </div>
+      <!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+  <script>
+    $(document).ready(function() {
+      
+
+      $('.cmbBuscarProducto').select2();
+      $('.cmbBuscarSubProducto').select2();
+    });
+    const elaborado = document.getElementById('elaborado')
+
+    elaborado.addEventListener('change', (event) => {
+      if (event.currentTarget.checked) {
+        elaborado.value = 1
+      } else {
+        elaborado.value = 0
+      }
+    })
+
+
+    const cancelado = document.getElementById('cancelado')
+
+    cancelado.addEventListener('change', (event) => {
+      if (event.currentTarget.checked) {
+        cancelado.value = 1
+      } else {
+        cancelado.value = 0
+      }
+    })
+    const entregado = document.getElementById('entregado')
+
+    entregado.addEventListener('change', (event) => {
+      if (event.currentTarget.checked) {
+        entregado.value = 1
+      } else {
+        entregado.value = 0
+      }
+    })
+
+    const facturado = document.getElementById('facturado')
+
+    facturado.addEventListener('change', (event) => {
+      if (event.currentTarget.checked) {
+        facturado.value = 1
+      } else {
+        facturado.value = 0
+      }
+    })
+
+
+  </script>
