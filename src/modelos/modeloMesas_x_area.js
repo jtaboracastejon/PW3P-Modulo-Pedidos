@@ -25,9 +25,7 @@ const Mesas_x_area = db.define(
     }
 )    
 
-Mesas_x_area.sync().then(
-    () => console.log("Tabla de mesas sincronizada")
-)
+
 
 
 module.exports = Mesas_x_area;
