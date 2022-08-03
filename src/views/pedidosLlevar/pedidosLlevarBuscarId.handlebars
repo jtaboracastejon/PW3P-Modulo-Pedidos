@@ -87,12 +87,24 @@
             data: datam,
             success: function (data, status) {
                 if (status == 'success') {
-                    alert("Data: " + data + "\nStatus: " + status);
-                    window.location.replace("listar");
-                } else {
-                    alert("Data: " + data + "\nStatus: " + status);
-                    console.log("Error" + data.message);
-                }
+                window.location.replace("listar");
+                //alert("Data: " + data + "\nStatus: " + status);
+                $(document).Toasts('create', {
+                  class: 'bg-success',
+                  title: 'Pedido llevar guardado',
+                  subtitle: '',
+                  body: 'El pedido a llevar se ha creado correctamente',
+                })
+ 
+              } else {
+                $(document).Toasts('create', {
+                  class: 'bg-danger',
+                  title: 'Pedido llevar  Eliminado',
+                  subtitle: '',
+                  body: 'El pedido llevar no se ha guardado correctamente',
+                })
+                console.log("Error" + data.message);
+              }
             },
             error: function (data) {
                 console.log(data);

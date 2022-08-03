@@ -70,13 +70,25 @@ function pedidosModificar(id) {
             url: url,
             data: datam,
             success: function (data, status) {
-                if (status == 'success') {
-                    alert("Data: " + data + "\nStatus: " + status);
-                    window.location.replace("listar");
-                } else {
-                    alert("Data: " + data + "\nStatus: " + status);
-                    console.log("Error" + data.message);
-                }
+                 if (status == 'success') {
+                window.location.replace("listar");
+                //alert("Data: " + data + "\nStatus: " + status);
+                $(document).Toasts('create', {
+                  class: 'bg-success',
+                  title: 'Pedido venta guardado',
+                  subtitle: '',
+                  body: 'El pedido venta se ha creado correctamente',
+                })
+ 
+              } else {
+                $(document).Toasts('create', {
+                  class: 'bg-danger',
+                  title: 'Pedido venta  Eliminado',
+                  subtitle: '',
+                  body: 'Pedido venta no se ha guardado correctamente',
+                })
+                console.log("Error" + data.message);
+              }
             },
             error: function (data) {
                 console.log(data);

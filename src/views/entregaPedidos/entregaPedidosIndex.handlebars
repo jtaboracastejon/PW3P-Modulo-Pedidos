@@ -32,7 +32,7 @@
 
                 <tbody>
                   {{#each entrega_pedidos}}
-                  <tr>
+                  <tr id="list-{{idDetalle}}">
                     <td><a href="/entrega_pedidos/buscarId?id={{idDetalle}}">{{idDetalle}}</a>
                     </td>
                     <td>{{'usuario.LoginUsuario'}}</td>
@@ -41,14 +41,18 @@
                     </td>
                     <td>{{fechahora}}</td>
                     <td>
-                      <a class="btn btn-warning" href="buscarId?id={{idDetalle}}"> Editar <i
+                      <a class="btn btn-warning" href="buscarId?id={{idDetalle}}"><i
                           class="text-white fas fa-edit"></i></a>
 
-                     
+                      {{!-- <a class="btn btn-danger" onclick="" ({{idDetalle}})" href="javascript:void(0)"
+                        id="{{idDetalle}}"> Eliminar <i class="text-white fas fa-window-close"></i></a> --}}
 
-                      <a class="btn btn-danger" onclick= "pedidosEliminar({{idDetalle}})"
-                        href="javascript:void(0)" id="{{idDetalle}}"> Eliminar <i
-                          class="text-white fas fa-window-close"></i></a>
+                      <button type="button" class="btn btn-danger modalEliminar" id="{{idDetalle}}"
+                        data-toggle="modal" data-target="#modal-danger">
+                        <i class="text-white fas fa-window-close"></i>
+                      </button>
+
+          
                     </td>
                   </tr>
 
@@ -81,24 +85,52 @@
   </div>
 </section>
 
+<div id="field_wrapper"></div>
+
 <script type="text/javascript">
+
+document.addEventListener('DOMContentLoaded', function () {
+    $('.modalEliminar').click(function () {
+      var id = $(this).attr('id');
+      console.log(id);
+      //$('#idEliminar').val(id);
+ 
+      var wrapper = $('#field_wrapper');
+      var modal = '<div class="modal fade" id="modal-danger"><div class="modal-dialog"><div class="modal-content bg-danger"><div class="modal-header"><h4 class="modal-title">Eliminar Pedido</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div><div class="modal-body"><p> ¿Esta seguro de eliminar el Pedido '+id+'?&hellip;</p></div><div class="modal-footer justify-content-between"><button type="button" class="btn btn-outline-light" data-dismiss="modal">Cancelar</button><button type="button"  class="btn btn-outline-light" onclick="pedidosEliminar('+id+')">Eliminar Pedido</button></div></div></div></div>'
+      $(wrapper).append(modal);
+    });
+  })
+
 
   function pedidosEliminar(id) {
 
     var url = "/app/entregaPedidos/eliminar?id=" + id;
-    console.log("hola" + id);
     $.ajax({
       type: 'Delete',
       url: url,
       success: function (data, status) {
         if (status == 'success') {
-          alert("Data: " + data + "\nStatus: " + status);
-          window.location.replace("listar");
+          //alert("Data: " + data + "\nStatus: " + status);
+          $("#list-"+id).remove();
+          $(document).Toasts('create', {
+            class: 'bg-success',
+            title: 'Entrega Eliminado',
+            subtitle: '',
+            body: 'El pedido "'+id+'" se ha sido eliminado correctamente'
+          })
+          $('#modal-danger').modal('hide');
+            return false;
         } else {
-          alert("Data: " + data + "\nStatus: " + status);
+          $(document).Toasts('create', {
+            class: 'bg-danger',
+            title: 'Entrega Eliminada',
+            subtitle: '',
+            body: 'la entrega "'+id+'" no se ha podido eliminar'
+          })
           console.log("Error" + data.message);
         }
-      },
+},
+
       error: function (data) {
         console.log(data);
         alert('Error al guardar el pedido');

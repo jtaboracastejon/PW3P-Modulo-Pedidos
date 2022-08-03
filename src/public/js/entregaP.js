@@ -11,9 +11,25 @@ $(".guardarEntregas").on("click",function(){
             identrega: $("#inputentrega").val()
         },
         function(data, status){
-            alert("Data: " + data + "\nStatus: " + status);
-            window.location.replace("listar")
-
+            if (status == 'success') {
+                window.location.replace("listar");
+                //alert("Data: " + data + "\nStatus: " + status);
+                $(document).Toasts('create', {
+                  class: 'bg-success',
+                  title: 'Entrega pedido guardado',
+                  subtitle: '',
+                  body: 'El pedido se ha creado correctamente',
+                })
+ 
+              } else {
+                $(document).Toasts('create', {
+                  class: 'bg-danger',
+                  title: 'Entrega  Eliminado',
+                  subtitle: '',
+                  body: 'La entrega no se ha guardado correctamente',
+                })
+                console.log("Error" + data.message);
+              }
         });
 
 });
@@ -26,8 +42,26 @@ $(".guardarLlevarPedido").on("click",function(){
             idCliente: $("#selectCliente").val()
         },
         function(data, status){
-            alert("Data: " + data + "\nStatus: " + status);
-            window.location.replace("listar")
+            if (status == 'success') {
+                window.location.replace("listar");
+                //alert("Data: " + data + "\nStatus: " + status);
+                $(document).Toasts('create', {
+                  class: 'bg-success',
+                  title: 'Pedido llevar guardado',
+                  subtitle: '',
+                  body: 'El pedido a llevar se ha guardado correctamente',
+                })
+ 
+              } else {
+                $(document).Toasts('create', {
+                  class: 'bg-danger',
+                  title: 'Pedido a llevar Eliminado',
+                  subtitle: '',
+                  body: 'El pedido a llevar no se ha guardado correctamente',
+                })
+                console.log("Error" + data.message);
+              }
+
         });
 
 });
@@ -39,9 +73,25 @@ $(".guardarVentaPedido").on("click",function(){
             numeroPedido: $("#selectPedido").val()
         },
         function(data, status){
-           
-            alert("Data: " + data + "\nStatus: " + status);
-            window.location.replace("listar")
+            if (status == 'success') {
+                window.location.replace("listar");
+                //alert("Data: " + data + "\nStatus: " + status);
+                $(document).Toasts('create', {
+                  class: 'bg-success',
+                  title: 'Pedido venta guardado',
+                  subtitle: '',
+                  body: 'El pedido venta se ha creado correctamente',
+                })
+ 
+              } else {
+                $(document).Toasts('create', {
+                  class: 'bg-danger',
+                  title: 'Pedido venta  Eliminado',
+                  subtitle: '',
+                  body: 'El pedido venta no se ha guardado correctamente',
+                })
+                console.log("Error" + data.message);
+              }
             
         });
 

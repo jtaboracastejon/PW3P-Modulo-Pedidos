@@ -81,17 +81,33 @@
         url: url,
         data: datam,
         success: function (data, status) {
-          if (status == 'success') {
-            alert("Data: " + data + "\nStatus: " + status);
-            window.location.replace("listar");
-          } else {
-            alert("Data: " + data + "\nStatus: " + status);
-            console.log("Error" + data.message);
-          }
+         if (status == 'success') {
+                window.location.replace("listar");
+                //alert("Data: " + data + "\nStatus: " + status);
+                $(document).Toasts('create', {
+                  class: 'bg-success',
+                  title: 'Entrega editada',
+                  subtitle: '',
+                  body: 'La entrega se ha editado correctamente',
+                  duration: 2000,
+                })
+ 
+              } else {
+                $(document).Toasts('create', {
+                  class: 'bg-danger',
+                  title: 'Entrega Eliminada',
+                  subtitle: '',
+                  timer:10000,
+                  body: 'La entrega no se ha editado correctamente'
+                 
+                })
+                console.log("Error" + data.message);
+              }
+
         },
         error: function (data) {
           console.log(data);
-          alert('Error al guardar el pedido');
+          alert('Error al editar el pedido');
         }
       });
     };
