@@ -1,0 +1,108 @@
+<div class="wrapper">
+
+
+
+
+    <section class="content-header">
+        <div class="container-fluid">
+            <h2 class="text-center display-4">Buscar</h2>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <form action="" method="">
+                        <div class="input-group input-group-lg">
+                            <select class="" id="filtro" name="filtro">
+                                <option value="id">N° pedido</option>
+                                <option value="LoginUsuario">Usuario</option>
+                            </select>
+                            <input type="text" id="buscar" name="buscar" class="form-control form-control-lg"
+                                placeholder="Buscar" value="">
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-lg btn-default btnbuscar">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row mt-3"></div>
+            <div class="row">
+                <div class="table-responsive">
+                    <table class="table m-0">
+                        <thead>
+                            <tr>
+                                <th>N° PEDIDO</th>
+                                <th>USUARIO</th>
+                                <th>FECHA</th>
+                                <!-- <th>ESTADO</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each lista}}
+                            <tr>
+                                <td><a href="/pedidos_cancelados/buscarid?id={{id}}">{{id}}</a></td>
+
+                                <td>{{'usuario.LoginUsuario'}}</td>
+                                <td>{{fechahora}}</td>
+                                <td>
+                                    <a class="btn btn-warning" href="/app/pedidos_cancelados/buscarid?id={{id}}">Editar</a>
+                                    <a class="btn btn-danger" onclick="pedidos_canceladoseliminar({{id}})" href="javascript:void(0)" id="{{id}}">Eliminar</a>
+                                </td>
+                            </tr>
+                            {{/each}}
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <section class="content-header">
+
+    </section>
+    <script>
+
+        function pedidos_canceladoseliminar(id) {
+            var url = "/app/pedidos_cancelados/eliminar?id=" + id;
+            $.ajax({
+                type: 'DELETE',
+                url: url,
+                success: function (data, status) {
+                    if (status == 'success') {
+                        alert("Data: " + data + "\nStatus: " + status);
+                        window.location.replace("listar");
+                    } else {
+                        alert("Data: " + data + "\nStatus: " + status);
+                        console.log("Error" + data.message);
+                    }
+                },
+                error: function (data) {
+                    console.log(data.message);
+                    console.log(data);
+                    alert('Error al Eliminar el pedido');
+                }
+            });
+        };
+
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log(window.location.href)
+            if (window.location.href == "http://localhost:3010/app/pedidos_cancelados/buscar?filtro=id&buscar=") {
+                window.location.href = '/app/pedidos_cancelados/buscar';
+            }
+            $('.btnbuscar').click(function () {
+                var filtro = $('#filtro').val();
+                var buscar = $('#buscar').val();
+                var url = '/app/pedidos_cancelados/buscar?filtro=' + filtro + '&buscar=' + buscar;
+                alert(url);
+                window.location.href = url;
+            });
+        });
+    </script>
