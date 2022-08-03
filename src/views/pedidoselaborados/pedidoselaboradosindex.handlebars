@@ -1,0 +1,124 @@
+<section class="content">
+  <div class="container-fluid">
+    <h5 class="mb-2 mt-4">Lista de Pedidos Elaborados</h5>
+    <!--<h5 class="mb-2 mt-4">?php var_dump($this->datos);?></h5>-->
+    <div class="row">
+      <!-- Left col -->
+      <div class="col-md-12">
+        <!-- TABLE: LATEST ORDERS -->
+        <div class="card">
+          <div class="card-header border-transparent">
+            <h3 class="card-title">Informacion General de Pedidos Elaborados</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table m-0">
+                <thead>
+                  <tr>
+                    <th>N°DETALLEPEDIDO</th>
+                    <th>USUARIO</th>
+                    <th>FECHAHORA</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each lista}}
+                  <tr id="list-{{iddetallepedido}}">
+                    <td><a href="/Pedidoselaborados/editar?id={{iddetallepedido}}">{{iddetallepedido}}</a></td>
+                    <td>{{'usuario.LoginUsuario'}}</td>
+                    <td>
+                      <div class="sparkbar" data-color="#00a65a" data-height="20">{{fechahora}}</div>
+                    </td>
+                    <td>
+                      <a class="btn btn-warning" href="buscarId?id={{iddetallepedido}}"><i
+                      class="text-white fas fa-edit"></i></a>
+
+                      <button type="button" class="btn btn-danger modalEliminar" id="{{iddetallepedido}}" data-toggle="modal" data-target="#modal-danger">
+                      <i class="text-white fas fa-window-close"></i>
+                      </button>
+
+                      
+                    </td>
+
+                  </tr>
+                  {{/each}}
+
+                </tbody>
+              </table>
+            </div>
+            <!-- /.table-responsive -->
+          </div>
+          <!-- /.card-body -->
+          <div class="card-footer clearfix">
+            <a href="/app/pedidoselaborados/nuevo" class="btn btn-sm btn-info float-left">Generar nuevo pedido
+              Elaborado</a>
+            <a href="/app/pedidoselaborados/buscar" class="btn btn-sm btn-secondary float-right">Buscar pedido </a>
+          </div>
+          <!-- /.card-footer -->
+        </div>
+        <!-- /.card -->
+      </div>
+      <!-- Fin columna izquierda -->
+    </div>
+    <!-- Fin primera fila -->
+  </div>
+</section>
+<!-- /.content -->
+
+<div id="field_wrapper">
+</div>
+
+<script type="text/javascript">
+  function pedidosEliminar(id) {
+
+    var url = "/app/pedidoselaborados/eliminar?id=" + id;
+    $.ajax({
+      type: 'DELETE',
+      url: url,
+
+      success: function (data, status) {
+        if (status == 'success') {
+          //alert("Data: " + data + "\nStatus: " + status);
+          $("#list-"+id).remove();
+          $(document).Toasts('create', {
+            class: 'bg-success',
+            title: 'Pedido Elaborado Eliminado',
+            subtitle: '',
+            body: 'El pedido elaborado "'+id+'" se ha sido eliminado correctamente'
+          })
+          $('#modal-danger').modal('hide');
+            return false;
+        } else {
+          $(document).Toasts('create', {
+            class: 'bg-danger',
+            title: 'Pedido Eliminado',
+            subtitle: '',
+            body: 'El pedido elaborado "'+id+'" no se ha podido eliminar'
+          })
+          console.log("Error" + data.message);
+        }
+      },
+
+      error: function (data) {
+        console.log(data.message);
+        console.log(data);
+        alert('Error al Eliminar el pedido');
+
+      }
+    });
+  };
+
+  document.addEventListener('DOMContentLoaded', function () {
+    $('.modalEliminar').click(function () {
+      var id = $(this).attr('id');
+      console.log(id);
+      //$('#idEliminar').val(id);
+ 
+      var wrapper = $('#field_wrapper');
+      var modal = '<div class="modal fade" id="modal-danger"><div class="modal-dialog"><div class="modal-content bg-danger"><div class="modal-header"><h4 class="modal-title">Eliminar Pedido</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div><div class="modal-body"><p> ¿Esta seguro de eliminar el Pedido '+id+'?&hellip;</p></div><div class="modal-footer justify-content-between"><button type="button" class="btn btn-outline-light" data-dismiss="modal">Cancelar</button><button type="button"  class="btn btn-outline-light" onclick="pedidosEliminar('+id+')">Eliminar Pedido</button></div></div></div></div>'
+      $(wrapper).append(modal);
+    });
+  })
+
+
+</script>
