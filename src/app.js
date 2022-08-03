@@ -28,6 +28,9 @@ app.set('views', [
     path.join(__dirname, './views/pedidos_cancelados'),
     path.join(__dirname, './views/pedidoselaborados'),
     path.join(__dirname, './views/Pedidos_mesa'),
+    path.join(__dirname, './views/pedidosVentas'),
+    path.join(__dirname, './views/pedidosLlevar'),
+    path.join(__dirname, './views/entregaPedidos'),
 ])//Rutas donde estaran contenidas las vistas
 app.use('/public',express.static(path.join(__dirname, 'public/')))//Ruta donde estaran contenidos los recursos
 

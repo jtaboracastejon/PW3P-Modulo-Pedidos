@@ -15,14 +15,6 @@ const usuarios = db.define(
             type: DataTypes.STRING(30),
             allowNull: false
         },
-        empleado: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        },
-        Contraseña: {
-            type: DataTypes.STRING(250),
-            allowNull: false
-        },
         AccesoTotal: {
             type: DataTypes.TINYINT,
             allowNull: false

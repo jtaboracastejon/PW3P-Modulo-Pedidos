@@ -65,6 +65,7 @@
 
 document.addEventListener('DOMContentLoaded', function () {
     $('.modalEliminar').click(function () {
+      $('#modal-danger').remove();
       var id = $(this).attr('id');
       console.log(id);
       //$('#idEliminar').val(id);
