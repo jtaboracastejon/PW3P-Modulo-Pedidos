@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/sequelize": "^4.28.14",
     "bcrypt": "^5.0.1",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
@@ -23,6 +24,7 @@
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
-    "sequelize": "^6.21.3"
+    "sequelize": "^6.21.3",
+    "sweetalert2": "^11.4.24"
   }
 }
