@@ -7,6 +7,9 @@ const { QueryTypes, Op } = require('sequelize');
 
 exports.Listar = async (req, res) => {
     const entrega_pedidos = await entregaPedidos.findAll({
+        order: [
+            ['idDetalle', 'ASC']
+        ],
         include: [{
             model: modelousuario,
             attributes: ['LoginUsuario']

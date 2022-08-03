@@ -10,6 +10,9 @@ const usuarios = require('../modelos/modelousuarios');
 
 exports.Listar = async(req, res) => {
         const lista = await modeloPedidosElaborados.findAll({
+            order: [
+                ['iddetallepedido', 'ASC']
+            ],
             include: {
                 model: usuarios,
                 attributes: ['LoginUsuario']

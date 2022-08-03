@@ -8,6 +8,9 @@ const modeloPedido = require('../modelos/modeloPedidos');
 
 exports.Listar = async (req, res) => {
     const pedidos_llevar = await pedidosLlevar.findAll({
+        order: [
+            ['idRegistro', 'ASC']
+        ],
         include:[{
             model: modelocliente,
             attributes: ['nombre']

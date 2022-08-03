@@ -6,6 +6,9 @@ const modelopedidosdetalle = require("../modelos/modeloDetallePedidos");
 
 exports.Listar = async (req, res) => {
     const pedidos_cancelados = await Pedidos_Cancelados.findAll({
+        order: [
+            ['id', 'ASC']
+        ],
         include:[{
             model: modelousuario,
             attributes: ['LoginUsuario']
