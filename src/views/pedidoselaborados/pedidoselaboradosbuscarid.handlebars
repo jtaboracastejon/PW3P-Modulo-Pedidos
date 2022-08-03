@@ -82,12 +82,24 @@
         data: datam,        
         success: function (data, status) {
           if (status == 'success') {
-            alert("Data: " + data + "\nStatus: " + status);
-            window.location.replace("listar");
-          } else {
-            alert("Data: " + data + "\nStatus: " + status);
-            console.log("Error"+ data.message);
-          }
+                window.location.replace("listar");
+                //alert("Data: " + data + "\nStatus: " + status);
+                $(document).Toasts('create', {
+                  class: 'bg-success',
+                  title: 'Pedido Creado',
+                  subtitle: '',
+                  body: 'El pedido elaborado se ha editado correctamente',
+                })
+ 
+              } else {
+                $(document).Toasts('create', {
+                  class: 'bg-danger',
+                  title: 'Pedido Eliminado',
+                  subtitle: '',
+                  body: 'El pedido elaborado no se ha editado correctamente',
+                })
+                console.log("Error" + data.message);
+              }
         },
         error: function (data) {
           console.log(data.message);

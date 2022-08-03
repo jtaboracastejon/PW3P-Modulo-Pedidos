@@ -22,8 +22,30 @@ $(document).ready(function($){
 
              }, 
             function(data, status){ 
-            alert("Data: " + data + "\nStatus: " + status); 
-            window.location.replace("listar");
+                if (status == 'success') {
+                    window.location.replace("listar");
+                    //alert("Data: " + data + "\nStatus: " + status);
+                    $(document).Toasts('create', {
+                      class: 'bg-success',
+                      title: 'Pedido Creado',
+                      subtitle: '',
+                      body: 'El pedido elaborado se ha creado correctamente',
+                    })
+     
+                  } else {
+                    $(document).Toasts('create', {
+                      class: 'bg-danger',
+                      title: 'Pedido Eliminado',
+                      subtitle: '',
+                      body: 'El pedido elaborado no se ha creado correctamente',
+                    })
+                    console.log("Error" + data.message);
+                  }
+    
           }); 
     }); 
+
+
+    
+
 });
