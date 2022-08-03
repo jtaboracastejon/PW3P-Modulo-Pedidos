@@ -103,12 +103,24 @@
         data: datam,        
         success: function (data, status) {
           if (status == 'success') {
-            alert("Data: " + data + "\nStatus: " + status);
-            window.location.replace("listar");
-          } else {
-            alert("Data: " + data + "\nStatus: " + status);
-            console.log("Error"+ data.message);
-          }
+                window.location.replace("listar");
+                //alert("Data: " + data + "\nStatus: " + status);
+                $(document).Toasts('create', {
+                  class: 'bg-success',
+                  title: 'Pedido Mesa Actualizado',
+                  subtitle: '',
+                  body: 'El pedido mesa se ha actualizado correctamente',
+                })
+
+              } else {
+                $(document).Toasts('create', {
+                  class: 'bg-danger',
+                  title: 'El pedido mesa no se ha actualizado',
+                  subtitle: '',
+                  body: 'El pedido Mesa no se ha actualizado correctamente',
+                })
+                console.log("Error" + data.message);
+              }
         },
         error: function (data) {
           console.log(data.message);

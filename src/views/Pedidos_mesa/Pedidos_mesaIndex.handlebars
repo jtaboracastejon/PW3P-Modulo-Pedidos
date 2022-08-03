@@ -29,7 +29,7 @@
                   </thead>
                   <tbody>
                     {{#each pedidos_mesa}}
-                    <tr>
+                    <tr id="list-{{idregistro}}">
                       <td>{{idregistro}}</td>
                       <td><a href="/cargos/buscarId?id={{idpedido}}">{{idpedido}}</a></td>
                       <td>{{'mesas_x_area.Mesa'}}</td>
@@ -38,9 +38,12 @@
                         <div class="sparkbar" data-color="#00a65a" data-height="20">{{nombrecuenta}}</div>
                       </td>
                       <td>
-                        <a class="btn btn-warning" href="/app/pedidos_mesa/buscarId?id={{idregistro}}">Editar</a>
+                        <a class="btn btn-warning" href="/app/pedidos_mesa/buscarId?id={{idregistro}}"><i
+                          class="text-white fas fa-edit"></i></a>
                         
-                        <a class="btn btn-danger" onclick="pedidosEliminar({{idregistro}})" href="javascript:void(0)" id="{{idregistro}}">Eliminar</a>
+                        <button type="button" class="btn btn-danger modalEliminar" id="{{idregistro}}" data-toggle="modal" data-target="#modal-danger">
+                        <i class="text-white fas fa-window-close"></i>
+                      </button>
                         <!--<a class="btn btn-danger" onclick="return confirm('Estas seguro de eliminar?') href="/pedidosmesa/eliminar?id=">Eliminar</a> -->
 
 
@@ -56,8 +59,8 @@
             </div>
             <!-- /.card-body -->
             <div class="card-footer clearfix">
-              <a href="./nuevo" class="btn btn-sm btn-info float-left">Generar nuevo cargo</a>
-              <a href="./buscar" class="btn btn-sm btn-secondary float-right">Buscar pedido</a>
+              <a href="./nuevo" class="btn btn-sm btn-info float-left">Generar nuevo pedido mesa</a>
+              <a href="./buscar" class="btn btn-sm btn-secondary float-right">Buscar pedido mesa</a>
             </div>
             <!-- /.card-footer -->
           </div>
@@ -68,12 +71,27 @@
       <!-- Fin primera fila -->
     </div>
   </section>
+  <div id="field_wrapper">
+
+</div>
   <!-- /.content -->
 
   <!-- Aqui agregar script adicionales -->
 
 
   <script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function () {
+    $('.modalEliminar').click(function () {
+      $('#modal-danger').remove();
+      var id = $(this).attr('id');
+      console.log(id);
+      //$('#idEliminar').val(id);
+
+      var wrapper = $('#field_wrapper'); 
+      var modal = '<div class="modal fade" id="modal-danger"><div class="modal-dialog"><div class="modal-content bg-danger"><div class="modal-header"><h4 class="modal-title">Eliminar Pedido</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div><div class="modal-body"><p> ¿Esta seguro de eliminar el Pedido '+id+'?&hellip;</p></div><div class="modal-footer justify-content-between"><button type="button" class="btn btn-outline-light" data-dismiss="modal">Cancelar</button><button type="button"  class="btn btn-outline-light" onclick="pedidosEliminar('+id+')">Eliminar Pedido</button></div></div></div></div>'
+      $(wrapper).append(modal);
+    });
+  })
   function pedidosEliminar(id) {    
       var url = "/app/pedidos_mesa/eliminar?id=" + id;
       $.ajax({
@@ -81,12 +99,25 @@
         url: url,    
         success: function (data, status) {
           if (status == 'success') {
-            alert("Data: " + data + "\nStatus: " + status);
-            window.location.replace("listar");
-          } else {
-            alert("Data: " + data + "\nStatus: " + status);
-            console.log("Error"+ data.message);
-          }
+          //alert("Data: " + data + "\nStatus: " + status);
+          $("#list-"+id).remove();
+          $(document).Toasts('create', {
+            class: 'bg-success',
+            title: 'Pedido Mesa Eliminado',
+            subtitle: '',
+            body: 'El pedido mesa "'+id+'" se ha sido eliminado correctamente'
+          })
+          $('#modal-danger').modal('hide');
+            return false;
+        } else {
+          $(document).Toasts('create', {
+            class: 'bg-danger',
+            title: 'Pedido Mesa Eliminado',
+            subtitle: '',
+            body: 'El pedido Mesa "'+id+'" no se ha podido eliminar'
+          })
+          console.log("Error" + data.message);
+        }
         },
         error: function (data) {
           console.log(data.message);

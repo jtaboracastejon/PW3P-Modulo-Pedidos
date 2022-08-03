@@ -29,8 +29,25 @@ $(document).ready(function($){
                 */
              }, 
             function(data, status){ 
-            alert("Data: " + data + "\nStatus: " + status);
-            window.location.replace("listar");
+                if (status == 'success') {
+                    window.location.replace("listar");
+                    //alert("Data: " + data + "\nStatus: " + status);
+                    $(document).Toasts('create', {
+                      class: 'bg-success',
+                      title: 'Pedido Mesa Creado',
+                      subtitle: '',
+                      body: 'El pedido mesa se ha creado correctamente',
+                    })
+    
+                  } else {
+                    $(document).Toasts('create', {
+                      class: 'bg-danger',
+                      title: 'El pedido mesa no se ha creado',
+                      subtitle: '',
+                      body: 'El pedido mesa no se ha creado correctamente',
+                    })
+                    console.log("Error" + data.message);
+                  };
 
           }); 
     }); 

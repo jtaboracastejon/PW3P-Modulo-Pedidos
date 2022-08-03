@@ -4,6 +4,7 @@ const { text } = require('express');
 const modelosMesa = require('../modelos/modeloMesas_x_area');
 const modeloPedido = require('../modelos/modeloPedidos');
 const {QueryTypes, Op} = require('sequelize');
+const modeloPedidos = require('../modelos/modeloPedidos');
 
 //const { transformAuthInfo } = require('passport');
 
@@ -11,6 +12,9 @@ const {QueryTypes, Op} = require('sequelize');
 exports.Listar = async(req, res) => {
     //const pedidos_mesa = await Pedidos_mesa.findAll();
     const pedidos_mesa = await Pedidos_mesa.findAll({
+        order: [
+            ['idregistro', 'ASC']
+        ],
         include: {
             model: modelosMesa,
             attributes: ['Mesa'],
@@ -38,7 +42,9 @@ exports.nuevo = async (req, res) =>{
         raw:true,
     });
     
-    
+    const pedidos = await modeloPedido.findAll({
+        raw:true,
+    });
     
     console.log(pedidos_mesa);
     console.log(mesas_x_area);
@@ -46,7 +52,8 @@ exports.nuevo = async (req, res) =>{
     res.render("Pedidos_mesaNuevo", {
         titulo: 'Nuevo en Pedidos_mesa',
         pedidos_mesa,
-        mesas_x_area
+        mesas_x_area,
+        pedidos
 
     });
 
@@ -270,6 +277,9 @@ exports.buscar = async (req, res) => {
     try {
         if(filtro === undefined || buscar === undefined){
             lista = await Pedidos_mesa.findAll({
+                order: [
+                    ['idregistro', 'ASC']
+                ],
                 include: {
                     model: modelosMesa,
                     attributes: ['Mesa']
@@ -281,6 +291,9 @@ exports.buscar = async (req, res) => {
 
         else if(filtro =='idregistro'){
             lista = await Pedidos_mesa.findAll({
+                order: [
+                    ['idregistro', 'ASC']
+                ],
                 where: {
                     idregistro: {
                         [Op.like]: '%'+buscar+'%'
@@ -297,6 +310,9 @@ exports.buscar = async (req, res) => {
 
         else if(filtro =='cuenta'){
             lista = await Pedidos_mesa.findAll({
+                order: [
+                    ['idregistro', 'ASC']
+                ],
                 where: {
                     cuenta: {
                         [Op.like]: '%'+buscar+'%'
@@ -311,6 +327,9 @@ exports.buscar = async (req, res) => {
             //console.log(lista);
         }
         else if(filtro =='nombrecuenta'){
+            order: [
+                ['idregistro', 'ASC']
+            ],
             lista = await Pedidos_mesa.findAll({
                 where: {
                     nombrecuenta: {
@@ -327,6 +346,9 @@ exports.buscar = async (req, res) => {
         }    
         else {
             lista = await  Pedidos_mesa.findAll({
+                order: [
+                    ['idregistro', 'ASC']
+                ],
                 include: {
                     model: modelosMesa,
                     where: {
