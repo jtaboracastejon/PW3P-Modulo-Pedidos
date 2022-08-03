@@ -94,12 +94,25 @@
                 data: datam,
                 success: function (data, status) {
                     if (status == 'success') {
-                        alert("Data: " + data + "\nStatus: " + status);
                         window.location.replace("listar");
+                        //alert("Data: " + data + "\nStatus: " + status);
+                        $(document).Toasts('create', {
+                            class: 'bg-success',
+                            title: 'Pedido Cancelado Editado',
+                            subtitle: '',
+                            body: 'El pedido cancelado se ha editado correctamente',
+                        })
+
                     } else {
-                        alert("Data: " + data + "\nStatus: " + status);
+                        $(document).Toasts('create', {
+                            class: 'bg-danger',
+                            title: 'Pedido Cancelado No Editado',
+                            subtitle: '',
+                            body: 'El pedido cancelado no se ha creado correctamente',
+                        })
                         console.log("Error" + data.message);
                     }
+
                 },
                 error: function (data) {
                     console.log(data);

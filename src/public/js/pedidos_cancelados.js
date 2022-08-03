@@ -1,5 +1,5 @@
-$(document).ready(function($){
-    $(".pedidos_canceladosguardar").on("click",function(){
+$(document).ready(function ($) {
+    $(".pedidos_canceladosguardar").on("click", function () {
         $.post(
             $(this).val(),
             {
@@ -7,13 +7,31 @@ $(document).ready(function($){
                 idusuario: $("#inputidusuario").val(),
                 fechahora: $("#textfecha").val()
             },
-            function(data, status){
-                alert("Data: " + data + "\nStatus: " + status);
-                window.location.replace("listar");
+            function (data, status) {
+                if (status == 'success') {
+                    window.location.replace("listar");
+                    //alert("Data: " + data + "\nStatus: " + status);
+                    $(document).Toasts('create', {
+                        class: 'bg-success',
+                        title: 'Pedido Cancelado Creado',
+                        subtitle: '',
+                        body: 'El pedido se ha creado correctamente',
+                    })
+
+                } else {
+                    $(document).Toasts('create', {
+                        class: 'bg-danger',
+                        title: 'Pedido Cancelado no se ha Creado',
+                        subtitle: '',
+                        body: 'El pedido no se ha creado correctamente',
+                    })
+                    console.log("Error" + data.message);
+                }
+
             });
 
     });
 
-    
+
 
 });
