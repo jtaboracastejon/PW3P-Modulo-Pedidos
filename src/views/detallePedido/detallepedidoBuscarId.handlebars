@@ -1,0 +1,189 @@
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+          <!-- jquery validation -->
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">Datos generales <small>Detella pedido</small></h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form id="quickForm" action="app/detallepedido/editar?id={{detallePedido.idregistro}}" method="post">
+              <div class="card-body row">
+                <div class="form-group col-md-6">
+                  <label for="inputNombre">Numero Pedido</label>
+                  <input type="number" name="numeropedidos" class="form-control" id="numeroPedido" value="{{detallePedido.NumeroPedido}}" placeholder="Escriba el nombre del cargo" required>
+                </div>
+                <div class="form-group col-md-6" data-select2-id="63">
+                  <label>Producto</label>
+                  <select id="producto" class="form-control cmbBuscarProducto select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="1" tabindex="-1" aria-hidden="true" name="codigoproducto">
+                    <option value="{{detallePedido.CodigoProducto}}" selected>{{producto.nombre}}</option>
+                    {{#each listaProductos}}
+                      <option value="{{Codigo}}">{{Nombre}}</option>
+                    {{/each}}
+                  </select>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="inputNombre">Cantidad</label>
+                  <input type="number" min="0" value="{{detallePedido.Cantidad}}" step="1" name="cantidad" class="form-control" id="cantidad" placeholder="Escriba el nombre del cargo" required>
+                </div>
+                <div class="form-group col-md-6">
+                  <label>SubProducto</label>
+                  <select id="subproducto" class="form-control cmbBuscarSubProducto select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="2" tabindex="-1" aria-hidden="true" name="subproducto">
+                    <option value="{{detallePedido.subproducto}}" selected>{{subproducto.nombre}}</option>
+                    {{#each listaProductos}}
+                      <option value="{{Codigo}}">{{Nombre}}</option>
+                    {{/each}}
+                  </select>
+                </div>
+                <div class="form-group col-md-12">
+                  <label for="inputNombre">Notas</label>
+                  <input type="text" value="{{detallePedido.Notas}}" class="form-control" id="notas" placeholder="Escriba el nombre del cargo">
+                </div>
+                <div class="col-md-3 text-center custom-control custom-switch custom-switch-off-danger custom-switch-on-success ">
+                  <input type="checkbox" class="custom-control-input" name="cancelado" id="cancelado" value="0" control-id="ControlID-41">
+                  <label class="custom-control-label" for="cancelado" id="cancelado">Cancelado</label>
+                </div>
+                <div class="col-md-3 text-center custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                  <input type="checkbox" class="custom-control-input" name="elaborado" id="elaborado" value="0" control-id="ControlID-42">
+                  <label class="custom-control-label" for="elaborado" id="elaborado">Elaborado</label>
+                </div>
+                <div class="col-md-3 text-center custom-control custom-switch custom-switch-off-danger custom-switch-on-success ">
+                  <input type="checkbox" class="custom-control-input" name="entregado" id="entregado" value="0" control-id="ControlID-43">
+                  <label class="custom-control-label" for="entregado" id="entregado">Entregado</label>
+                </div>
+                <div class="col-md-3 text-center custom-control custom-switch custom-switch-off-danger custom-switch-on-success ">
+                  <input type="checkbox" class="custom-control-input" name="facturado" id="facturado" value="0" control-id="ControlID-44">
+                  <label class="custom-control-label" for="facturado" id="facturado">Facturado</label>
+                </div>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer">
+                <a class="btn btn-primary toastrDefaultSuccess" onclick="detallePedidoModificar({{detallePedido.idregistro}})" href="javascript:void(0)" id="{{pedido.NumeroPedido}}">Guardar</a>
+              </div>
+            </form>
+          </div>
+          <!-- /.card -->
+        </div>
+        <!--/.col (left) -->
+        <!-- right column -->
+        <div class="col-md-6">
+
+        </div>
+        <!--/.col (right) -->
+      </div>
+      <!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+  <script>
+    $(document).ready(function() {
+      $('.cmbBuscarProducto').select2();
+      $('.cmbBuscarSubProducto').select2();
+    });
+    const elaborado = document.getElementById('elaborado')
+    if({{detallePedido.Elaborado}}=='1'){
+      elaborado.checked=true
+      elaborado.value=1
+    }
+
+    elaborado.addEventListener('change', (event) => {
+      if (event.currentTarget.checked) {
+        elaborado.value = 1
+      } else {
+        elaborado.value = 0
+      }
+    })
+
+    const cancelado = document.getElementById('cancelado')
+    if({{detallePedido.Cancelado}}=='1'){
+      cancelado.checked=true
+      cancelado.value=1
+    }
+
+    cancelado.addEventListener('change', (event) => {
+      if (event.currentTarget.checked) {
+        cancelado.value = 1
+      } else {
+        cancelado.value = 0
+      }
+    })
+    const entregado = document.getElementById('entregado')
+    if({{detallePedido.Entregado}}=='1'){
+      entregado.checked=true
+      entregado.value=1
+    }
+
+    entregado.addEventListener('change', (event) => {
+      if (event.currentTarget.checked) {
+        entregado.value = 1
+      } else {
+        entregado.value = 0
+      }
+    })
+
+    const facturado = document.getElementById('facturado')
+    if({{detallePedido.Facturado}}=='1'){
+      facturado.checked=true
+      facturado.value=1
+    }
+
+    facturado.addEventListener('change', (event) => {
+      if (event.currentTarget.checked) {
+        facturado.value = 1
+      } else {
+        facturado.value = 0
+      }
+    })
+
+    function detallePedidoModificar (id) {    
+
+      var url = "/app/detallepedido/editar?id=" + id;
+      var datam= {
+          NumeroPedido : $("#numeroPedido").val(),
+          CodigoProducto: $("#producto").val(),
+          Cantidad: $("#cantidad").val(),
+          Notas: $("#notas").val(),
+          Cancelado: $("#cancelado").val(),
+          Elaborado: $("#elaborado").val(),
+          Entregado: $("#entregado").val(),
+          Facturado: $("#facturado").val(),
+          subproducto:$("#subproducto").val()
+        };
+      $.ajax({
+        type: 'PUT',
+        url: url,
+        data: datam,        
+        success: function (data, status) {
+          if (status == 'success') {
+              window.location.replace("listar");
+              //alert("Data: " + data + "\nStatus: " + status);
+              $(document).Toasts('create', {
+                class: 'bg-success',
+                title: 'Pedido Creado',
+                subtitle: '',
+                body: 'El detalle pedido se ha creado correctamente',
+              })
+
+            } else {
+              $(document).Toasts('create', {
+                class: 'bg-danger',
+                title: 'El detalle pedido no se ha creado',
+                subtitle: '',
+                body: 'El detalle pedido no se ha creado correctamente',
+              })
+              console.log("Error" + data.message);
+            }
+        },
+        error: function (data) {
+          console.log(data);
+          alert('Error al guardar el Detalle pedido');
+        }
+      });
+    };
+
+
+  </script>

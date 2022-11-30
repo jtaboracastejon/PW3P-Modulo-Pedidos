@@ -1,0 +1,123 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <h2 class="text-center display-4">Buscar</h2>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <form action="" method="">
+                    <div class="input-group input-group-lg">
+                        <select class="" id="filtro" name="filtro">
+                            <option value="NumeroPedido">N° Pedido</option>
+                            <option value="mesero">Mesero</option>
+                            <option value="estacion">Estacion</option>
+                        </select>
+                        <input type="text" id="buscar" name="buscar" class="form-control form-control-lg"
+                            placeholder="Buscar" value="">
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-lg btn-default btnbuscar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row mt-3"></div>
+        <div class="row">
+            <div class="table-responsive">
+                <table class="table m-0">
+                    <thead>
+                        <tr>
+                            <th>N° PEDIDO</th>
+                            <th>MESERO</th>
+                            <th>FECHA Y HORA</th>
+                            <th>ESTACION</th>
+                            <th>ESTADO</th>
+                            <th>MODALIDAD</th>
+                            <th>ESTADO DEL PEDIDO</th>
+                            <th>ACCIONES</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each lista}}
+                        <tr>
+                            <td><a href="/pedidos/buscarId?id={{NumeroPedido}}">{{NumeroPedido}}</a></td>
+                            <td>{{'mesero.nombre'}}</td>
+                            <td>{{fechahora}}</td>
+                            <td>{{'estacione.nombre'}}</td>
+                            <td>{{activo}}</td>
+                            <td>{{modalidad}}</td>
+                            <td>
+                                {{estado}}
+                                <!-- <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                            <input type="checkbox" readonly class="custom-control-input"  id="elaborado<?php echo $row['NumeroPedido']; ?>" name="elaborado<?php echo $row['NumeroPedido']; ?>" value="<?php echo $row['elaborado']; ?>" checked control-id="ControlID-45">
+                            <label class="custom-control-label"  for="elaborado<?php echo $row['NumeroPedido']; ?>">Elaborado</label>
+                          </div> -->
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="elaborado{{NumeroPedido}}"
+                                        {{elaborado}} readonly>
+                                    <label class="custom-control-label">Elaborado</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="entregado{{NumeroPedido}}"
+                                        {{entregado}} readonly>
+                                    <label class="custom-control-label">Entregado</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="facturado{{NumeroPedido}}"
+                                        {{facturado}} readonly>
+                                    <label class="custom-control-label">Facturado</label>
+                                </div>
+                            </td>
+                            <td>
+                                <a class="btn btn-warning" href="/pedidos/buscarId?id={{NumeroPedido}}"><i
+                                        class="text-white fas fa-edit"></i></a>
+                                <a class="btn btn-danger"
+                                    onclick="return confirm('Estas seguro de Cancelar el pedido?')"
+                                    href="/pedidos/eliminar?id={{NumeroPedido}}"><i
+                                        class="text-white fas fa-window-close"></i></a>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</section>
+{{!--
+<?php 
+                if($this->datos == null){
+                    $msj=
+                    '<section class="content-header">
+                        <div class="container-fluid">
+                            <h5 class="text-center display">No existen datos que coincidan con la busqueda</h5>
+                        </div>
+                    </section>';
+                    echo $msj;
+                }
+                ?> --}}
+
+
+<!-- /.content -->
+<script>
+    $(document).ready(function() {
+        console.log(window.location.href)
+        if(window.location.href == "http://localhost:3010/app/pedidos/buscar?filtro=NumeroPedido&buscar="){
+            window.location.href = '/app/pedidos/buscar';    
+        }
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        $('.btnbuscar').click(function () {
+            var filtro = $('#filtro').val();
+            var buscar = $('#buscar').val();
+            var url = '/app/pedidos/buscar?filtro=' + filtro + '&buscar=' + buscar;
+            window.location.href = url;
+        });
+    });
+</script>

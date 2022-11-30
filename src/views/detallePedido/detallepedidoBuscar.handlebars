@@ -1,0 +1,112 @@
+<section class="content-header">
+  <div class="container-fluid">
+    <h2 class="text-center display-4">Buscar</h2>
+  </div>
+</section>
+
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-8 offset-md-2">
+        <form action="" method="">
+          <div class="input-group input-group-lg">
+            <select class="" id="filtro" name="filtro">
+              <option value="NumeroPedido">N° Pedido</option>
+              <option value="Producto">Producto</option>
+            </select>
+            <input type="text" id="buscar" name="buscar" class="form-control form-control-lg" placeholder="Buscar"
+              value="">
+            <div class="input-group-append">
+              <button type="button" class="btn btn-lg btn-default">
+                <i class="fa fa-search"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="row mt-3"></div>
+    <div class="row">
+      <div class="col-sm-12">
+        <table class="table m-0">
+          <thead>
+            <tr>
+              <th class="text-center">ID</th>
+              <th class="text-center">NumeroPedido</th>
+              <th class="text-center">Producto</th>
+              <th class="text-center">Cantidad</th>
+              <th class="text-center">Notas</th>
+              <th class="text-center">subproducto</th>
+              <th class="text-center" width=3%>Cancelado</th>
+              <th class="text-center" width=3%>Elaborado</th>
+              <th class="text-center" width=3%>Entregado</th>
+              <th class="text-center" width=3%>Facturado</th>
+              <th class="text-center" width=15%>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each lista}}
+            <tr id="list-{{idregistro}}">
+              <td class="text-center"><a href="/detallepedido/buscarid?id={{idregistro}}">{{idregistro}}</a>
+              </td>
+              <td class="text-center">{{NumeroPedido}}</td>
+              <td class="text-center">{{'producto.Nombre'}}</td>
+              <td class="text-center">{{Cantidad}}</td>
+              <td class="text-center">{{Notas}}</td>
+              <td class="text-center">{{subproducto}}</td>
+              <td class="text-center">
+                {{#if Cancelado}}
+                <span class="badge badge-success">SI</span>
+                {{else}}
+                <span class="badge badge-danger">NO</span>
+                {{/if}}
+              <td class="text-center">
+                {{#if Elaborado}}
+                <span class="badge badge-success">SI</span>
+                {{else}}
+                <span class="badge badge-danger">NO</span>
+                {{/if}}
+              <td class="text-center">
+                {{#if Entregado}}
+                <span class="badge badge-success">SI</span>
+                {{else}}
+                <span class="badge badge-danger">NO</span>
+                {{/if}}
+              <td class="text-center">
+                {{#if Facturado}}
+                <span class="badge badge-success">SI</span>
+                {{else}}
+                <span class="badge badge-danger">NO</span>
+                {{/if}}
+              <td class="text-center">
+                <a class="btn btn-warning" href="../detallepedido/buscarid?id={{idregistro}}"><i
+                    class="text-white fas fa-edit"></i></a>
+                <Button class="btn btn-danger modalEliminar" id="{{idregistro}}" data-toggle="modal"
+                  data-target="#modal-danger"><i class="fas fa-trash"></i></Button>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+    $(document).ready(function() {
+        console.log(window.location.href)
+        if(window.location.href == "http://localhost:3010/app/detallepedido/buscar?filtro=NumeroPedido&buscar="){
+            window.location.href = '/app/detallepedido/buscar';    
+        }
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        $('.btnbuscar').click(function () {
+            var filtro = $('#filtro').val();
+            var buscar = $('#buscar').val();
+            var url = '/app/detallepedido/buscar?filtro=' + filtro + '&buscar=' + buscar;
+            window.location.href = url;
+        });
+    });
+</script>
+

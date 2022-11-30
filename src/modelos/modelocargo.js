@@ -26,8 +26,8 @@ const Cargo = db.define(
         tableName: 'cargos'
     }
 )
-/* Esto es para crear la tabla por primera vez 
+// Esto es para crear la tabla por primera vez 
     Cargo.sync().then(
     () => console.log("Sincronizacion Completa")
-); */
+); 
 module.exports = Cargo;

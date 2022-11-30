@@ -1,0 +1,139 @@
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Detalle Pedido</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table class="table m-0">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">ID</th>
+                                                <th class="text-center">NumeroPedido</th>
+                                                <th class="text-center">Producto</th>
+                                                <th class="text-center">Cantidad</th>
+                                                <th class="text-center">Notas</th>
+                                                <th class="text-center">subproducto</th>
+                                                <th class="text-center" width=3%>Cancelado</th>
+                                                <th class="text-center" width=3%>Elaborado</th>
+                                                <th class="text-center" width=3%>Entregado</th>
+                                                <th class="text-center" width=3%>Facturado</th>
+                                                <th class="text-center" width=15%>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{#each lista}}
+                                            <tr id="list-{{idregistro}}">
+                                                <td class="text-center"><a
+                                                        href="/detallepedido/buscarid?id={{idregistro}}">{{idregistro}}</a>
+                                                </td>
+                                                <td class="text-center">{{NumeroPedido}}</td>
+                                                <td class="text-center">{{'producto.Nombre'}}</td>
+                                                <td class="text-center">{{Cantidad}}</td>
+                                                <td class="text-center">{{Notas}}</td>
+                                                <td class="text-center">{{subproducto}}</td>
+                                                <td class="text-center">
+                                                    {{#if Cancelado}}
+                                                    <span class="badge badge-success">SI</span>
+                                                    {{else}}
+                                                    <span class="badge badge-danger">NO</span>
+                                                    {{/if}}
+                                                <td class="text-center">
+                                                    {{#if Elaborado}}
+                                                    <span class="badge badge-success">SI</span>
+                                                    {{else}}
+                                                    <span class="badge badge-danger">NO</span>
+                                                    {{/if}}
+                                                <td class="text-center">
+                                                    {{#if Entregado}}
+                                                    <span class="badge badge-success">SI</span>
+                                                    {{else}}
+                                                    <span class="badge badge-danger">NO</span>
+                                                    {{/if}}
+                                                <td class="text-center">
+                                                    {{#if Facturado}}
+                                                    <span class="badge badge-success">SI</span>
+                                                    {{else}}
+                                                    <span class="badge badge-danger">NO</span>
+                                                    {{/if}}
+                                                <td class="text-center">
+                                                    <a class="btn btn-warning"
+                                                        href="../detallepedido/buscarid?id={{idregistro}}"><i
+                                                            class="text-white fas fa-edit"></i></a>
+                                                    <Button class="btn btn-danger modalEliminar" id="{{idregistro}}" data-toggle="modal" data-target="#modal-danger"><i
+                                                            class="fas fa-trash"></i></Button>       
+                                                </td>
+                                            </tr>
+                                            {{/each}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <div class="card-footer clearfix">
+                    <a href="/detallepedido/nuevo" class="btn btn-sm btn-info float-left">Generar nuevo Detalle
+                        Pedido</a>
+                    <a href="/detallepedido/buscar" class="btn btn-sm btn-secondary float-right">Buscar Detalle
+                        Pedido</a>
+                </div>
+                <!-- /.card-footer -->
+            </div>
+            <!--/.col (left) -->
+            <!-- right column -->
+            <div class="col-md-6">
+
+            </div>
+            <!--/.col (right) -->
+        </div>
+        <!-- /.row -->
+    </div>
+</section>
+<div id="field_wrapper">
+    
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    $('.modalEliminar').click(function () {
+        $('#modal-danger').remove();
+        var id = $(this).attr('id');
+        console.log(id);
+        $('#idEliminar').val(id);
+
+        var wrapper = $('#field_wrapper'); 
+        var modal = '<div class="modal fade" id="modal-danger"><div class="modal-dialog"><div class="modal-content bg-danger"><div class="modal-header"><h4 class="modal-title">Eliminar Pedido</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div><div class="modal-body"><p> ¿Esta seguro de eliminar el Pedido '+id+'?&hellip;</p></div><div class="modal-footer justify-content-between"><button type="button" class="btn btn-outline-light" data-dismiss="modal">Cancelar</button><button type="button"  class="btn btn-outline-light" onclick="pedidosEliminar('+id+')">Eliminar Pedido</button></div></div></div>'
+        $(wrapper).append(modal);
+    });
+    
+  })
+  function pedidosEliminar(id) {
+    var url = "/app/detallepedido/eliminar?id=" + id;
+    $.ajax({
+      type: 'DELETE',
+      url: url,
+      success: function (data, status) {
+        if (status == 'success') {
+          $("#list-"+id).remove();
+          $('#modal-danger').modal('hide');
+            return false;
+        } else {
+          console.log("Error" + data.message);
+        }
+      },
+      error: function (data) {
+        console.log(data);
+        alert('Error al eliminar el pedido');
+      }
+    });
+  };
+</script>
